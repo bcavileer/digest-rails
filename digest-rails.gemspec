@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 3.2.21"
   s.add_dependency "opal-rails"
   s.add_dependency "foundation-rails"
+  s.add_dependency "digest"
 
   s.add_development_dependency 'rspec-rails', "~> 3.1"
   s.add_development_dependency 'capybara'
