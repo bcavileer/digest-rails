@@ -1,0 +1,23 @@
+<h1>Listing digests</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @digests.each do |digest| %>
+  <tr>
+    <td><%= digest.name %></td>
+    <td><%= link_to 'Show', digest %></td>
+    <td><%= link_to 'Edit', edit_digest_path(digest) %></td>
+    <td><%= link_to 'Destroy', digest, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Digest', new_digest_path %>
