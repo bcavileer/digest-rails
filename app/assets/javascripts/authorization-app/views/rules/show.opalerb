@@ -1,0 +1,36 @@
+    <h2>Rules</h2>
+
+    <div class="row">
+      <div class="small-12 columns">
+
+        <ul class="tabs show-for-medium-up" data-tab>
+          <li class="tab-title active"><a href="#panel1">Search Criteria</a></li>
+          <li class="tab-title"><a href="#panel2">Search Result</a></li>
+        </ul>
+
+        <dl class="accordion" data-accordion>
+
+          <dd class="accordion-navigation">
+
+            <a href="#panel1" class="show-for-small-only">Search Criteria</a>
+            <div id="panel1" class="content">
+              <div class="content-box section-box">
+              Search Criteria
+                <div id="search_criteria" class="handsontable"style="height: 400px; overflow: scroll" ></div>
+              </div>
+            </div>
+
+            <a href="#panel2" class="show-for-small-only">Search Result</a>
+            <div id="panel2" class="content active">
+              <div class="content-box section-box">
+              Search Result
+                <div id="search_result" class="handsontable" style="height: 400px; overflow: scroll"></div>
+              </div>
+            </div>
+
+          </dd>
+
+        </dl>
+
+      </div>
+    </div>

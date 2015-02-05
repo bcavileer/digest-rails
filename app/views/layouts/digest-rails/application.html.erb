@@ -1,14 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>DigestRails</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+  <title>Authorize</title>
   <%= stylesheet_link_tag    "digest-rails/application", :media => "all" %>
   <%= javascript_include_tag "digest-rails/application" %>
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body id="page" class="off-canvas hide-extras">
+<div class="container">
 
-<%= yield %>
+<%= yield :user_header%>
+
+
+  <div id="markup" ></div>
+<%= yield :developer%>
+  <div id="data" >
+
+    <div class = 'hide' id="data_links">
+      <a class="rules">authorization_data_rules_path Rules</a>
+      <a class="users">authorization_data_users_path  Users</a>
+      <a class="rulesets">authorization_data_rulesets_path Rulesets</a>
+    </div>
+
+  </div>
+
+  <footer class="row">
+    <div class="large-12 columns">
+      <hr/>
+      <div class="row">
+        <div class="large-6 columns">
+          <p>&copy; Copyright Holman.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<%= javascript_include_tag "digest_rails_application" %>
+<%= javascript_include_tag "handsontable" %>
+
+<script>
+    $(".hide").hide();
+    <%= yield :script %>
+    $(document).foundation({
+        tab: {
+            callback : function (tab) {
+                console.log(tab);
+            }
+        }
+    });
+</script>
 
 </body>
 </html>

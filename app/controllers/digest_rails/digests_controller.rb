@@ -2,6 +2,7 @@ require_dependency "digest_rails/application_controller"
 
 module DigestRails
   class DigestsController < ApplicationController
+    layout 'digest-rails/application'
     # GET /digests
     # GET /digests.json
     def index
