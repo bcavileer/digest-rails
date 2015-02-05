@@ -10,5 +10,9 @@ module DigestRails
 
     end
 
+    config.eager_load_paths = config.eager_load_paths.select do |p|
+      p.split('/')[-2..-1].join('/') != 'app/assets'
+    end
+
   end
 end
