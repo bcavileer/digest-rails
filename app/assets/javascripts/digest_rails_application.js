@@ -10,21 +10,23 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require jquery2/jquery-2.1.3.js
+//= require jquery2
 //= require jquery_ujs
 //= require opal
 //= require paloma
-//= require digest/digest
+//= require opal-paloma
+//= require digest
 //= require foundation
 //= require handsontable
-//= require_tree ./authorization-app
+//= require authorization-app
+//= require digest-rails-app
 
-
-
-console.log('set executehook');
+console.log('digest_rails executehook');
 $(document).on('page:load', function(){
-console.log('executehook');
-   Paloma.executeHook();
+//console.log('executehook');
+console.log('Paloma executehook');
+    Paloma.executeHook();
+console.log('Paloma engine.start');
    Paloma.engine.start();
 });
 

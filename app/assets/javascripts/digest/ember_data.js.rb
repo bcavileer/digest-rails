@@ -1,4 +1,4 @@
-require 'opal-paloma/digest_decode'
+//= require 'opal-paloma'
 
 module Paloma
   class EmberData

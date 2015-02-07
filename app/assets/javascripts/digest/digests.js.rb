@@ -1,5 +1,5 @@
-require 'opal'
-require 'ember_data'
+//= require 'opal'
+//= require ./'ember_data'
 
 module Paloma
 

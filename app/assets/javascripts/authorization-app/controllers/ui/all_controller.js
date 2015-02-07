@@ -1,3 +1,5 @@
+console.log('authorization-app all_controller');
+
 if (typeof Authorization == 'undefined') {
     Authorization = {};
 }

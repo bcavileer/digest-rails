@@ -1,12 +1,13 @@
 require_dependency "digest_rails/application_controller"
 
-module DigestRails
+#module DigestRails
+  module Ui
   class DigestsController < ApplicationController
     layout 'digest-rails/application'
     # GET /digests
     # GET /digests.json
     def index
-      @digests = Digest.all
+      @digests = DigestRails::Digest.all
   
       respond_to do |format|
         format.html # index.html.erb
@@ -85,4 +86,5 @@ module DigestRails
       end
     end
   end
-end
+  end
+

@@ -4,12 +4,14 @@ module Paloma
     class << self
 
       def create(klass, names, methods)
+`console.log('Paloma::Controller.create');`
         n = new(klass, names, methods).construct
         n.add_instance_methods
         return n
       end
 
       def create_controller(names, methods)
+`console.log('Paloma::Controller.create_controller');`
         opal_controller = create(self, names, methods)
         return `opal_controller.constructor`
       end
@@ -17,14 +19,21 @@ module Paloma
     end
 
     def initialize(klass, names, methods)
+      `console.log('Paloma::Controller.new');`
+      `console.log(klass);`
+      `console.log(names);`
+      `console.log(methods);`
+
       @klass = klass
       @controllerPath = names
       @methods = methods
     end
 
     def construct
+      `console.log('Paloma::Controller.construct');`
       namespace
       cmd = "#{logical} = this.$do_construct(\"#{route}\") "
+`console.log(cmd);`
       @constructor = `eval(cmd)`
       return self
     end
@@ -37,11 +46,11 @@ module Paloma
     end
 
     def logical
-      @controllerPath[0] + '.' + @controllerPath[1] + '.' + @controllerPath[2]
+      @controllerPath.join "."
     end
 
     def route
-      @controllerPath[0] + '/' + @controllerPath[1] + '/' + @controllerPath[2]
+      @controllerPath.join "/"
     end
 
     def prototype_method_name(mname)
@@ -60,6 +69,7 @@ module Paloma
     def namespace
       if !defined(@controllerPath[0])
         cmd = "#{@controllerPath[0]} = {}"
+`console.log(cmd);`
         `eval(cmd)`
       end
       next_dir = "#{@controllerPath[0]}.#{@controllerPath[1]}"
