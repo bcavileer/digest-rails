@@ -1,9 +1,22 @@
 require_dependency "digest_rails/application_controller"
 
-#module DigestRails
-  module Ui
   class DigestsController < ApplicationController
     layout 'digest-rails/application'
+
+    def digest_keys
+      DigestRails::Digest.select('key').uniq.map{|r| r.key}
+    end
+
+    def digest(key)
+      DigestRails::Digest.where(:key => key).order("created_at").last
+    end
+
+    def digests
+      @digests =  digest_keys.map do |key|
+        DigestRails::Digest.where(:key => key).order("created_at").last
+      end
+    end
+
     # GET /digests
     # GET /digests.json
     def index
@@ -86,5 +99,3 @@ require_dependency "digest_rails/application_controller"
       end
     end
   end
-  end
-

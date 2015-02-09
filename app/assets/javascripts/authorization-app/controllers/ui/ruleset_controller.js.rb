@@ -3,7 +3,6 @@ require 'opal'
 #require 'opal-paloma/digests'
 
 module Authorization
-  module Ui
   class Ruleset < Paloma::Controller
     class << self
       def index
@@ -13,7 +12,6 @@ module Authorization
         @digest = Paloma::Digests.create('rulesets')
       end
     end
-  end
   end
 end
 

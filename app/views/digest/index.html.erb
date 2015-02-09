@@ -1,0 +1,26 @@
+<% content_for :user_header do %>
+<header id="header" class="row">
+  <div class="large-12 columns">
+    <hr/>
+    <div class="row">
+      <div class="large-6 columns">
+        <ul class="inline-list right">
+
+
+          <h1><%= @digest_name %> </h1>
+
+          <table border='1'>
+            <% @digest_core_instances.each do |instance| %>
+                <tr>
+                  <td><%= instance.to_s %></td>
+                 </tr>
+            <% end %>
+          </table>
+          <br />
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
+<% end %>

@@ -10,6 +10,7 @@ class CreateDigestRailsDigests < ActiveRecord::Migration
       t.string :menu_name_low
       t.integer :menu_index_low
       t.integer :data_length
+      t.string :url
       t.binary :data, :limit => 10.megabyte
       t.timestamps
     end

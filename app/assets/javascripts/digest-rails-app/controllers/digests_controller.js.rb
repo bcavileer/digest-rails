@@ -1,10 +1,6 @@
 require 'opal'
 
-`console.log('ui/digests digests_controller');`
-
-`if (typeof Ui == 'undefined') {
-    Ui = {};
-}`
+`console.log('digests digests_controller');`
 
 #Ui.Digests = Paloma.controller('Ui/Digests');
 #Ui.Digests.prototype.index = function(){
@@ -18,28 +14,23 @@ require 'opal'
 # #require 'digest'
 #
 
-module Ui
      class Digests < Paloma::Controller
        class << self
 
          def index
-           `console.log('ui/digests all_controller index');`
+           `console.log('digests all_controller index');`
            template = Template["authorization-app/views/rulesets/show"]
            rendered = template.render
            `$("#markup").html(rendered);`
          end
 
          def render
-           `console.log('ui/digests all_controller render');`
+           `console.log('digests all_controller render');`
          end
-#
-#           template = Template["authorization-app/views/digests/show"]
-#           rendered = template.render
 
        end
      end
-end
 
 
-Ui::Digests.create_controller(['Ui','Digests'],[:index])
+Digests.create_controller(['Digests'],[:index])
 

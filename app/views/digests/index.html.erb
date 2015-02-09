@@ -7,7 +7,7 @@
         <ul class="inline-list right">
 
 
-          <h1>User Header</h1>
+          <h1>Digests</h1>
 
           <table border='1'>
             <% @digests.each do |digest| %>
@@ -23,20 +23,12 @@
                   <td><%= digest.menu_name_low %></td>
                   <td><%= digest.menu_index_low %></td>
 
-                  <td><%= link_to 'Show', digest_rails.ui_digests_path %></td>
-                 </tr>
+                  <td><%= link_to 'Show', digest.url %></td>
+                </tr>
             <% end %>
           </table>
 
           <br />
-
-          <li>authorization_ui_rules_path, :remote => true</li>
-          <li>authorization_ui_user_rule_path, :remote => true</li>
-          <li>authorization_ui_ruleset_path, :remote => true</li>
-          <li>authorization_ui_ruleset_rule_path, :remote => true</li>
-          <li>authorization_ui_user_ruleset_path, :remote => true</li>
-          <li>authorization_ui_transition_path, :remote => true</li>
-
         </ul>
       </div>
     </div>
