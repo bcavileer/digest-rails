@@ -11,12 +11,8 @@ require_dependency "digest_rails/application_controller"
       DigestRails::Digest.where(:key => key).order("created_at").last
     end
 
-    def url_subdomain
-      'authorize'
-    end
-
-    def url_host
-      'lvh.me:5000'
+    def url_subdomain(a_raw_digest)
+      a_raw_digest.url_subdomain
     end
 
     def server_name

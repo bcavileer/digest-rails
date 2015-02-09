@@ -66,20 +66,28 @@ class DigestController < ApplicationController
     end
   end
 
+  def server_name
+    r = request.env["SERVER_NAME"]
+    rsplit = r.split('.')
+    r = rsplit[1..-1].join('.') if rsplit.length > 2
+    return r
+  end
+
+  def server_port
+    request.env["SERVER_PORT"]
+  end
+
+  def url_path(a_raw_digest)
+    rsplit = a_raw_digest.path_repl_command.split('.')
+    rsplit[-1].split('_')[0..-2].join('_')
+  end
+
   def url_subdomain
     'digest_rails'
   end
 
-  def url_host
-    'lvh.me:5000'
-  end
-
-  def url_path
-    app.digest_rails.digests_path
-  end
-
-  def digests_url
-    @digests_url = "http://#{url_subdomain}.#{url_host}#{url_path}"
+  def digests_url(a_raw_digest)
+    "http://#{url_subdomain}.#{server_name}:#{server_port}/digests"
   end
 
   # GET /digests
@@ -87,6 +95,7 @@ class DigestController < ApplicationController
   def index
     @digest_name = digest_key
     @digest_core_instances = digest_core_instances
+    @digests_url = digests_url(digest_record)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: digest }
