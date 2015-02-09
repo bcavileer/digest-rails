@@ -6,13 +6,21 @@
       <div class="large-6 columns">
         <ul class="inline-list right">
 
-
           <h1><%= @digest_name %> </h1>
 
           <table border='1'>
+            <tr>
+              <% @digest_manifest['identifier_descriptors'].each do |descriptor| %>
+                <td><%= descriptor["digest_hash_key"].split('/').last%></td>
+              <% end %>
+              </td>
+            </tr>
             <% @digest_core_instances.each do |instance| %>
                 <tr>
-                  <td><%= instance.to_s %></td>
+                  <% @digest_manifest['identifier_descriptors'].each do |descriptor| %>
+                      <td><%= instance[descriptor["digest_hash_key"]][:identifier]%></td>
+                  <% end %>
+                  <td><%= link_to 'Core', 'l' %></td>
                  </tr>
             <% end %>
           </table>

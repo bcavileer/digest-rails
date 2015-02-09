@@ -94,6 +94,7 @@ class DigestController < ApplicationController
   # GET /digests.json
   def index
     @digest_name = digest_key
+    @digest_manifest = digest_manifest
     @digest_core_instances = digest_core_instances
     @digests_url = digests_url(digest_record)
     respond_to do |format|
