@@ -7,20 +7,54 @@ require_dependency "digest_rails/application_controller"
       DigestRails::Digest.select('key').uniq.map{|r| r.key}
     end
 
-    def digest(key)
+    def raw_digest(key)
       DigestRails::Digest.where(:key => key).order("created_at").last
+    end
+
+    def url_subdomain
+      'authorize'
+    end
+
+    def url_host
+      'lvh.me:5000'
+    end
+
+    def server_name
+      r = request.env["SERVER_NAME"]
+      rsplit = r.split('.')
+      r = rsplit[1..-1].join('.') if rsplit.length > 2
+      return r
+    end
+
+    def server_port
+      request.env["SERVER_PORT"]
+    end
+
+    def url_path(a_raw_digest)
+      rsplit = a_raw_digest.path_repl_command.split('.')
+      rsplit[-1].split('_')[0..-2].join('_')
+    end
+
+    def digest_url(a_raw_digest)
+      "http://#{a_raw_digest.url_subdomain}.#{server_name}:#{server_port}/#{url_path(a_raw_digest)}"
+    end
+
+    def link_urls(a_raw_digest)
+      a_raw_digest.instance_variable_set( :@url, digest_url(a_raw_digest) )
     end
 
     def digests
       @digests =  digest_keys.map do |key|
-        DigestRails::Digest.where(:key => key).order("created_at").last
+        r = raw_digest(key)
+        link_urls(r)
+        r
       end
     end
 
     # GET /digests
     # GET /digests.json
     def index
-      @digests = DigestRails::Digest.all
+      @digests = digests
   
       respond_to do |format|
         format.html # index.html.erb

@@ -66,6 +66,22 @@ class DigestController < ApplicationController
     end
   end
 
+  def url_subdomain
+    'digest_rails'
+  end
+
+  def url_host
+    'lvh.me:5000'
+  end
+
+  def url_path
+    app.digest_rails.digests_path
+  end
+
+  def digests_url
+    @digests_url = "http://#{url_subdomain}.#{url_host}#{url_path}"
+  end
+
   # GET /digests
   # GET /digests.json
   def index

@@ -23,7 +23,7 @@
                   <td><%= digest.menu_name_low %></td>
                   <td><%= digest.menu_index_low %></td>
 
-                  <td><%= link_to 'Show', digest.url %></td>
+                  <td><%= link_to 'Show', digest.instance_variable_get( :@url ) %></td>
                 </tr>
             <% end %>
           </table>
