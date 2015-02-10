@@ -1,7 +1,7 @@
 require_dependency "digest_rails/application_controller"
 
-  class DigestsController < DigestRails::ApplicationController
-    layout 'digest-rails/application'
+  class DigestsController #< DigestRails::ApplicationController
+    #layout 'digest-rails/application'
 
     def digest_keys
       DigestRails::Digest.select('key').uniq.map{|r| r.key}

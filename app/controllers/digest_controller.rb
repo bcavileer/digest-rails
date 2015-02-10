@@ -1,7 +1,7 @@
 require_dependency "digest_rails/application_controller"
 
-class DigestController < DigestRails::ApplicationController
-  layout 'digest-rails/application'
+class DigestController# < DigestRails::ApplicationController
+  #layout 'digest-rails/application'
 
   def digest_key
     "Must override"
