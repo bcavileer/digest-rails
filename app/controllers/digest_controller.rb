@@ -1,6 +1,6 @@
 require_dependency "digest_rails/application_controller"
 
-class DigestController < ApplicationController
+class DigestController < DigestRails::ApplicationController
   layout 'digest-rails/application'
 
   def digest_key
@@ -41,7 +41,7 @@ class DigestController < ApplicationController
 
   # GET /digests
   # GET /digests.json
-  def index
+  def show
     @digest_key = digest_key
     @digest_hash = digest_hash
     @digests_url = digests_url(digest_record)
@@ -51,15 +51,5 @@ class DigestController < ApplicationController
     end
   end
 
-  # GET /digests/1
-  # GET /digests/1.json
-  def show
-    @digest = Digest.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @digest }
-    end
-  end
 
 end
