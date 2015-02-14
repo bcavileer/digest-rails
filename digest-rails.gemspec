@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.version     = DigestRails::VERSION
   s.authors     = ["Eric Laquer","Ben Cavalier"]
   s.email       = ["LaquerEric@gmail.com", "bcavileer@holmanauto.com"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of DigestRails."
-  s.description = "TODO: Description of DigestRails."
+  s.homepage    = ""
+  s.summary     = "Summary of DigestRails."
+  s.description = "Description of DigestRails."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"]

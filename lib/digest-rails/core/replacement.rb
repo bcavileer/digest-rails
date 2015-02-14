@@ -21,21 +21,38 @@ module DigestRails
 
       def process
         @digest = params[:digest]
+        to_file
         replace
       end
 
+      def to_file
+        dir = File.join(Rails.root,'tmp','digests')
+        `mkdir -p #{dir}`
+        filename = File.join(dir,"#{@digest.key.underscore}.json" )
+        File.open(filename,'w') do |f|
+          f.write(@digest.as_json.to_json)
+        end
+      end
+
       def replace
+        remove
+        create
+      end
+
+      def remove
         old_ids = DigestRails::Digest.where({key: @digest.key}).all.map{|r| r.id }
         DigestRails::Digest.destroy(old_ids)
+      end
+
+      def create
         DigestRails::Digest.create({
                                key: @digest.key,
                                menu_index_low: @digest.menu.menu_index_low, menu_name_low: @digest.menu.menu_name_low,
                                data: @digest.as_json, data_length: @digest.as_json.length,
-                               url_subdomain: @digest.data_view.core_set.endpoint.url_subdomain , path_repl_command: @digest.data_view.core_set.endpoint.url_subdomain
+                               engine: @digest.data_view.core_set.endpoint.engine , route_name: @digest.data_view.core_set.endpoint.route_name
                            })
         # Sanity check
         #j = Axle::Core::Digest.from_as_json( JSON.parse( @digest.as_json.to_json ) )
-
       end
 
     end

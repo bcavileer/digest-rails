@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150205163304) do
+ActiveRecord::Schema.define(:version => 20150214201713) do
 
   create_table "digest_rails_digests", :force => true do |t|
     t.string   "key"
@@ -22,11 +22,11 @@ ActiveRecord::Schema.define(:version => 20150205163304) do
     t.string   "menu_name_low"
     t.integer  "menu_index_low"
     t.integer  "data_length"
-    t.string   "path_repl_command"
-    t.string   "url_subdomain"
-    t.binary   "data",              :limit => 10485760
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.string   "engine"
+    t.string   "route_name"
+    t.binary   "data",            :limit => 10485760
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
   end
 
 end

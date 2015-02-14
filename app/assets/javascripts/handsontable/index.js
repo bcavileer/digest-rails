@@ -1,1 +1,0 @@
-//= require "./handsontable.full_mod3"
