@@ -1,5 +1,22 @@
-require_dependency "digest_rails/application_controller"
+require_dependency "application_controller"
 
+
+require 'axle/route/dir'
+
+class DigestsController < DigestRails::ApplicationController
+
+  def index
+    get_digests
+    render :text => "Available Digests #{@digests.keys}"
+  end
+
+  def name_server
+    render :text => "Route:#{get_route}"
+  end
+
+end
+
+=begin
   class DigestsController #< DigestRails::ApplicationController
     #layout 'digest-rails/application'
 
@@ -59,3 +76,4 @@ require_dependency "digest_rails/application_controller"
     end
 
   end
+=end

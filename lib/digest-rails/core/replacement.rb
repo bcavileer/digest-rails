@@ -52,7 +52,7 @@ module DigestRails
                                engine: @digest.data_view.core_set.endpoint.engine , route_name: @digest.data_view.core_set.endpoint.route_name
                            })
         # Sanity check
-        #j = Axle::Core::Digest.from_as_json( JSON.parse( @digest.as_json.to_json ) )
+        j = Axle::Core::Digest[ as_json: JSON.parse( @digest.as_json.to_json ) ]
       end
 
     end
