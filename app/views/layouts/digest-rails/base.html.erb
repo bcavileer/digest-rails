@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%= stylesheet_link_tag("application", "data-turbolinks-track" => true) %>
+  <%= javascript_include_tag("application", "data-turbolinks-track" => true) %>
+
+  <%= yield(:head) %>
+
+  <meta charset="utf8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <%= csrf_meta_tags %>
+
+  <title>
+    <%= yield(:title) + " – " if content_for?(:title) %>
+    RailsStarter
+  </title>
+</head>
+<body>
+
+<%= yield %>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+<div class="tabs-content">
+     <% @digests.each_index do |i| %>
+
+      <% active = (i == @active_digest_index ) %>
+      <% active_class= (active ? 'active' : '') %>
+
+      <% digest = @digests[i] %>
+
+      <div class="content <%= active_class %>" id="panel<%= i %>">
+        <% if active %>
+            <%= render(@digest_view_template) %>
+        <% else %>
+            <p>This is number <%= i %>  <%= active_class %> </p>
+        <% end %>
+      </div>
+
+  <% end %>
+</div>

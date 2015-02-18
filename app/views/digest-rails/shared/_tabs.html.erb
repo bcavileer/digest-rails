@@ -1,0 +1,12 @@
+<ul class="tabs" data-tab>
+  <% @digests.each_index do |i| %>
+      <% digest = @digests[i] %>
+
+      <% active = (i == @active_digest_index ) %>
+      <% active_class= (active ? 'active' : '') %>
+
+      <li class="tab-title <%= active_class %>">
+        <a href="#panel<%= i %>"><%= digest.key.underscore.split('_')[0].capitalize %></a></li>
+  <% end %>
+</ul>
+

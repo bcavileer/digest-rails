@@ -1,1 +1,0 @@
-//= require_tree old/opal-paloma
