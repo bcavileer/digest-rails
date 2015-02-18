@@ -1,14 +1,14 @@
 PATH
   remote: .
   specs:
-    digest-rails (0.4.7)
+    digest-rails (0.4.9)
       axle
       rails (~> 3.2.21)
 
 PATH
   remote: ../axle
   specs:
-    axle (0.4.7)
+    axle (0.4.9)
       digest
       rails (~> 3.2.21)
 
