@@ -8,7 +8,7 @@ PATH
 PATH
   remote: ../axle
   specs:
-    axle (0.4.5)
+    axle (0.4.6)
       digest
       rails (~> 3.2.21)
 

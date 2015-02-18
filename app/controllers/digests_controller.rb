@@ -3,7 +3,7 @@ require 'axle/route/dir'
 
 
 class DigestsController < DigestRails::ApplicationController
-  layout 'foundation_migration/application'
+  layout 'digest-rails/application'
 
   def index
     get_digests
