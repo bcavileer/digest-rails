@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
 
-  mount DigestRails::Engine => "/digest-rails"
+  constraints(:subdomain => 'digest_rails') do
+    mount DigestRails::Engine => ''
+  end
+
 end

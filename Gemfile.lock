@@ -1,14 +1,14 @@
 PATH
   remote: .
   specs:
-    digest-rails (0.4.2)
+    digest-rails (0.4.6)
       axle
       rails (~> 3.2.21)
 
 PATH
   remote: ../axle
   specs:
-    axle (0.4.1)
+    axle (0.4.5)
       digest
       rails (~> 3.2.21)
 
@@ -56,6 +56,9 @@ GEM
     factory_girl_rails (4.5.0)
       factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
+    foundation-rails (5.5.1.0)
+      railties (>= 3.1.0)
+      sass (>= 3.3.0, < 3.5)
     hike (1.2.3)
     i18n (0.7.0)
     interception (0.5)
@@ -75,7 +78,7 @@ GEM
     pry-rescue (1.4.1)
       interception (>= 0.5)
       pry
-    pry-stack_explorer (0.4.9.1)
+    pry-stack_explorer (0.4.9.2)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
     rack (1.4.5)
@@ -120,6 +123,7 @@ GEM
       rspec-mocks (~> 3.2.0)
       rspec-support (~> 3.2.0)
     rspec-support (3.2.1)
+    sass (3.4.12)
     slop (3.6.0)
     sprockets (2.2.3)
       hike (~> 1.2)
@@ -141,6 +145,7 @@ DEPENDENCIES
   axle (~> 0.4.1)!
   digest-rails!
   factory_girl_rails (~> 4.0)
+  foundation-rails
   pry-rescue
   pry-stack_explorer
   rspec-rails (~> 3.2.0)

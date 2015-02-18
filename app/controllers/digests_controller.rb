@@ -1,13 +1,13 @@
-require_dependency "application_controller"
-
-
+require_dependency "digest_rails/application_controller"
 require 'axle/route/dir'
 
+
 class DigestsController < DigestRails::ApplicationController
+  layout 'foundation_migration/application'
 
   def index
     get_digests
-    render :text => "Available Digests #{@digests.keys}"
+    #render :text => "Available Digests #{@digests.keys}"
   end
 
   def name_server

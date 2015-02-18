@@ -1,37 +1,46 @@
-<% content_for :user_header do %>
-<header id="header" class="row">
-  <div class="large-12 columns">
-    <hr/>
-    <div class="row">
-      <div class="large-6 columns">
-        <ul class="inline-list right">
 
+          <nav class="top-bar" data-topbar role="navigation">
+            <ul class="title-area">
+              <li class="name">
+                <h1><a href="#">Holman Intranet</a></h1>
+              </li>
+              <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+              <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+            </ul>
 
-          <h1>Digests</h1>
-
-          <table border='1'>
-            <% @digests.each do |digest| %>
-                <tr>
-                  <td><%= digest.key %></td>
-
-                  <td><%= digest.menu_name_high %></td>
-                  <td><%= digest.menu_index_high %></td>
-
-                  <td><%= digest.menu_name_med %></td>
-                  <td><%= digest.menu_index_med %></td>
-
-                  <td><%= digest.menu_name_low %></td>
-                  <td><%= digest.menu_index_low %></td>
-
-                  <td><%= link_to 'Show', digest.instance_variable_get( :@url ) %></td>
-                </tr>
+            <section class="top-bar-section">
+              <!-- Left Nav Section -->
+              <ul class="left">
+                <li class="has-dropdown">
+                  <a href="#">Admin</a>
+                  <ul class="dropdown">
+                    <li class="active"><a href="#">Authorize</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </section>
+          </nav>
+          <ul class="tabs" data-tab>
+            <% @digests.digests.each_index do |i| %>
+                <% digest= @digests.digests[i] %>
+                <% active = ( i == 0 ? 'active' : '' ) %>
+                <li class="tab-title <%= active %>" ><a href="#panel<%=i%>"><%= digest.key.underscore.split('_')[0].capitalize %></a></li>
             <% end %>
-          </table>
+          </ul>
+
+          <div class="tabs-content">
+            <% @digests.digests.each_index do |i| %>
+                <% active = ( i == 0 ? 'active' : '' ) %>
+                <% digest= @digests.digests[i] %>
+                <div class="content <%= active %>" id="panel<%= i %>">
+                    <p>This is number <%= i %> </p>
+                </div>
+            <% end %>
+          </div>
+
 
           <br />
         </ul>
       </div>
     </div>
   </div>
-</header>
-<% end %>
