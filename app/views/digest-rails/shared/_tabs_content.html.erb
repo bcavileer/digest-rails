@@ -8,9 +8,15 @@
 
       <div class="content <%= active_class %>" id="panel<%= i %>">
         <% if active %>
-            <%= render(@digest_view_template) %>
+
+            <% if content_for?(:digest_pane) %>
+                <%= yield(:digest_pane) %>
+            <% else %>
+                <%= render(@digest_view_template) %>
+            <% end %>
+
         <% else %>
-            <p>This is number <%= i %>  <%= active_class %> </p>
+            <p>Please wait a moment...</p>
         <% end %>
       </div>
 

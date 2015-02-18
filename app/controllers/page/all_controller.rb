@@ -5,6 +5,7 @@ require 'axle/core/digests'
 module Page
   class AllController < ::ActionController::Base
     include Axle::Concern::Server::DigestsControllerHelper
+    include Axle::Concern::Ui::MenuTree
 
     layout 'digest-rails/application'
 
