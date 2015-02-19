@@ -8,9 +8,7 @@
 
       <div class="content <%= active_class %>" id="panel<%= i %>">
         <% if active %>
-            <div id="active_digest_title"><%= @active_digest_title %> </div>
-            <div id="active_digest_pane" class="handsontable"></div>
-            <%= yield :active_digest_footer %>
+            <%= render("digest-rails/shared/tabs_content_active") %>
         <% else %>
             <p>Please wait a moment...</p>
         <% end %>
