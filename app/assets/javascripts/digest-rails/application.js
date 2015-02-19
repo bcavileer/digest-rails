@@ -14,6 +14,8 @@
 //= require jquery_ujs
 //= require foundation
 //= require handsontable_dr
+//= require axle
+
 
 
 $(function(){ $(document).foundation(); });
