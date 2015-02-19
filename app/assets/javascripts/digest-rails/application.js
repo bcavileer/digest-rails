@@ -13,6 +13,7 @@
 //= require jquery.js
 //= require jquery_ujs
 //= require foundation
+//= require handsontable_dr
 
 
 $(function(){ $(document).foundation(); });

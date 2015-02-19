@@ -12,6 +12,7 @@ module Page
     before_filter :prepare_digests
 
     def prepare_digests
+      @title = 'Holman Digester'
       view_context.class.include(Axle::Concern::Ui::LayoutsHelper)
       @digests =  Axle::Core::Digests[].digests
       @digest_view_template = "digest-rails/shared/digest"

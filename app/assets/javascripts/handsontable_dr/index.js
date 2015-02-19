@@ -1,0 +1,1 @@
+//= require handsontable_dr/v_12_5/handsontable.full

@@ -8,13 +8,9 @@
 
       <div class="content <%= active_class %>" id="panel<%= i %>">
         <% if active %>
-
-            <% if content_for?(:digest_pane) %>
-                <%= yield(:digest_pane) %>
-            <% else %>
-                <%= render(@digest_view_template) %>
-            <% end %>
-
+            <div id="active_digest_title"><%= @active_digest_title %> </div>
+            <div id="active_digest_pane" class="handsontable"></div>
+            <%= yield :active_digest_footer %>
         <% else %>
             <p>Please wait a moment...</p>
         <% end %>

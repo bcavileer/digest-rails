@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <%= stylesheet_link_tag("application", "data-turbolinks-track" => true) %>
-  <%= javascript_include_tag("application", "data-turbolinks-track" => true) %>
+  <%= stylesheet_link_tag("digest-rails/application", "data-turbolinks-track" => true) %>
+  <%= javascript_include_tag("digest-rails/application", "data-turbolinks-track" => true) %>
 
   <%= yield(:head) %>
 
@@ -12,13 +12,16 @@
   <%= csrf_meta_tags %>
 
   <title>
-    <%= yield(:title) + " – " if content_for?(:title) %>
-    RailsStarter
+    <%= @title %>
   </title>
+
 </head>
 <body>
-
 <%= yield %>
+
+<%= javascript_tag do %>
+    <% yield :digest_pane_javascript %>
+<% end %>
 
 </body>
 </html>
