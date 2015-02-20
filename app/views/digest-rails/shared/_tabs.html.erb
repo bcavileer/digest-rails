@@ -6,7 +6,7 @@
       <% active_class= (active ? 'active' : '') %>
 
       <li class="tab-title <%= active_class %>">
-        <a href="#panel<%= i %>"><%= digest.key.underscore.split('_')[0].capitalize %></a></li>
+        <a href="#digest_<%= i %>" id="open_digest_<%= i %>"><%= digest.key.underscore.split('_')[0].capitalize %></a></li>
   <% end %>
 </ul>
 
