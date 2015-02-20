@@ -18,19 +18,26 @@
 </head>
 
 <body>
+
 <%= yield %>
-
-<%= javascript_tag do %>
-    <% yield :digest_pane_javascript %>
-<% end %>
-
-<script>
+<% content_for :javascript do %>
     <% @digests.each_index do |i| %>
         <% digest =  @digests[i] %>
         $( open_digest_<%= i  %> ).click(function( event ) {
-            window.location = "<%= digest.key.underscore %>"
+        window.location = "<%= digest.key.underscore %>"
         });
-    <% end %>
+        <% end %>
+<% end %>
+
+<%= javascript_tag do %>
+    $(function() {
+    console.log( "dom ready!" );
+        <%= yield :javascript %>
+    });
+<% end %>
+
+<script>
+
 </script>
 
 </body>

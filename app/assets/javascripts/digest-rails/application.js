@@ -14,6 +14,7 @@
 //= require foundation
 //= require handsontable_dr
 //= require axle
+//= require authorize
 
 
 $(function(){ $(document).foundation(); });
