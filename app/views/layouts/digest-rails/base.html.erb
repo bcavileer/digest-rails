@@ -2,6 +2,9 @@
 <html>
 <head>
   <%= stylesheet_link_tag("digest-rails/application", "data-turbolinks-track" => true) %>
+
+
+
   <%= javascript_include_tag("digest-rails/application", "data-turbolinks-track" => true) %>
 
   <%= yield(:head) %>
@@ -14,6 +17,10 @@
   <title>
     <%= @title %>
   </title>
+
+  <style>
+      <%= yield(:style) %>
+  </style>
 
 </head>
 
