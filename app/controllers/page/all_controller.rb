@@ -14,7 +14,8 @@ module Page
     def prepare_digests
       @title = 'Holman Digester'
       view_context.class.include(Axle::Concern::Ui::LayoutsHelper)
-      @digests =  Axle::Core::Digests[].digests
+      @digests_crosses =  Axle::Core::Digests[].digests_crosses
+      @digests = @digests_crosses[:digests]
       @digest_view_template = "digest-rails/shared/digest"
     end
 
