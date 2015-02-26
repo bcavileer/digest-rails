@@ -16,5 +16,7 @@
 //= require axle
 //= require authorize
 
+var dr_id_function = require('./lib/id');
+console.log( dr_id_function() );
 
 $(function(){ $(document).foundation(); });
