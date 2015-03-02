@@ -37,10 +37,10 @@
 <% end %>
 
 <%= javascript_tag do %>
-    //$(function() {
+    $(function() {
     //console.log( "dom ready!" );
-    //    <%= yield :javascript %>
-    //});
+        <%= yield :javascript %>
+    });
 <% end %>
 
 <script>

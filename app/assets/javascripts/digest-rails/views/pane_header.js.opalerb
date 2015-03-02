@@ -1,0 +1,1 @@
+Pane Header Context: <%= @context.inspect %>

@@ -1,0 +1,1 @@
+Pane Body Context<%= @context.inspect %>

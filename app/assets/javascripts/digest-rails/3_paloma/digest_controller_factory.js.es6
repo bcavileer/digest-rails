@@ -8,7 +8,6 @@ export class DigestControllerFactory{
     me.done = false;
     me.failed = false;
     me.requested = false;
-
     me.dataPromise = new Promise(
         function (resolve, reject) {
             me.dataPromise__resolve = resolve;
@@ -21,18 +20,19 @@ export class DigestControllerFactory{
     let me = this;
     me.request = request_params;
     console.log( 'DigestController configured' );
-    me.paloma_controller = new PalomaControllerFactory(
+    me.palomaController = new PalomaControllerFactory(
         me.request.digest_name.capitalizeFirstLetter()
     );
-    console.log('DigestController controllerName: ',me.paloma_controller.getName());
+    console.log('DigestController controllerName: ',me.palomaController.getName());
   }
 
-  setPaneController(paneController){
+  setPaneController(pc){
     let me = this;
-    me.paneController = paneController;
-  };
+    me.paneController = pc
+  }
 
   getData(){
+console.log('D');
     let me = this;
     $.ajax({
       url: 'http://'+me.request.digests_crosses_json_url,
@@ -48,6 +48,7 @@ export class DigestControllerFactory{
   }
 
   getDataP(){
+console.log('Dp');
     let me = this;
     let done = false;
     let timedout = false;
@@ -67,19 +68,5 @@ export class DigestControllerFactory{
     ]).catch( function(reason){
         console.log('getDataP failed because '+reason);
     });
-  }
-
-  renderPaneWithoutData(){
-    let me = this;
-    console.log('renderPaneWithoutData');
-    me.paneController.render('WithoutData');
-    return(true);
-  }
-
-  renderPaneWithData(){
-    let me = this;
-    console.log('renderPaneWithData');
-    me.paneController.render('WithData');
-    return(true);
   }
 }

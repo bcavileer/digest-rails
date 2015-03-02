@@ -1,17 +1,43 @@
 export class PaneControllerFactory {
-  constructor() {
-    this.render_targets = [];
+  constructor(theDigestController){
+    let me = this;
+
+    console.log('PaneControllerFactory');
+    me.digestController = theDigestController;
+
+    let opalPaneControllerClass =
+        Opal[ me.digestController.palomaController.getName() + 'PaneController' ];
+    me.opalPaneController = opalPaneControllerClass.$new();
+    me.digestController.setPaneController(me);
+    me.opalPaneController.$set_pane_controller(me);
+    me.opalPaneController.$ping();
+
+    me.render_targets = [];
   };
 
-  set_render_targets(render_targets){
-     this.render_targets = render_targets;
+  setRenderTargets(renderTargets){
+    let me = this;
+    me.renderTargets = renderTargets;
   };
 
-  render(msg){
-       for (var i in this.render_targets) {
-            var render_target = this.render_targets[i];
-            render_target.html(i + ' msg: ' + msg);
-       }
+  renderPaneWithoutData(){
+    let me = this;
+    console.log('renderPaneWithoutData');
+    me.opalPaneController.$render('WithoutData');
+    return(true);
   }
+
+  renderPaneWithData(){
+    let me = this;
+    console.log('renderPaneWithData');
+    me.opalPaneController.$render('WithData');
+    return(true);
+  }
+
+  renderTarget(key){
+    let me = this;
+    return me.renderTargets[key];
+  }
+
 }
 
