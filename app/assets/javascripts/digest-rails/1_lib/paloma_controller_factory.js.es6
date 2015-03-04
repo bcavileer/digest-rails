@@ -1,7 +1,7 @@
 export class PalomaControllerFactory {
-  constructor(controllerName) {
-    this.controllerName = controllerName;
-    this.palomaController = Paloma.controller(this.controllerName);
+  constructor(name) {
+    this.name = name;
+    this.palomaController = Paloma.controller(this.name);
     let me = this;
 
     me.showPromise = new Promise(
@@ -17,11 +17,7 @@ export class PalomaControllerFactory {
     };
   }
 
-  getName(){
-    return this.controllerName;
-  }
-
-  showP(){
+  waitForShowP(){
     return this.showPromise;
   }
 

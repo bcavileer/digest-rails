@@ -1,14 +1,15 @@
 require 'template'
+require 'core_pane_controller'
 
-class BasePaneController
+class BasePaneController < CorePaneController
     puts 'BasePaneController exists'
     attr_accessor :pane_controller
 
-    def reconcile_context(context=nil)
-        return @context if !@context.nil?
-        context ||= 'Context Not Set'
-        return @context = context
-    end
+    #def reconcile_context(context=nil)
+    #    return @context if !@context.nil?
+    #    context ||= 'Context Not Set'
+    #    return @context = context
+    #end
 
     def header_template
         Template['digest-rails/views/pane_header']
@@ -37,33 +38,14 @@ class BasePaneController
         render_target_html( :footer, footer_template.render(self) )
     end
 
-    def set_pane_controller(pc)
-        self.pane_controller = pc
+    def pre_render()
+        `console.log("PreRender Not Defined",self.request);`
+        render_target_html(:header,'PreRender Not Defined')
     end
 
-    def render_target_html(key,html)
-      `
-      var pc = this.$pane_controller()
-      var rt = pc.renderTarget(key);
-      rt.html(html);
-      `
-    end
-
-    def digests_crosses
-        `
-        var pc = this.$pane_controller();
-        return pc.digestController;
-        `
-    end
-
-    def ping
-       puts "#{self.class.to_s} pong"
-    end
-
-    def render(context)
-        render_header(context)
-        render_body(context)
-        render_footer(context)
+    def render()
+        `console.log("Render Not Defined",self.request);`
+        render_target_html(:header,'Render Not Defined')
     end
 
 end

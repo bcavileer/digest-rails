@@ -13,12 +13,12 @@ export class MarkupControllerFactory {
      );
   }
 
-  configure(){
+  waitForDocP(){
     let me = this
-    delay(1).then( function () {
+    return delay(1).then( function () {
         $(function(){
             me.ready = true;
-            me.markupPromise__resolve('ok');
+            me.markupPromise__resolve(true);
         })
     })
   }

@@ -1,10 +1,12 @@
-import { PalomaControllerFactory } from 'digest-rails/2_lib/paloma_controller_factory';
+import { PalomaControllerFactory } from 'digest-rails/1_lib/paloma_controller_factory';
 import { delay } from 'digest-rails/1_lib/delay';
 
 export class DigestControllerFactory{
 
-  constructor() {
+  constructor(params) {
     let me = this;
+    me.params = params;
+
     me.done = false;
     me.failed = false;
     me.requested = false;
@@ -14,28 +16,17 @@ export class DigestControllerFactory{
             me.dataPromise__reject = reject;
         }
     )
+
+
+    me.palomaController = new PalomaControllerFactory( me.params.digest_name.capitalizeFirstLetter() );
+    console.log('DigestController name: ',me.palomaController.name);
   }
 
-  configure(request_params){
-    let me = this;
-    me.request = request_params;
-    console.log( 'DigestController configured' );
-    me.palomaController = new PalomaControllerFactory(
-        me.request.digest_name.capitalizeFirstLetter()
-    );
-    console.log('DigestController controllerName: ',me.palomaController.getName());
-  }
-
-  setPaneController(pc){
-    let me = this;
-    me.paneController = pc
-  }
 
   getData(){
-console.log('D');
     let me = this;
     $.ajax({
-      url: 'http://'+me.request.digests_crosses_json_url,
+      url: 'http://'+me.params.digests_crosses_json_url,
     }).done(function(data) {
       console.log('requestData done',data);
       me.processData(data);
@@ -50,14 +41,16 @@ console.log('D');
     let me = this;
     let digestsCrossesO = Opal.Axle.Core.DigestsCrosses.$new( digestsCrosses );
     me.done = true;
-    me.dataPromise__resolve( digestsCrossesO );
+    me.context = digestsCrossesO;
+    me.dataPromise__resolve(true);
   }
 
-  getDataP(){
-console.log('Dp');
+  addRequestP(){
     let me = this;
     let done = false;
     let timedout = false;
+
+    me.getData();
 
     return Promise.race([
           me.dataPromise,

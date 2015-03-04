@@ -23,96 +23,34 @@
 //= require_tree ./1_lib
 //= require_tree ./2_lib
 //= require_tree ./3_paloma
-//= require_tree ./4_opal
+//= require_tree ./4_globals
+//= require_tree ./5_request
 //= require_tree ./views
 //= require authorize
 
 import { id } from 'digest-rails/1_lib/id';
 console.log( id() );
-var PHASE, theDigestsController, theDigestController, markupController, thePaneController;
 
-import { MarkupControllerFactory } from "digest-rails/1_lib/markup_controller_factory";
-function phase_0P(){ return function(result){
-  PHASE = 0
-  console.log( 'Started PHASE '+ PHASE );
-  markupController = new MarkupControllerFactory();
-  markupController.configure();
-  return new Promise(
-    function (resolve, reject) {
-        resolve('ok');
-    }
-  );
-}}
+import { GlobalsFactory } from "digest-rails/4_globals/globals_factory";
+import { RenderTargetFactory } from 'digest-rails/1_lib/render_target_factory';
+import { RequestFactory } from "digest-rails/5_request/request_factory";
 
-import { DigestsControllerFactory } from "digest-rails/3_paloma/digests_controller_factory";
-function phase_1P(){ return function(result){
-    PHASE = 1;
-    console.log( 'Started PHASE '+ PHASE );
-    return new Promise(
-        function (resolve, reject) {
-            theDigestsController = new DigestsControllerFactory();
-            resolve('ok');
-        }
-     );
-}};
+let theGlobals = new GlobalsFactory();
+let theFirstRequest = new RequestFactory(theGlobals);
 
-import { DigestControllerFactory } from "digest-rails/3_paloma/digest_controller_factory";
-function phase_2P(){ return function(result){
-    PHASE = 2;
-    console.log( 'Started PHASE '+ PHASE );
+Promise.all([
 
-    // Paloma Digests 'Show' Request Received
-    theDigestController = new DigestControllerFactory();
-    return theDigestsController.showP().then( function(request_params){
-        theDigestController.configure(request_params);
-        return theDigestController.getData();
-    });
-}};
+    theGlobals.markupController.waitForDocP().then( function(ready){
+        theFirstRequest.setRenderTargets({
+              header: new RenderTargetFactory( '#active_digest_header' ),
+              body: new RenderTargetFactory( '#active_digest_pane' ),
+              footer: new RenderTargetFactory( '#active_digest_footer' )
+        });
+    }),
 
-import { PaneControllerFactory } from "digest-rails/1_lib/pane_controller_factory";
-import { RenderTargetFactory } from "digest-rails/1_lib/render_target_factory";
-function phase_3P(){ return function(result){
-    PHASE = 3;
-    console.log( 'Started PHASE '+ PHASE );
+    theGlobals.digestsController.waitForShowP().then( function(user_request){
+        theFirstRequest.setUserRequest(user_request);
+        //theFirstRequest.getData();
+    })
 
-    // Render Pane WITHOUT Data
-    thePaneController = new PaneControllerFactory(theDigestController);
-    thePaneController.setRenderTargets({
-             header: new RenderTargetFactory( '#active_digest_header' ),
-             body: new RenderTargetFactory( '#active_digest_pane' ),
-             footer: new RenderTargetFactory( '#active_digest_footer' )
-    });
-    return thePaneController.renderPaneWithoutData();
-}};
-
-function phase_4P(){ return function(result){
-    PHASE = 4;
-    console.log( 'Started PHASE '+ PHASE );
-
-    // Sync to Data
-    return theDigestController.getDataP()
-}}
-
-function phase_5P(result){ return function(result){
-    PHASE = 5;
-    console.log( 'Started PHASE '+ PHASE );
-    thePaneController.renderPaneWithData();
-}};
-
-phase_0P()().then( phase_1P() ).then( phase_2P() ).then( phase_3P() ).then( phase_4P() ).then( phase_5P() ).catch(
-    function(reason){
-        console.log( 'Failed PHASE ',PHASE,' because '+ reason );
-    }
-);
-
-//$(function(){
-    //$(document).foundation();
-
-//    DigestController.set_render_targets({
-//         header: new RenderTargetFactory( '#active_digest_header' ),
-//         pane: new RenderTargetFactory( '#active_digest_pane' ),
-//         footer: new RenderTargetFactory( '#active_digest_footer' )
-//    });
-
-//});
-
+]);
