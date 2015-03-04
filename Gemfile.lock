@@ -1,15 +1,14 @@
 PATH
   remote: .
   specs:
-    digest-rails (0.5.5)
+    digest-rails (0.5.6)
       axle
       rails (~> 3.2.21)
 
 PATH
   remote: ../axle
   specs:
-    axle (0.5.5)
-      browserify-rails
+    axle (0.5.6)
       rails (~> 3.2.21)
 
 GEM
@@ -45,8 +44,6 @@ GEM
     arel (3.0.3)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    browserify-rails (0.7.4)
-      sprockets (~> 2.0)
     builder (3.0.4)
     coderay (1.1.0)
     debug_inspector (0.0.2)
