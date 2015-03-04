@@ -10,7 +10,7 @@ module DigestRails
 
     end
 
-    config.browserify_rails.paths << lambda { |p| p.start_with?(Engine.root.join("app").to_s) }
+    #config.browserify_rails.paths << lambda { |p| p.start_with?(Engine.root.join("app").to_s) }
 
     def eager_load!
     end

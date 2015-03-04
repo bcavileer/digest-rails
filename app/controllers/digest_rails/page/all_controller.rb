@@ -1,5 +1,6 @@
 require 'axle/concern/server/digests_controller_helper'
 require 'axle/concern/ui/layouts_helper'
+require 'axle/concern/ui/menu_tree'
 require 'axle/core/digests'
 
 module DigestRails
