@@ -38,13 +38,19 @@ console.log('D');
       url: 'http://'+me.request.digests_crosses_json_url,
     }).done(function(data) {
       console.log('requestData done',data);
-      me.done = true;
-      me.dataPromise__resolve(data);
+      me.processData(data);
     }).fail(function(jqXHR, textStatus) {
       me.fail = true;
       console.log('requestData fail '+ textStatus, jqXHR);
       me.dataPromise__reject(textStatus);
     });
+  }
+
+  processData(digestsCrosses){
+    let me = this;
+    let digestsCrossesO = Opal.Axle.Core.DigestsCrosses.$new( digestsCrosses );
+    me.done = true;
+    me.dataPromise__resolve( digestsCrossesO );
   }
 
   getDataP(){
