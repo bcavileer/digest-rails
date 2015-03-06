@@ -49,7 +49,9 @@ Promise.all([
     }),
 
     theGlobals.digestsController.waitForShowP().then( function(user_request){
-        theFirstRequest.setUserRequest(user_request);
+        theFirstRequest.setUserRequest(user_request).then( function(){
+            theGlobals.markupController.reflow()
+        });
         //theFirstRequest.getData();
     })
 

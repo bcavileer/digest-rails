@@ -19,8 +19,20 @@ class CorePaneController
         Native(`self.request.native.params`)
     end
 
+    def active_digest_index
+        `self.$request_params().native.active_digest_index`
+    end
+
+    def active_digest_name
+       String(`self.$request_params().native.digest_name`).capitalize
+    end
+
     def digests_crosses
        Native(`self.request.native.digestController.context`)
+    end
+
+    def active_digest
+       digests_crosses.digests[active_digest_index]
     end
 
     def render_request_promises(request,renderPromise,preRenderPromise)

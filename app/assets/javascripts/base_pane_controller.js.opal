@@ -24,7 +24,11 @@ class BasePaneController < CorePaneController
     class Context < Struct.new(
         :flash,
         :request_params,
-        :digests_crosses
+        :digests_crosses,
+        :digest_index,
+        :digest_name,
+        :digest,
+        :digests_hash
     )
     end
 
@@ -32,9 +36,14 @@ class BasePaneController < CorePaneController
         @context ||= Context.new(
             @flash,
             request_params,
-            digests_crosses_context
+            digests_crosses_context,
+            active_digest_index,
+            active_digest_name,
+            active_digest,
+            digests_crosses_context.digests_hash
         )
     end
+
 
     def render
         @flash = { text: "Render Not Defined" }

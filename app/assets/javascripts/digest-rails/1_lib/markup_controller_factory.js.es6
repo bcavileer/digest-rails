@@ -28,5 +28,12 @@ export class MarkupControllerFactory {
     return this.markupPromise;
   }
 
+  flow(){
+    $(document).foundation();
+  }
+
+  reflow(){
+    $(document).foundation('reflow');
+  }
 }
 
