@@ -2,50 +2,93 @@ require 'template'
 require 'core_pane_controller'
 
 class BasePaneController < CorePaneController
-    puts 'BasePaneController exists'
-    attr_accessor :pane_controller
 
-    #def reconcile_context(context=nil)
-    #    return @context if !@context.nil?
-    #    context ||= 'Context Not Set'
-    #    return @context = context
-    #end
+    class BaseSectionController
+
+        def initialize( config )
+            @render_target = config[:render_target]
+            @template = config[:template]
+            @context = config[:context]
+        end
+
+        def rendering
+            @template.render(@context)
+        end
+
+        def render
+            @render_target.html(rendering)
+        end
+
+    end
+
+    class Context < Struct.new(
+        :flash,
+        :request_params,
+        :digests_crosses
+    )
+    end
+
+    def context
+        @context ||= Context.new(
+            @flash,
+            request_params,
+            digests_crosses_context
+        )
+    end
+
+    def render
+        @flash = { text: "Render Not Defined" }
+        render_all
+    end
+
+    def pre_render
+    end
+
+    private
+
+    def render_all
+        header.render
+        body.render
+        footer.render
+    end
+
+    def digests_crosses_context
+        Axle::Base::DigestsCrosses.new(digests_crosses)
+    end
 
     def header_template
         Template['digest-rails/views/pane_header']
     end
 
-    def render_header(context=nil)
-        reconcile_context(context)
-        render_target_html( :header, header_template.render(self) )
+    def header
+        @header ||= BaseSectionController.new({
+            template: header_template,
+            render_target: render_target( :header )
+        }.merge({ context: context }))
     end
 
-    def body_template
+   def body_template
         Template['digest-rails/views/pane_body']
-    end
+   end
 
-    def render_body(context=nil)
-        reconcile_context(context)
-        render_target_html( :body, body_template.render(self) )
+   def body
+        @body ||= BaseSectionController.new({
+            template: body_template,
+            render_target: render_target(:body)
+        }.merge({ context: context }))
     end
 
     def footer_template
         Template['digest-rails/views/pane_footer']
     end
 
-    def render_footer(context=nil)
-        reconcile_context(context)
-        render_target_html( :footer, footer_template.render(self) )
+    def footer
+        @footer ||= BaseSectionController.new({
+            template: footer_template,
+            render_target: render_target(:footer)
+        }.merge({ context: context }))
     end
 
-    def pre_render()
-        `console.log("PreRender Not Defined",self.request);`
-        render_target_html(:header,'PreRender Not Defined')
-    end
-
-    def render()
-        `console.log("Render Not Defined",self.request);`
-        render_target_html(:header,'Render Not Defined')
-    end
+    private
 
 end

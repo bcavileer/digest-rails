@@ -21,7 +21,6 @@ export class PanesControllerFactory {
         me.panes[name] = controller;
 
         return controller;
-
     }
 }
 

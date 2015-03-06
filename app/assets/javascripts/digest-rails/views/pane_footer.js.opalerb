@@ -1,1 +1,4 @@
-Pane Footer Context: <%= @context.inspect %>
+Pane Footer
+<% `console.log(self.request_params)` %>
+
+<%= self.request_params.digest_name %>

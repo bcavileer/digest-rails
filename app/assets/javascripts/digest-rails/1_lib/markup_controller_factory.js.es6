@@ -1,6 +1,7 @@
 import { delay } from 'digest-rails/1_lib/delay';
 
 export class MarkupControllerFactory {
+
   constructor() {
     this.ready = false
     let me = this
@@ -20,11 +21,12 @@ export class MarkupControllerFactory {
             me.ready = true;
             me.markupPromise__resolve(true);
         })
-    })
+    });
   }
 
   readyP(){
     return this.markupPromise;
   }
+
 }
 

@@ -53,4 +53,6 @@ Promise.all([
         //theFirstRequest.getData();
     })
 
-]);
+]).catch(function(reason){
+    console.log( 'application.js failed because: ' + reason );
+});

@@ -1,1 +1,1 @@
-Pane Header Context: <%= @context.inspect %>
+<h1><%= self.request_params.digest_name %> <%= self.flash[:text] %><h1/>

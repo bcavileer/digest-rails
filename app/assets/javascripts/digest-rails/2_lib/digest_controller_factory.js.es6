@@ -15,7 +15,7 @@ export class DigestControllerFactory{
             me.dataPromise__resolve = resolve;
             me.dataPromise__reject = reject;
         }
-    )
+    );
 
 
     me.palomaController = new PalomaControllerFactory( me.params.digest_name.capitalizeFirstLetter() );
