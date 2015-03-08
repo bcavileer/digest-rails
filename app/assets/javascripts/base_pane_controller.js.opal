@@ -28,7 +28,8 @@ class BasePaneController < CorePaneController
         :digest_index,
         :digest_name,
         :digest,
-        :digests_hash
+        :digests_hash,
+        :sub_contexts
     )
     end
 
