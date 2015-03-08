@@ -15,6 +15,10 @@ class BasePaneController < CorePaneController
             @template.render(@context)
         end
 
+        def render_target
+            return @render_target
+        end
+
         def render
             @render_target.html(rendering)
         end

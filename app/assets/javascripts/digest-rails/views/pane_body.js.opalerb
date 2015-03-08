@@ -1,13 +1,16 @@
 <% `console.log( 'pane_body context: ', self );` %>
 
 <br/>
-    Pane Body YYY: <br/>
+    Pane Body: <br/>
     <br/>
+
     <% self.digests_crosses.digests.map do |digest| %>
         <% `console.log(digest)` %>
         <%= digest.key %><br/>
     <% end %>
+
     <% self.digests_crosses.crosses.map do |cross| %>
             <% `console.log(cross)` %>
     <% end %>
+
 <br/>
