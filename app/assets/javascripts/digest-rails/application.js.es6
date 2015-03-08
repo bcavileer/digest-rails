@@ -46,13 +46,12 @@ Promise.all([
               body: new RenderTargetFactory( '#active_digest_pane' ),
               footer: new RenderTargetFactory( '#active_digest_footer' )
         });
+        return(true);
     }),
 
     theGlobals.digestsController.waitForShowP().then( function(user_request){
-        theFirstRequest.setUserRequest(user_request).then( function(){
-            theGlobals.markupController.reflow()
-        });
-        //theFirstRequest.getData();
+        theFirstRequest.setUserRequest(user_request);
+        return(true);
     })
 
 ]).catch(function(reason){

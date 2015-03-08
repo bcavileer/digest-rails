@@ -1,7 +1,7 @@
 <% `console.log( 'pane_body context: ', self );` %>
 
 <br/>
-    Pane Body: <br/>
+    Pane Body YYY: <br/>
     <br/>
     <% self.digests_crosses.digests.map do |digest| %>
         <% `console.log(digest)` %>

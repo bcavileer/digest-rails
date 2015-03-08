@@ -33,7 +33,7 @@ export class RequestFactory{
     console.log('setRenderTargets');
 
     me.renderTargets = rt;
-    me.renderTargetsP__resolve(true);
+    me.renderTargetsP__resolve(rt);
   }
 
   getRenderTarget(key){
@@ -43,11 +43,25 @@ export class RequestFactory{
   }
 
   setUserRequest(params){
+
     let me = this;
 
     me.params = params;
+
     me.paneController = me.globals.panesController.getPane( params );
-    me.paneController.$render_request_promises( me, me.renderP, me.preRenderP );
+    me.paneController.$request=(me);
+
+    me.preRenderP.then(function(){
+        me.paneController.$pre_render();
+        me.globals.markupController.reflow();
+        return(true);
+    });
+
+    me.renderP.then(function(){
+        me.paneController.$render();
+        me.globals.markupController.reflow();
+        return(true);
+    });
 
     me.userRequestP__resolve(true);
 
@@ -55,7 +69,9 @@ export class RequestFactory{
     me.digestController.addRequestP(params).then( function(data){
         me.data = data;
         me.dataP__resolve(true);
+        return(true);
     });
+
   }
 
 }
