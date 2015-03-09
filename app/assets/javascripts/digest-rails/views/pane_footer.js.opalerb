@@ -1,4 +1,2 @@
 Digest Rails Footer
-<% `console.log(self.request_params)` %>
-
 <%= self.request_params.digest_name %>

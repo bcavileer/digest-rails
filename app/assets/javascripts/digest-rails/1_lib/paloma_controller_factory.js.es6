@@ -12,7 +12,6 @@ export class PalomaControllerFactory {
     );
 
     me.palomaController.prototype.show = function(){
-        console.log('Paloma Controller show called');
         me.showPromise__resolve(this.params);
     };
   }

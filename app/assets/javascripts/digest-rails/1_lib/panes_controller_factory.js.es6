@@ -1,16 +1,10 @@
 export class PanesControllerFactory {
     constructor(){
-
-        console.log('PanesControllerFactory');
-
         let me = this;
         me.panes = {};
-
     }
 
     getPane(params){
-        console.log('PanesControllerFactory params: ',params);
-
         let me = this;
 
         let name = params.digest_name;

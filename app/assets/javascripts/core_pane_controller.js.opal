@@ -3,10 +3,7 @@ require 'template'
 class CorePaneController
     attr_accessor :request
 
-    puts 'CorePaneController exists'
-
     def render_target(key)
- `console.log('render_target', self.$request);`
         Native(`self.$request.getRenderTarget(key)`)
     end
 
@@ -23,15 +20,15 @@ class CorePaneController
     end
 
     def active_digest_name
-       String(`self.$request_params().native.digest_name`).capitalize
+        String(`self.$request_params().native.digest_name`).capitalize
     end
 
     def digests_crosses
-       Native(`self.$request.digestController.context`)
+        Native(`self.$request.digestController.context`)
     end
 
     def active_digest
-       digests_crosses.digests[active_digest_index]
+        digests_crosses.digests[active_digest_index]
     end
 
 end

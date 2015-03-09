@@ -2,8 +2,6 @@ export class RequestFactory{
 
   constructor(globals) {
 
-    console.log('RequestFactory');
-
     let me = this;
     me.globals = globals;
 
@@ -30,15 +28,12 @@ export class RequestFactory{
   setRenderTargets(rt){
     let me = this;
 
-    console.log('setRenderTargets');
-
     me.renderTargets = rt;
     me.renderTargetsP__resolve(rt);
   }
 
   getRenderTarget(key){
     let me = this;
-    console.log('getRenderTargets');
     return me.renderTargets[key];
   }
 
@@ -49,7 +44,7 @@ export class RequestFactory{
     me.params = params;
 
     me.paneController = me.globals.panesController.getPane( params );
-    me.paneController.$request=(me);
+    me.paneController.$request = (me);
 
     me.preRenderP.then(function(){
         me.paneController.$pre_render();
@@ -66,6 +61,7 @@ export class RequestFactory{
     me.userRequestP__resolve(true);
 
     me.digestController = me.globals.digestsController.getDigest(params);
+
     me.digestController.addRequestP(params).then( function(data){
         me.data = data;
         me.dataP__resolve(true);

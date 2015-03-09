@@ -1,5 +1,3 @@
-<% `console.log( 'pane_body context: ', self );` %>
-
 <br/>
     Pane Body: <br/>
     <br/>

@@ -26,19 +26,19 @@ class BasePaneController < CorePaneController
     end
 
     class Context < Struct.new(
-        :flash,
-        :request_params,
-        :digests_crosses,
-        :digest_index,
-        :digest_name,
-        :digest,
-        :digests_hash,
-        :sub_contexts
+       :flash,
+       :request_params,
+       :digests_crosses,
+       :digest_index,
+       :digest_name,
+       :digest,
+       :digests_hash,
+       :sub_contexts
     )
     end
 
     def context
-        @context ||= Context.new(
+       @context ||= Context.new(
             @flash,
             request_params,
             digests_crosses_context,
@@ -46,13 +46,13 @@ class BasePaneController < CorePaneController
             active_digest_name,
             active_digest,
             digests_crosses_context.digests_hash
-        )
+       )
     end
 
 
     def render
-        @flash = { text: "Render Not Defined" }
-        render_all
+       @flash = { text: "Render Not Defined" }
+       render_all
     end
 
     def pre_render
@@ -61,32 +61,32 @@ class BasePaneController < CorePaneController
     private
 
     def render_all
-        header.render
-        body.render
-        footer.render
+       header.render
+       body.render
+       footer.render
     end
 
     def digests_crosses_context
-        Axle::Base::DigestsCrosses.new(digests_crosses)
+       Axle::Base::DigestsCrosses.new(digests_crosses)
     end
 
     def header_template
-        Template['digest-rails/views/pane_header']
+       Template['digest-rails/views/pane_header']
     end
 
     def header
-        @header ||= BaseSectionController.new({
+       @header ||= BaseSectionController.new({
             template: header_template,
             render_target: render_target( :header )
-        }.merge({ context: context }))
+       }.merge({ context: context }))
     end
 
    def body_template
-        Template['digest-rails/views/pane_body']
+       Template['digest-rails/views/pane_body']
    end
 
    def body
-        @body ||= BaseSectionController.new({
+       @body ||= BaseSectionController.new({
             template: body_template,
             render_target: render_target(:body)
         }.merge({ context: context }))

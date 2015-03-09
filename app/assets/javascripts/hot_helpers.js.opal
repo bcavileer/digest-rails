@@ -20,17 +20,23 @@ module HotHelpers
         end
 
         def columns
-            [
-                {data: property('id')},
-                {data: property('name')},
-                {data: property('address')}
-            ]
+            keys_from_first_core_item.map do |attr|
+                data_property(attr)
+            end
         end
 
         def model(opts)
         end
 
-        def property(attr)
+        def data_property(attr)
+            me = self
+            # Property
+            { data:
+                Proc.new do |row, value|
+                    # Assumes READ (value == nil)
+                    me.item_at_index_attr( row , attr )
+                end
+            }
         end
 
 end

@@ -19,7 +19,6 @@ export class DigestControllerFactory{
 
 
     me.palomaController = new PalomaControllerFactory( me.params.digest_name.capitalizeFirstLetter() );
-    console.log('DigestController name: ',me.palomaController.name);
   }
 
 
@@ -28,11 +27,9 @@ export class DigestControllerFactory{
     $.ajax({
       url: 'http://'+me.params.digests_crosses_json_url,
     }).done(function(data) {
-      console.log('requestData done',data);
       me.processData(data);
     }).fail(function(jqXHR, textStatus) {
       me.fail = true;
-      console.log('requestData fail '+ textStatus, jqXHR);
       me.dataPromise__reject(textStatus);
     });
   }

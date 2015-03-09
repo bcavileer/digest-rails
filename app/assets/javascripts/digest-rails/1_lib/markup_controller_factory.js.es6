@@ -33,7 +33,6 @@ export class MarkupControllerFactory {
   }
 
   reflow(){
-    console.log('reflow');
     $(document).foundation();
     $(document).foundation('reflow');
   }

@@ -35,18 +35,19 @@ class DigestSectionController < SubController
                     end
                 end
 
-                puts item_at_index_attr( 0 , :id)
-                puts data[ 0 ].call( :id )
-
                 (0..data.length-1).each do |data_i|
 
                     row do
-                        keys_from_first_core_item.each do |attr|
+
+                        columns.each do |column|
+                            property = column[:data]
                             cell do
-                                @r << data[data_i].call(attr)
+                                @r << property.call(data_i)
                             end
                         end
+
                     end
+
                 end
 
             end
