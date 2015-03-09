@@ -24,6 +24,6 @@ module DigestHelpers
         end
 
         def digest__model_for_core_id_attr(attr)
-            `self.digest.data_view.identifier_map.native[attr])`
+            `self.digest.data_view.identifier_map.native[attr]`
         end
 end
