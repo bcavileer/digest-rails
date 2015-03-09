@@ -1,31 +1,37 @@
 module HotLikeTable
    def render_table
-        data
-
         table do
-            row do
-                colHeaders.each do |colHeader|
-                    column_header do
-                        @r << colHeader
-                    end
+            render_header
+puts '6b'
+            render_rows
+        end
+    end
+
+    def render_header
+        row do
+            colHeaders.each do |colHeader|
+                column_header do
+                    @r << colHeader
                 end
             end
+        end
+    end
 
-            (0..data.length-1).each do |data_i|
+    def render_rows
+puts '6b'
+        (0..data.length-1).each do |i|
+            render_row(i)
+        end
+    end
 
-                row do
-
-                    columns.each do |column|
-                        property = column[:data]
-                        cell do
-                            @r << property.call(data_i)
-                        end
-                    end
-
+    def render_row(i)
+        row do
+puts '6c'
+            columns.each do |column|
+                cell do
+                    @r << column.property_data[:data].call(i)
                 end
-
             end
-
         end
     end
 

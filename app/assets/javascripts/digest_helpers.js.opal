@@ -4,6 +4,14 @@ module DigestHelpers
             `self.digest.data_view.core_set.item_hash.item_array.items`
         end
 
+        def item_at_index(item_index)
+            `self.$core_item_array()[item_index].object`
+        end
+
+        def item_at_index_attr( item_index , attr)
+            item_at_index(item_index)[attr]
+        end
+
         def headers_from_first_core_item
             keys_from_first_core_item #.map do |k|
                 #k

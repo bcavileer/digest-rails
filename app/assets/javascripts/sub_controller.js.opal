@@ -5,6 +5,8 @@ class SubController
         @key = key
     end
 
-    def render
+    def render_target
+        `return self.base_section_controller.render_target`
     end
+
 end

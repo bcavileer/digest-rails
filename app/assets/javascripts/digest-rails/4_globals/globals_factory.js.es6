@@ -12,6 +12,5 @@ export class GlobalsFactory {
     me.digestsController = new DigestsControllerFactory();
     me.panesController = new PanesControllerFactory();
     me.markupController = new MarkupControllerFactory();
-
   }
 }

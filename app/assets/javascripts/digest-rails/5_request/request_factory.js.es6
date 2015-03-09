@@ -64,6 +64,10 @@ export class RequestFactory{
 
     me.digestController.addRequestP(params).then( function(data){
         me.data = data;
+        return(true);
+
+    }).then( function(data){
+        Opal.Store.$process_digests_crosses(data)
         me.dataP__resolve(true);
         return(true);
     });
