@@ -1,3 +1,5 @@
+require 'cell'
+
 module HotLikeTable
    def render_table
         table do
@@ -29,7 +31,7 @@ puts '6b'
 puts '6c'
             columns.each do |column|
                 cell do
-                    @r << column.property_data[:data].call(i)
+                    @r << Cell.new(column).property_data[:data].call(i)
                 end
             end
         end
