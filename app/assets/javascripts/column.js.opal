@@ -19,6 +19,6 @@ class Column
             # Assumes READ (value == nil)
             me.item_at_index_attr( row , @attr )
         end
-    
+
     end
 end
