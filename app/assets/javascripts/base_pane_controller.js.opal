@@ -1,4 +1,5 @@
 require 'template'
+require 'columns'
 require 'core_pane_controller'
 
 class BasePaneController < CorePaneController

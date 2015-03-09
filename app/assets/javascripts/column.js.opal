@@ -3,13 +3,12 @@ require 'digest_helpers'
 class Column
     include DigestHelpers
 
-    def initialize(digest,attr)
-        @digest = digest
-        @attr = attr
+    def initialize(header)
+        @header = header
     end
 
     def header
-        'headers_from_first_core_item'
+        @header
     end
 
     def data_proc
@@ -17,8 +16,12 @@ class Column
 
         Proc.new do |row, value|
             # Assumes READ (value == nil)
-            me.item_at_index_attr( row , @attr )
+            'Column Base Class - OVERRIDE'
         end
 
     end
 end
+
+require 'column_text'
+require 'column_direct_attr'
+require 'column_indirect_attr'

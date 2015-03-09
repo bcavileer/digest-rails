@@ -15,7 +15,7 @@ class Table
 
         def columns
             keys_from_first_core_item.map do |attr|
-                Column.new(@digest,attr)
+                ColumnDirectAttr.new(attr,@digest,attr)
             end
         end
 
@@ -29,7 +29,8 @@ class Table
 
     end
 
-    def initialize
+    def initialize(columns)
+        @columns = columns
         @digest_sources = []
     end
 
@@ -38,6 +39,7 @@ class Table
     end
 
     def columns
+        return @columns
         @digest_sources.map do |digest_sources|
             digest_sources.columns
         end.flatten

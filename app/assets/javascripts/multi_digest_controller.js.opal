@@ -7,12 +7,12 @@ require 'table'
 
 class MultiDigestController < SubController
 
-    def initialize( base_section_controller, key, digests, template, render_target=nil )
+    def initialize( base_section_controller, key, digests, template, columns )
        super(base_section_controller,key)
-       @table = Table.new(template)
-       digests.each do |digest|
-            @table.add_digest(digest)
-       end
+       @table = Table.new(columns)
+       @table.add_digest(digests[0])
+       @columns = columns
+
     end
 
     def render
