@@ -26,6 +26,7 @@
 //= require_tree ./4_globals
 //= require_tree ./5_request
 //= require_tree ./views
+//= require_tree ./application_opal
 //= require authorize
 
 import { id } from 'digest-rails/1_lib/id';

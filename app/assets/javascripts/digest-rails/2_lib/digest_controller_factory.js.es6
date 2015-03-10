@@ -17,7 +17,6 @@ export class DigestControllerFactory{
         }
     );
 
-
     me.palomaController = new PalomaControllerFactory( me.params.digest_name.capitalizeFirstLetter() );
   }
 
@@ -39,7 +38,7 @@ export class DigestControllerFactory{
     let digestsCrossesO = Opal.Axle.Core.DigestsCrosses.$new( digestsCrosses );
     me.done = true;
     me.context = digestsCrossesO;
-    me.dataPromise__resolve(true);
+    me.dataPromise__resolve(digestsCrossesO);
   }
 
   addRequestP(){

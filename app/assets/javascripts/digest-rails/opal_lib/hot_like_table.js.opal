@@ -1,4 +1,4 @@
-require 'cell'
+require 'digest-rails/opal_lib/cell'
 
 module HotLikeTable
    def render_table

@@ -1,4 +1,4 @@
-require 'column'
+require 'digest-rails/opal_lib/column'
 
 class Table
     include HotHelpers

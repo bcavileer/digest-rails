@@ -1,2 +1,0 @@
-class DataSourceDigest < DataSource
-end

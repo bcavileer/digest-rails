@@ -1,4 +1,4 @@
-require 'digest_helpers'
+require 'axle/opal_lib/digest_helpers'
 
 class ColumnDirectAttr < Column
     include DigestHelpers

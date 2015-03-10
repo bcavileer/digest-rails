@@ -1,9 +1,9 @@
 #################################
 # HandsOnTable Compatible
 #################################
-require 'store'
-require 'column'
-require 'row'
+require 'axle/opal_lib/store'
+require 'digest-rails/opal_lib/column'
+require 'digest-rails/opal_lib/row'
 
 module HotHelpers
 

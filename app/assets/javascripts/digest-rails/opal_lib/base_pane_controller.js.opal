@@ -1,6 +1,6 @@
 require 'template'
-require 'data_source'
-require 'core_pane_controller'
+require 'axle/opal_lib/data_source'
+require 'digest-rails/opal_lib/core_pane_controller'
 
 class BasePaneController < CorePaneController
 
