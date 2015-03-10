@@ -6,11 +6,9 @@ class ColumnDirectAttr < Column
     def initialize(header,digest,attr)
         super(header)
         @digest = digest
-        @attr = attr
-    end
+        @model_name = model_name_for_core
 
-    def header
-        'headers_from_first_core_item'
+        @attr = attr
     end
 
     def data_proc
@@ -18,8 +16,7 @@ class ColumnDirectAttr < Column
 
         Proc.new do |row, value|
             # Assumes READ (value == nil)
-            'me.item_at_index_attr( row , @attr )'
+            me.item_at_index_attr( row, @attr )
         end
-
     end
 end

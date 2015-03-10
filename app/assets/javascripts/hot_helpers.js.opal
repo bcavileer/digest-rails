@@ -20,6 +20,7 @@ module HotHelpers
         end
 
         def colHeaders
+  puts 'colHeaders in HotHelpers'
             return columns.map{ |column| column.header }
         end
 

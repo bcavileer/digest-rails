@@ -7,12 +7,10 @@ require 'table'
 
 class MultiDigestController < SubController
 
-    def initialize( base_section_controller, key, digests, template, columns )
+    def initialize( base_section_controller, key, data_source )
        super(base_section_controller,key)
-       @table = Table.new(columns)
-       @table.add_digest(digests[0])
-       @columns = columns
-
+       @data_source = data_source
+       @table = Table.new(@data_source)
     end
 
     def render

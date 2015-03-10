@@ -1,7 +1,4 @@
-require 'digest_helpers'
-
 class ColumnText < Column
-    include DigestHelpers
 
     def initialize(header,text)
         super(header)

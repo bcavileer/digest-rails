@@ -29,20 +29,15 @@ class Table
 
     end
 
-    def initialize(columns)
-        @columns = columns
-        @digest_sources = []
-    end
-
-    def add_digest(digest)
-        @digest_sources << DigestSource.new( digest )
+    def initialize(data_source)
+        @columns = data_source.columns
+        @digest_sources = data_source.digests.values.map do |digest|
+            DigestSource.new( digest )
+        end
     end
 
     def columns
         return @columns
-        @digest_sources.map do |digest_sources|
-            digest_sources.columns
-        end.flatten
     end
 
     def render

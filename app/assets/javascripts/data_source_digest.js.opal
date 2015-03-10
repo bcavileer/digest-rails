@@ -1,0 +1,2 @@
+class DataSourceDigest < DataSource
+end

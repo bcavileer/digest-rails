@@ -1,7 +1,4 @@
-require 'digest_helpers'
-
 class Column
-    include DigestHelpers
 
     def initialize(header)
         @header = header
@@ -22,6 +19,3 @@ class Column
     end
 end
 
-require 'column_text'
-require 'column_direct_attr'
-require 'column_indirect_attr'
