@@ -1,11 +1,10 @@
 require 'columns'
 
 class DataSource
-  attr_accessor :columns, :digests
+  attr_accessor :columns, :digest
 
   def initialize()
     @columns = Columns.new(self)
-    @digests = []
   end
 
 end

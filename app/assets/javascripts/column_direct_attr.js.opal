@@ -2,6 +2,7 @@ require 'digest_helpers'
 
 class ColumnDirectAttr < Column
     include DigestHelpers
+    attr_accessor :digest
 
     def initialize(header,digest,attr)
         super(header)
