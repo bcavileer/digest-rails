@@ -4,7 +4,6 @@ module HotLikeTable
    def render_table
         table do
             render_header
-puts '6b'
             render_rows
         end
     end
@@ -20,7 +19,6 @@ puts '6b'
     end
 
     def render_rows
-puts '6b'
         (0..data.length-1).each do |i|
             render_row(i)
         end
@@ -29,9 +27,9 @@ puts '6b'
     def render_row(i)
         row do
 puts '6c'
-            columns.each do |column|
+            @data_source.columns.each do |column|
                 cell do
-                    @r << Cell.new(column).property_data[:data].call(i)
+                    @r << Cell.new(column).property_data[:data].call(i,nil)
                 end
             end
         end

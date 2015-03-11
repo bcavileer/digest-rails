@@ -15,17 +15,20 @@ module HotHelpers
         end
     end
 
+    def dataSchema
+    end
 
-        def dataSchema
-        end
+    def colHeaders
+        r = Array(@data_source.columns).map{ |column|
+            `console.log('column: ',column);`
+            column.header
+        }
+        puts "colHeaders in HotHelpers: #{r}"
+        return r
+    end
 
-        def colHeaders
-  puts 'colHeaders in HotHelpers'
-            return columns.map{ |column| column.header }
-        end
-
-        def model(opts)
-        end
+    def model(opts)
+    end
 
 
 end

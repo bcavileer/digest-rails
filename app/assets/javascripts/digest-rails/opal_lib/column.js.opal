@@ -1,9 +1,5 @@
 class Column
 
-    def initialize(header)
-        @header = header
-    end
-
     def header
         @header
     end
@@ -17,5 +13,12 @@ class Column
         end
 
     end
+
+    def inspect_lines
+        r = []
+        r << "aaa#{self.class}"
+        return r
+    end
+
 end
 
