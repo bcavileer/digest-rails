@@ -27,7 +27,7 @@ class ColumnIndirectAttr < Column
         Proc.new do |row, value|
             # Assumes READ (value == nil)
             id_val = Store.data_proc_model( @core_model_name, @attr ).call(row, nil)
-            final_val = Store.data_proc_model( @identifier_model_name, :name ).call(id_val, nil)
+            final_val = Store.data_proc_identifier( @identifier_model_name, :name ).call(id_val, nil)
         end
     end
 

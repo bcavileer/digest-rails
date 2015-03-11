@@ -6,9 +6,9 @@ class ColumnDirectAttr < Column
     attr_accessor :model
     attr_reader :header
 
-    #########
+    ########################
     # Digest IF deprecated
-    #########
+    ########################
 
     def for_digest(digest)
         @model_name = Store.core_model_name_4_digest(digest)
