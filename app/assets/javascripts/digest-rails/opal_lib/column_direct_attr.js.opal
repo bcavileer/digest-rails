@@ -1,25 +1,25 @@
 require 'axle/opal_lib/digest_helpers'
 
 class ColumnDirectAttr < Column
-    include DigestHelpers
+    attr_reader :header, :model, :header
 
-    attr_accessor :model
-    attr_reader :header
+    def init( config )
 
-    ########################
-    # Digest IF deprecated
-    ########################
+        @header     = config[:header]
 
-    def init( header, attr, model_name = nil )
-        @header = header
-        @attr = attr
-        @model_name = model_name if !model_name.nil?
+        @model      = config[:model]
+        @attr       = config[:attr]
+
+
         return self
     end
 
     def data_proc
         # Proc |row, value|
-        Store.data_proc_model( @model_name, @attr )
+        Store.data_proc_model(
+            model: @model,
+            attr: @attr
+        )
     end
 
 end
