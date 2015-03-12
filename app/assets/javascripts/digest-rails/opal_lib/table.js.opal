@@ -15,15 +15,19 @@ class Table
         @data_source.data
     end
 
-    def columns
-        return @columns
-    end
 
     def render
         @r = []
         h2{ @r << @name }
         render_table
+        add_link_procs
         return @r.join
+    end
+
+    def add_link_procs
+        @data_source.columns.each do |column|
+            MarkupLinks.add_link_proc(column.link_proc) if column.respond_to? :link_proc
+        end
     end
 
 end

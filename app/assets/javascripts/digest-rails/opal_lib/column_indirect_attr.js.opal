@@ -29,6 +29,7 @@ class ColumnIndirectAttr < Column
                 model: @identifier_model_name,
                 attr: :name
             ).call(id_val, nil)
+
         end
 
     end

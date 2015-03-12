@@ -35,6 +35,7 @@ export class MarkupControllerFactory {
   reflow(){
     $(document).foundation();
     $(document).foundation('reflow');
+    Opal.MarkupLinks.$run_link_procs();
   }
 }
 

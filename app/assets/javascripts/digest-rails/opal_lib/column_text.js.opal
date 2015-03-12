@@ -1,17 +1,17 @@
 class ColumnText < Column
+    attr_reader :header, :data_proc
 
-    def initialize(header,text)
-        super(header)
-        @text = text
+    def init(config)
+        @header = config[:header]
+        @text = config[:text]
+
+        return self
     end
 
     def data_proc
-        me = self
-
         Proc.new do |row, value|
-            # Assumes READ (value == nil)
             @text
-        end
-
+        end\
     end
+
 end
