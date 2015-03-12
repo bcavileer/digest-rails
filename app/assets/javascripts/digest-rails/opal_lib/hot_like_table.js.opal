@@ -1,7 +1,11 @@
 require 'digest-rails/opal_lib/cell'
 
 module HotLikeTable
-   def render_table
+
+   def render_table(config)
+        #@rows = config[:rows]
+        #@rows ||= :all
+
         table do
             render_header
             render_rows
@@ -18,8 +22,17 @@ module HotLikeTable
         end
     end
 
+    def row_range
+        if @rows == :all
+            (0..data.length-1)
+        else
+ puts "Rendering row #{@rows}"
+            [ @rows.to_i ]
+        end
+    end
+
     def render_rows
-        (0..data.length-1).each do |i|
+        row_range.each do |i|
             render_row(i)
         end
     end

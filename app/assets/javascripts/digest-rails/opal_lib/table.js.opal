@@ -15,13 +15,28 @@ class Table
         @data_source.data
     end
 
+    def render(config={})
+        @rows = config[:rows]
+        @rows ||= :all
 
-    def render
         @r = []
+
+        @data_source.columns.each do |column|
+            column.table = self if column.respond_to?(:table=)
+        end
+
         h2{ @r << @name }
-        render_table
+        render_table( config )
         add_link_procs
+
         return @r.join
+    end
+
+    def get_row_content(row_number)
+        puts "get_row_content( #{row_number} )"
+        return ({
+            rendering: render( rows: row_number )
+        })
     end
 
     def add_link_procs
