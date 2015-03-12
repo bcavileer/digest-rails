@@ -26,7 +26,6 @@ module HotLikeTable
 
     def render_row(i)
         row do
-puts '6c'
             @data_source.columns.each do |column|
                 cell do
                     @r << Cell.new(column).property_data[:data].call(i,nil)

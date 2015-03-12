@@ -10,11 +10,6 @@ class ColumnDirectAttr < Column
     # Digest IF deprecated
     ########################
 
-    def for_digest(digest)
-        @model_name = Store.core_model_name_4_digest(digest)
-        return self
-    end
-
     def init( header, attr, model_name = nil )
         @header = header
         @attr = attr

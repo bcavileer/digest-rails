@@ -10,23 +10,19 @@ class ColumnIndirectAttr < Column
     # Digest IF deprecated
     #########
 
-    def for_digest(digest, attr)
-        @core_model_name =       Store.core_model_name_4_digest(digest)
-        @identifier_model_name = Store.identifier_model_name_4_digest(digest, attr)
-        return self
-    end
-
-    def init( header, attr, model_name = nil )
+    def init( header, core_attr, core_model_name, identifier_model_name )
         @header = header
-        @attr = attr
-        @model_name = model_name if !model_name.nil?
+        @core_attr = core_attr
+        @core_model_name =       core_model_name
+        @identifier_model_name = identifier_model_name
+
         return self
     end
 
     def data_proc
         Proc.new do |row, value|
             # Assumes READ (value == nil)
-            id_val = Store.data_proc_model( @core_model_name, @attr ).call(row, nil)
+            id_val = Store.data_proc_model( @core_model_name, @core_attr ).call(row, nil)
             final_val = Store.data_proc_identifier( @identifier_model_name, :name ).call(id_val, nil)
         end
     end
