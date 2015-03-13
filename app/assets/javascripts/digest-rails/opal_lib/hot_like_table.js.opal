@@ -26,7 +26,6 @@ module HotLikeTable
         if @rows == :all
             (0..data.length-1)
         else
- puts "Rendering row #{@rows}"
             [ @rows.to_i ]
         end
     end
@@ -41,7 +40,12 @@ module HotLikeTable
         row do
             @data_source.columns.each do |column|
                 cell do
-                    @r << Cell.new(column).property_data[:data].call(i,nil)
+                    cell_content = Cell.new(column).for_row(i)
+                    @rendering_data << {
+                        data: cell_content.data,
+                        column: column
+                    }
+                    @r << cell_content.rendering
                 end
             end
         end

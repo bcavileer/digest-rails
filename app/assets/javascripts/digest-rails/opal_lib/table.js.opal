@@ -20,6 +20,7 @@ class Table
         @rows ||= :all
 
         @r = []
+        @rendering_data = []
 
         @data_source.columns.each do |column|
             column.table = self if column.respond_to?(:table=)
@@ -29,13 +30,14 @@ class Table
         render_table( config )
         add_link_procs
 
-        return @r.join
+        @rendering = @r.join
     end
 
     def get_row_content(row_number)
-        puts "get_row_content( #{row_number} )"
+        render( rows: row_number )
         return ({
-            rendering: render( rows: row_number )
+            rendering: @rendering,
+            data: @rendering_data
         })
     end
 
