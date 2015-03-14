@@ -33,7 +33,6 @@ import { id } from 'digest-rails/1_lib/id';
 console.log( id() );
 
 import { GlobalsFactory } from "digest-rails/4_globals/globals_factory";
-import { RenderTargetFactory } from 'digest-rails/1_lib/render_target_factory';
 import { RequestFactory } from "digest-rails/5_request/request_factory";
 
 let theGlobals = new GlobalsFactory();
@@ -42,11 +41,7 @@ let theFirstRequest = new RequestFactory(theGlobals);
 Promise.all([
 
     theGlobals.markupController.waitForDocP().then( function(ready){
-        theFirstRequest.setRenderTargets({
-              header: new RenderTargetFactory( '#active_digest_header' ),
-              body: new RenderTargetFactory( '#active_digest_pane' ),
-              footer: new RenderTargetFactory( '#active_digest_footer' )
-        });
+        theFirstRequest.setRenderTargets( Opal.ActivePaneRenderTargets );
         return(true);
     }),
 

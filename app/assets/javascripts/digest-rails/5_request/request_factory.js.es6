@@ -32,9 +32,9 @@ export class RequestFactory{
     me.renderTargetsP__resolve(rt);
   }
 
-  getRenderTarget(key){
+  getRenderTargets(){
     let me = this;
-    return me.renderTargets[key];
+    return me.renderTargets;
   }
 
   setUserRequest(params){

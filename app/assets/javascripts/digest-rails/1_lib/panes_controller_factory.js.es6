@@ -11,6 +11,8 @@ export class PanesControllerFactory {
         let capdName = name.capitalizeFirstLetter();
         let opalPaneControllerClass = Opal[ capdName + 'PaneController' ];
         let controller = opalPaneControllerClass.$new();
+        controller.$init();
+        Opal.Logger.$log('opalPaneControllerClass created:', controller);
 
         me.panes[name] = controller;
 

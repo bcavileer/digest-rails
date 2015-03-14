@@ -6,7 +6,7 @@ class BasePaneController < CorePaneController
 
     class BaseSectionController
 
-        def initialize( config )
+        def initialize(config)
             @render_target = config[:render_target]
             @template = config[:template]
             @context = config[:context]
@@ -50,7 +50,6 @@ class BasePaneController < CorePaneController
        )
     end
 
-
     def render
        @flash = { text: "Render Not Defined" }
        render_all
@@ -59,28 +58,29 @@ class BasePaneController < CorePaneController
     def pre_render
     end
 
-    private
+   private
 
-    def render_all
+   def render_all
+       Logger.log("Rendering: ",self)
        header.render
        body.render
        footer.render
-    end
+   end
 
-    def digests_crosses_context
+   def digests_crosses_context
        Axle::Base::DigestsCrosses.new(digests_crosses)
-    end
+   end
 
-    def header_template
+   def header_template
        Template['digest-rails/views/pane_header']
-    end
+   end
 
-    def header
+   def header
        @header ||= BaseSectionController.new({
             template: header_template,
             render_target: render_target( :header )
        }.merge({ context: context }))
-    end
+   end
 
    def body_template
        Template['digest-rails/views/pane_body']
@@ -91,19 +91,19 @@ class BasePaneController < CorePaneController
             template: body_template,
             render_target: render_target(:body)
         }.merge({ context: context }))
-    end
+   end
 
-    def footer_template
+   def footer_template
         Template['digest-rails/views/pane_footer']
-    end
+   end
 
-    def footer
+   def footer
         @footer ||= BaseSectionController.new({
             template: footer_template,
             render_target: render_target(:footer)
         }.merge({ context: context }))
-    end
+   end
 
-    private
+   private
 
 end

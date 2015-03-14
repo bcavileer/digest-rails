@@ -4,7 +4,10 @@ class CorePaneController
     attr_accessor :request
 
     def render_target(key)
-        Native(`self.$request.getRenderTarget(key)`)
+        rs = `self.$request.getRenderTargets()`.hash
+        r = rs[key]
+        Logger.log("#{self.class.to_s} getting render_target #{key}",r);
+        return r
     end
 
     def render_target_html(key,html)

@@ -1,12 +1,32 @@
+require 'digest-rails/opal_lib/logger'
+require 'digest-rails/opal_lib/render_target'
+require 'digest-rails/opal_lib/render_targets'
+
 require 'axle/opal_lib/store'
 require 'digest-rails/opal_lib/markup_links'
 require 'digest-rails/opal_lib/dialog'
 
+Logger = Logger.new
+Logger.log('Opal.Logger', `Opal.Logger`)
+
+RenderTargetFactory = RenderTarget
+Logger.log('Opal.RenderTarget: ', `Opal.RenderTargetFactory`)
+
+ActivePaneRenderTargets = RenderTargets.new(
+    header: RenderTarget.new( '#active_digest_header' ),
+    body: RenderTarget.new( '#active_digest_pane' ),
+    footer: RenderTarget.new( '#active_digest_footer' )
+)
+
 Store = Store.new
-`console.log('Opal.Store: ', Opal.Store);`
+Logger.log('Opal.Store: ', `Opal.Store`)
 
 MarkupLinks = MarkupLinks.new
-`console.log('Opal.MarkupLinks: ', Opal.MarkupLinks);`
+Logger.log('Opal.MarkupLinks: ', `Opal.MarkupLinks`)
 
-Dialog = Dialog.new
-`console.log('Opal.Dialog: ', Opal.Dialog);`
+Dialog = Dialog.new(
+       top: '#myModal',
+       content: '#myModal > .content'
+)
+
+Logger.log('Opal.Dialog: ', `Opal.Dialog`)

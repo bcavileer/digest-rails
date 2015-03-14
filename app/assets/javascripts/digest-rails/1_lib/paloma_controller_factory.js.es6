@@ -2,6 +2,7 @@ export class PalomaControllerFactory {
   constructor(name) {
     this.name = name;
     this.palomaController = Paloma.controller(this.name);
+    Opal.Logger.$log('palomaController created:', this);
     let me = this;
 
     me.showPromise = new Promise(

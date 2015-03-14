@@ -1,7 +1,7 @@
 class Logger
 
-    def log(text,objects=[])
-`console.log(text)`
+    def log(text,object=nil)
+`console.log(text,object)`
     end
 
 end
