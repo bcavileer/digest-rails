@@ -3,15 +3,12 @@ require 'template'
 class CorePaneController
     attr_accessor :request
 
-    def render_target(key)
-        rs = `self.$request.getRenderTargets()`.hash
-        r = rs[key]
-        Logger.log("#{self.class.to_s} getting render_target #{key}",r);
-        return r
+    def render_targets
+        @render_targets = `self.$request.getRenderTargets()`
     end
 
     def render_target_html(key,html)
-        render_target(key).html(html)
+        render_targets.child(key).html(html)
     end
 
     def request_params

@@ -10,12 +10,15 @@ Logger = Logger.new
 Logger.log('Opal.Logger', `Opal.Logger`)
 
 RenderTargetFactory = RenderTarget
-Logger.log('Opal.RenderTarget: ', `Opal.RenderTargetFactory`)
+Logger.log('Opal.RenderTarget:', `Opal.RenderTargetFactory`)
 
 ActivePaneRenderTargets = RenderTargets.new(
-    header: RenderTarget.new( '#active_digest_header' ),
-    body: RenderTarget.new( '#active_digest_pane' ),
-    footer: RenderTarget.new( '#active_digest_footer' )
+    parent: RenderTarget.new( '.content.active' ),
+    children: {
+        header: RenderTarget.new( '.header' ),
+        body: RenderTarget.new( '.pane' ),
+        footer: RenderTarget.new( '.footer' )
+    }
 )
 
 Store = Store.new

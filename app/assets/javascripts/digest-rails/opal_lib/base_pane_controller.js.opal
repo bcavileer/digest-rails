@@ -1,30 +1,9 @@
 require 'template'
 require 'axle/opal_lib/data_source'
 require 'digest-rails/opal_lib/core_pane_controller'
+require 'digest-rails/opal_lib/base_section_controller'
 
 class BasePaneController < CorePaneController
-
-    class BaseSectionController
-
-        def initialize(config)
-            @render_target = config[:render_target]
-            @template = config[:template]
-            @context = config[:context]
-        end
-
-        def rendering
-            @template.render(@context)
-        end
-
-        def render_target
-            return @render_target
-        end
-
-        def render
-            @render_target.html(rendering)
-        end
-
-    end
 
     class Context < Struct.new(
        :flash,
@@ -78,7 +57,7 @@ class BasePaneController < CorePaneController
    def header
        @header ||= BaseSectionController.new({
             template: header_template,
-            render_target: render_target( :header )
+            render_target: render_targets.child(:header)
        }.merge({ context: context }))
    end
 
@@ -89,7 +68,7 @@ class BasePaneController < CorePaneController
    def body
        @body ||= BaseSectionController.new({
             template: body_template,
-            render_target: render_target(:body)
+            render_target: render_targets.child(:body)
         }.merge({ context: context }))
    end
 
@@ -100,7 +79,7 @@ class BasePaneController < CorePaneController
    def footer
         @footer ||= BaseSectionController.new({
             template: footer_template,
-            render_target: render_target(:footer)
+            render_target: render_targets.child(:footer)
         }.merge({ context: context }))
    end
 
