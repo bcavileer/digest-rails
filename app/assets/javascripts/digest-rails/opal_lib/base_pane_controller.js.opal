@@ -50,39 +50,28 @@ class BasePaneController < CorePaneController
        Axle::Base::DigestsCrosses.new(digests_crosses)
    end
 
-   def header_template
-       Template['digest-rails/views/pane_header']
-   end
-
    def header
-       @header ||= BaseSectionController.new({
-            template: header_template,
-            render_target: render_targets.child(:header)
-       }.merge({ context: context }))
-   end
-
-   def body_template
-       Template['digest-rails/views/pane_body']
+       @header ||= BaseSectionController.new(
+            template: Template['digest-rails/views/pane_header'],
+            render_target: render_targets.child(:header),
+            context: context
+        )
    end
 
    def body
-       @body ||= BaseSectionController.new({
-            template: body_template,
-            render_target: render_targets.child(:body)
-        }.merge({ context: context }))
-   end
-
-   def footer_template
-        Template['digest-rails/views/pane_footer']
+       @body ||= BaseSectionController.new(
+            template: Template['digest-rails/views/pane_body'],
+            render_target: render_targets.child(:body),
+            context: context
+       )
    end
 
    def footer
-        @footer ||= BaseSectionController.new({
-            template: footer_template,
-            render_target: render_targets.child(:footer)
-        }.merge({ context: context }))
+        @footer ||= BaseSectionController.new(
+            template: Template['digest-rails/views/pane_footer'],
+            render_target: render_targets.child(:footer),
+            context: context
+        )
    end
-
-   private
 
 end

@@ -28,8 +28,11 @@ MarkupLinks = MarkupLinks.new
 Logger.log('Opal.MarkupLinks: ', `Opal.MarkupLinks`)
 
 Dialog = Dialog.new(
-       top: '#myModal',
-       content: '#myModal > .content'
+    parent: RenderTarget.new( '#myModal' ),
+    children: {
+        content: RenderTarget.new( '.content' ),
+        button:  RenderTarget.new( 'a.custom-close-reveal-modal' )
+    }
 )
 
 Logger.log('Opal.Dialog: ', `Opal.Dialog`)

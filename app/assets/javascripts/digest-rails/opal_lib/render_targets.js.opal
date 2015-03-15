@@ -1,6 +1,7 @@
 class RenderTargets
 
-    attr_reader :hash
+    attr_reader :parent
+    attr_accessor :children
 
     def initialize(config)
         @parent = config[:parent]
