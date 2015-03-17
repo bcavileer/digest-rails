@@ -1,11 +1,19 @@
 require 'template'
 
 class CorePaneController
+
+    def init
+      Logger.log('CorePaneController.init',self);
+    end
+
     attr_accessor :request
 
-    def render_targets
-        @render_targets = `self.$request.getRenderTargets()`
-    end
+    #def method_missing(method_sym, *arguments, &block)
+    #    r = ClientContext.get(method_sym)
+    #    Logger.log("method_missing #{self.class.to_s} #{method_sym}",r)
+    #    return r
+    #end
+
 
     def render_target_html(key,html)
         render_targets.child(key).html(html)

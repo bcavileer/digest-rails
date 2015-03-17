@@ -38,16 +38,31 @@ import { RequestFactory } from "digest-rails/5_request/request_factory";
 let theGlobals = new GlobalsFactory();
 let theFirstRequest = new RequestFactory(theGlobals);
 
+
+
 Promise.all([
 
-    theGlobals.markupController.waitForDocP().then( function(ready){
-        theFirstRequest.setRenderTargets( Opal.ActivePaneRenderTargets );
+    theGlobals.markupController.waitForDocP().then( function(user_request){
+        console.log("waitForDocP  resolved");
+        Opal.Boot.$start_dialog();
         return(true);
     }),
 
     theGlobals.digestsController.waitForShowP().then( function(user_request){
-        theFirstRequest.setUserRequest(user_request);
+        Opal.Logger.$log("waitForShowP resolved");
+
+Opal.Logger.$log("ClientContext", Opal.CC);
+        let CC = Opal.CC.$push_name('CC_User');
+
+Opal.Logger.$log("11111");
+        CC.$set_key_value('request',user_request);
+Opal.Logger.$log("22222",user_request);
         return(true);
+
+    }).then( function(user_request){
+        theFirstRequest.runRequest();
+        return(true);
+
     })
 
 ]).catch(function(reason){

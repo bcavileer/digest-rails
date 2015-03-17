@@ -1,7 +1,11 @@
 class Logger
 
     def log(text,object=nil)
-`console.log(text,object)`
+        if object
+            `console.log(text,object)`
+        else
+            `console.log(text)`
+        end
     end
 
 end

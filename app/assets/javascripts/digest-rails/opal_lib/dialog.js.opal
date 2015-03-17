@@ -1,14 +1,31 @@
-class Dialog < RenderTargets
+require 'digest-rails/opal_lib/base_section_controller'
 
-    def set_content(html)
-        child(:content).html(html)
+class Dialog < BaseSectionController
+    def initialize
+        super
     end
 
     def open
+
+        `self.$select().foundation('reveal', 'open')`
+    end
+
+    def content_select
+        box_selector = self.render_target.selector
+        CC.push(:content) do
+        end
+
+        box_rt = self.render_target
+        box_selector = self.render_target.selector
+        `$(box_selector)`
+    end
+
+    def Xopen
+
        `self.$button().click(function(){
-          self.$parent().foundation('reveal', 'close');
+          selector.foundation('reveal', 'close');
         });`
-        `self.$parent().foundation('reveal', 'open');`
+
     end
 
 end

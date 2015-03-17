@@ -10,49 +10,37 @@ export class RequestFactory{
         me.dataP__reject = reject;
     } );
 
-    me.renderTargetsP = new Promise( function (resolve, reject) {
-        me.renderTargetsP__resolve = resolve;
-        me.renderTargetsP__reject = reject;
-    } );
-
     me.userRequestP = new Promise( function (resolve, reject) {
         me.userRequestP__resolve = resolve;
         me.userRequestP__reject = reject;
     } );
 
-    me.preRenderP = Promise.all([ me.renderTargetsP, me.userRequestP ]);
-    me.renderP = Promise.all([ me.renderTargetsP, me.userRequestP,me.dataP ]);
+    me.preRenderP = Promise.all([ me.userRequestP          ]);
+    me.renderP = Promise.all(   [ me.userRequestP,me.dataP ]);
 
   }
 
-  setRenderTargets(rt){
-    let me = this;
-
-    me.renderTargets = rt;
-    me.renderTargetsP__resolve(rt);
-  }
-
-  getRenderTargets(){
-    let me = this;
-    return me.renderTargets;
-  }
-
-  setUserRequest(params){
+  runRequest(){
+    Opal.Logger.$log('setUserRequest stubbed');
+    return;
 
     let me = this;
 
     me.params = params;
 
     me.paneController = me.globals.panesController.getPane( params );
+    me.paneController.$init();
     me.paneController.$request = (me);
 
     me.preRenderP.then(function(){
+        Opal.Logger.$log('preRenderP run');
         me.paneController.$pre_render();
         me.globals.markupController.reflow();
         return(true);
     });
 
     me.renderP.then(function(){
+        Opal.Logger.$log('RenderP run');
         me.paneController.$render();
         me.globals.markupController.reflow();
         return(true);
@@ -67,8 +55,7 @@ export class RequestFactory{
         return(data);
 
     }).then( function(data){
-
-        Opal.Store.$process_digests_crosses(data)
+        Opal.Store.$process_digests_crosses(data);
         me.dataP__resolve(true);
         return(true);
     });

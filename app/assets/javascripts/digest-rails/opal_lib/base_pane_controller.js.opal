@@ -4,74 +4,30 @@ require 'digest-rails/opal_lib/core_pane_controller'
 require 'digest-rails/opal_lib/base_section_controller'
 
 class BasePaneController < CorePaneController
+    def init
+        super
+        Logger.log('BasePaneController.init',self);
+        CC = ClientContext.push(:base_pane)
+        CC.push(self)
 
-    class Context < Struct.new(
-       :flash,
-       :request_params,
-       :digests_crosses,
-       :digest_index,
-       :digest_name,
-       :digest,
-       :digests_hash,
-       :sub_contexts
-    )
+        CC = ClientContext.push_y(:header)
+        CC[:controller] = LocationPaneletController.new
+        CC[:template] = Template['digest-rails/views/pane_header']
+        CC[:render_target] = RenderTarget.new(selector: '.header')
+        CC.pop
+
+        CC = ClientContext.push_y(:body)
+        CC[:controller] = LocationPaneletController.new
+        CC[:template] = Template['digest-rails/views/pane_body']
+        CC[:render_target] = RenderTarget.new(selector: '.body')
+        CC.pop
+
+        CC = ClientContext.push_y(:footer)
+        CC[:controller] = LocationPaneletController.new
+        CC[:template] = Template['digest-rails/views/pane_footer']
+        CC[:render_target] = RenderTarget.new(selector: '.footer')
+        CC.pop
+
     end
-
-    def context
-       @context ||= Context.new(
-            @flash,
-            request_params,
-            digests_crosses_context,
-            active_digest_index,
-            active_digest_name,
-            active_digest,
-            digests_crosses_context.digests_hash
-       )
-    end
-
-    def render
-       @flash = { text: "Render Not Defined" }
-       render_all
-    end
-
-    def pre_render
-    end
-
-   private
-
-   def render_all
-       Logger.log("Rendering: ",self)
-       header.render
-       body.render
-       footer.render
-   end
-
-   def digests_crosses_context
-       Axle::Base::DigestsCrosses.new(digests_crosses)
-   end
-
-   def header
-       @header ||= BaseSectionController.new(
-            template: Template['digest-rails/views/pane_header'],
-            render_target: render_targets.child(:header),
-            context: context
-        )
-   end
-
-   def body
-       @body ||= BaseSectionController.new(
-            template: Template['digest-rails/views/pane_body'],
-            render_target: render_targets.child(:body),
-            context: context
-       )
-   end
-
-   def footer
-        @footer ||= BaseSectionController.new(
-            template: Template['digest-rails/views/pane_footer'],
-            render_target: render_targets.child(:footer),
-            context: context
-        )
-   end
 
 end

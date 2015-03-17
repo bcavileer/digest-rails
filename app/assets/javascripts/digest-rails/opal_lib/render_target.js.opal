@@ -1,8 +1,9 @@
 class RenderTarget
     attr_reader :selector
 
-    def initialize(selector)
-        @selector = selector
+    def initialize(c)
+        @selector = c[:selector]
+        Logger.log( "rt selector", selector )
     end
 
     def under_render_target(parent)
@@ -13,6 +14,10 @@ class RenderTarget
 
     def append(txt)
         `$(self.selector).append(txt)`
+    end
+
+    def select
+        `$(self.selector)`
     end
 
     def html(txt)
