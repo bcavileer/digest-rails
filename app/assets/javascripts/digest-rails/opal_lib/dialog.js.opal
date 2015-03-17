@@ -5,19 +5,16 @@ class Dialog < BaseSectionController
         super
     end
 
-    def open
-
+    def open(content=nil)
+        if !content.nil?
+            put_content(content)
+        end
         `self.$select().foundation('reveal', 'open')`
     end
 
-    def content_select
-        box_selector = self.render_target.selector
-        CC.push(:content) do
-        end
-
-        box_rt = self.render_target
-        box_selector = self.render_target.selector
-        `$(box_selector)`
+    def put_content(content)
+       rt = `self.$select('content')`
+       rt['render_target'].html(content)
     end
 
     def Xopen

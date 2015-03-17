@@ -25,8 +25,6 @@ attr_accessor :list
         end
 
         def push(c)
-            Logger.log("self: ", self);
-            Logger.log("7push: ", c);
             c[:dir] = @dir
             c[:parent] = self
             new_cursor = @dir.push(
@@ -42,15 +40,12 @@ attr_accessor :list
 
         end
 
-def chain(key)
-    rr = chain_raw(key)
-    Logger.log("rr ", rr);
-    return rr.compact.reverse.flatten
-end
+        def chain(key)
+            rr = chain_raw(key)
+            return rr.compact.reverse.flatten
+        end
 
         def chain_raw(key,r=[])
-
-      Logger.log("chain_raw self.fullname: ", self.fullname);
 
             r ||= []
             fetch_key_value = nil
@@ -67,12 +62,7 @@ end
         end
 
         def [](key)
- Logger.log("self",self)
- Logger.log("key",key)
             value = super(key)
-
- Logger.log("value",value)
-
             if value.nil?
                 value = if !@root
                     parent.get(key)
@@ -90,10 +80,6 @@ end
     end
 
     def get(fullname)
-
-    Logger.log("ClientContext get", fullname)
-    Logger.log("ClientContext get", @list[fullname])
-
         @list[fullname]
     end
 
@@ -110,7 +96,6 @@ end
 
     def add(new_cursor)
         @cursor = @list[new_cursor.fullname]  = new_cursor
- Logger.log("ClientContext list after add",@list)
         return @cursor
     end
 
@@ -118,10 +103,8 @@ end
         rt_fullname = rt.fullname
         existing = @list[rt_fullname]
         @cursor = if existing.nil?
-Logger.log("new",rt)
            @list[rt_fullname] = rt
         else
-Logger.log("existing",existing)
            existing
         end
     end

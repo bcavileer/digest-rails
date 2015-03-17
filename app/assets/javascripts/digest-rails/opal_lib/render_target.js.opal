@@ -3,7 +3,6 @@ class RenderTarget
 
     def initialize(c)
         @selector = c[:selector]
-        Logger.log( "rt selector", selector )
     end
 
     def under_render_target(parent)
@@ -21,8 +20,6 @@ class RenderTarget
     end
 
     def html(txt)
-Logger.log("#{self.class.to_s}",self)
-Logger.log("text",txt)
         `$(self.selector).html(txt)`
     end
 

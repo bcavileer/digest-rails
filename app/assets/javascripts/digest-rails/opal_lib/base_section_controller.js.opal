@@ -9,27 +9,20 @@ class BaseSectionController
         @CC_dir = c[:cc_dir]
     end
 
-    def xxselect(path='.')
-        return raw_select
-        r = nil
-        if path == '.'
-            r = raw_select
+    def select(path=nil)
+        if path.nil?
+            `$( self.$render_target(self.$CC() ).selector)`
         else
-            CC.push(path) do
-                r = raw_select
+
+            self.CC.push(name: path) do |fCC|
+                `$(self.$render_target(fCC).selector)`
             end
         end
-        return r
     end
 
-    def select
-        `$(self.$render_target().selector)`
-    end
-
-    def render_target
-        rt_os = self.CC.chain(:render_target)
+    def render_target(cc)
+        rt_os = cc.chain(:render_target)
         rt_selectors = rt_os.map{ |rto|
-        Logger.log('RTO',rto.selector);
             rto.selector
         }
         rt_selector = rt_selectors.join(' > ')
@@ -38,7 +31,6 @@ class BaseSectionController
     end
 
     def CC
-Logger.log('CC called');
         @CC_dir.get(@CC_fullname)
     end
 

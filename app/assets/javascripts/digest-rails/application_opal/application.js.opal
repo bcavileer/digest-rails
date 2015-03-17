@@ -13,10 +13,7 @@ class Boot
 
         def start_dialog
             CC.push(name: :dialog) do |fCC|
-                Logger.log("fCC dialog2",fCC)
-                fCC[:content] = 'hello'
-                fCC[:controller].open
-
+                fCC[:controller].open('hello')
             end
         end
 

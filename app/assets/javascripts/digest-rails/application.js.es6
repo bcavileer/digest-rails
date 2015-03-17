@@ -54,7 +54,6 @@ Promise.all([
 Opal.Logger.$log("ClientContext", Opal.CC);
         let CC = Opal.CC.$push_name('CC_User');
 
-Opal.Logger.$log("11111");
         CC.$set_key_value('request',user_request);
 Opal.Logger.$log("22222",user_request);
         return(true);
