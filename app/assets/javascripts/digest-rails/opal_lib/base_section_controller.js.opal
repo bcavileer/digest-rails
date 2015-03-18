@@ -10,17 +10,30 @@ class BaseSectionController
     end
 
     def select(path=nil)
+        r = nil
         if path.nil?
-            `$( self.$render_target(self.$CC() ).selector)`
+            r = `$( self.$render_target(self.$CC() ).selector)`
         else
-
             self.CC.push(name: path) do |fCC|
-                `$(self.$render_target(fCC).selector)`
+                r = `$(self.$render_target_raw(fCC).selector)`
             end
         end
+        return r
     end
 
-    def render_target(cc)
+    def render_target(path=nil)
+        r = nil
+        if path.nil?
+            r = render_target_raw(self.CC)
+        else
+            self.CC.push(name: path) do |fCC|
+                r = render_target_raw(fCC)
+            end
+        end
+        return r
+    end
+
+    def render_target_raw(cc)
         rt_os = cc.chain(:render_target)
         rt_selectors = rt_os.map{ |rto|
             rto.selector

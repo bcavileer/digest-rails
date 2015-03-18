@@ -13,7 +13,7 @@ class Boot
 
         def start_dialog
             CC.push(name: :dialog) do |fCC|
-                fCC[:controller].open('hello')
+                fCC[:controller].open('Loading Opal App...')
             end
         end
 
@@ -31,8 +31,6 @@ class Boot
         Logger.log('Opal.Logger', `Opal.Logger`)
         CC[:logger] = Logger
     end
-
-
 
     def render_targets
         require 'digest-rails/opal_lib/render_target'

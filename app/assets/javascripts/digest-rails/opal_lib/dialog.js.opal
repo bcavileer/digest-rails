@@ -6,23 +6,28 @@ class Dialog < BaseSectionController
     end
 
     def open(content=nil)
+        link_button
         if !content.nil?
             put_content(content)
         end
         `self.$select().foundation('reveal', 'open')`
     end
 
-    def put_content(content)
-       rt = `self.$select('content')`
-       rt['render_target'].html(content)
+    def close
+        `self.$select().foundation('reveal', 'close')`
     end
 
-    def Xopen
-
-       `self.$button().click(function(){
-          selector.foundation('reveal', 'close');
+    def link_button
+        `self.$select('button').click(function(){
+            self.$close();
         });`
+    end
 
+    def put_content(content)
+        self.CC.push(name: 'content') do |fCC|
+            fCC[:content] = content
+        end
+        render_target('content').html(content)
     end
 
 end
