@@ -25,7 +25,7 @@ export class RequestFactory{
     let me = this;
 
     Opal.Logger.$log('me.globals.router',me.globals.router);
-    me.paneController = me.globals.router.$route(user_request);
+    me.paneController = me.globals.router.$route_js(user_request);
 
     me.preRenderP.then(function(){
         Opal.Logger.$log('preRenderP run');
