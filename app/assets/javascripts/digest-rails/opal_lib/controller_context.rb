@@ -1,31 +1,17 @@
 module ControllerContext
 
   def initialize(c)
-    if c[:context].nil?
-      Logger.log("ControllerContext",c)
-      raise "ControllerContext #{self.class.to_s} requires source context"
-    end
-    Logger.log("ControllerContext #{self.class.to_s} in module",c)
-    dir = c[:context].dir
-    c[:controller] = self
-    @CC = dir.get_controller_context(c)
+    @source_context_ref = c
   end
 
   def get_context
-    rcc = nil
-    scope do |cc|
-      rcc = cc
-    end
-    return rcc
+    @source_context_ref[:controller] = self
+    return @source_context_ref[:context].dir.get_controller_context( @source_context_ref )
   end
 
   def scope
-    yield @CC
+    yield get_context
     return self
-  end
-
-  def select
-    `$( self.$selector() )`
   end
 
   def selector
@@ -33,19 +19,23 @@ module ControllerContext
   end
 
   def render_target
-
-    rt_selectors = render_target_chain.map{ |rto|
-      rto.selector
-    }
-    rt_selector = rt_selectors.join(' > ')
-    rt = RenderTarget.new(selector: rt_selector)
-    return rt
+    RenderTarget.new(selector: selector)
   end
 
-  def render_target_chain
+  def selector
+    render_target_selectors.join(' > ')
+  end
+
+  def render_target_selectors
+    sym_chain(:render_target).map do |rto|
+      rto.selector
+    end
+  end
+
+  def sym_chain(sym)
     r = nil
     scope do |cc|
-        r = cc.chain(:render_target)
+      r = cc.chain(sym)
     end
     return r
   end
