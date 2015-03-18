@@ -54,10 +54,10 @@ Opal.Logger.$log("ClientContext", Opal.CC);
 
         CC.$set_key_value('request',user_request);
 Opal.Logger.$log("22222",user_request);
-        return(true);
+        return(user_request);
 
     }).then( function(user_request){
-        theFirstRequest.runRequest();
+        theFirstRequest.runRequest(user_request);
         return(true);
 
     })

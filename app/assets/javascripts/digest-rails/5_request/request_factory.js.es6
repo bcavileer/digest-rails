@@ -20,20 +20,16 @@ export class RequestFactory{
 
   }
 
-  runRequest(){
-    Opal.Logger.$log('setUserRequest stubbed');
-    return;
+  runRequest(user_request){
 
     let me = this;
 
-    me.params = params;
-
-    me.paneController = me.globals.panesController.getPane( params );
-    me.paneController.$init();
-    me.paneController.$request = (me);
+    Opal.Logger.$log('me.globals.router',me.globals.router);
+    me.paneController = me.globals.router.$route(user_request);
 
     me.preRenderP.then(function(){
         Opal.Logger.$log('preRenderP run');
+
         me.paneController.$pre_render();
         me.globals.markupController.reflow();
         return(true);
@@ -41,6 +37,7 @@ export class RequestFactory{
 
     me.renderP.then(function(){
         Opal.Logger.$log('RenderP run');
+
         me.paneController.$render();
         me.globals.markupController.reflow();
         return(true);
@@ -48,14 +45,17 @@ export class RequestFactory{
 
     me.userRequestP__resolve(true);
 
-    me.digestController = me.globals.digestsController.getDigest(params);
+    me.digestController = me.globals.digestsController.getDigest(user_request);
 
-    me.digestController.addRequestP(params).then( function(data){
+    me.digestController.addRequestP(user_request).then( function(data){
         me.data = data;
         return(data);
 
     }).then( function(data){
+        Opal.Logger.$log('data to Store',data);
+        Opal.Logger.$log('Opal.Store',Opal.Store);
         Opal.Store.$process_digests_crosses(data);
+        Opal.Logger.$log('data to Store2');
         me.dataP__resolve(true);
         return(true);
     });

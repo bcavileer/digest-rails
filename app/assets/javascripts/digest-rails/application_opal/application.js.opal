@@ -18,6 +18,7 @@ class Boot
             n.markup_links
             n.boot_dialog
             n.boot_store
+            n.boot_router
             n.boot_pane
         end
 
@@ -60,9 +61,6 @@ class Boot
         require 'digest-rails/opal_lib/dialog_controller'
         ::Dialog = DialogController.new( name: :main_dialog, context: self.get_context ).scope do |dialog|
 
-Logger.log("TTTTTTT",dialog)
-
-            dialog[:controller] = dialog
             dialog[:render_target] = RenderTarget.new(selector:'#myModal')
 
             dialog.push(name: :content) do |content|
@@ -79,8 +77,14 @@ Logger.log("TTTTTTT",dialog)
 
     def boot_store
         require 'axle/opal_lib/store'
-        Store = Store.new
+        ::Store = Store.new
         CC[:store] = Store
+    end
+
+    def boot_router
+        require 'digest-rails/opal_lib/router'
+        ::Router = Router.new( name: :router, context: self.get_context )
+        Logger.log('Opal.Router', `Opal.Router`)
     end
 
     def boot_pane

@@ -34,6 +34,7 @@ export class DigestControllerFactory{
   }
 
   processData(digestsCrosses){
+Opal.Logger.$log('processData');
     let me = this;
     let digestsCrossesO = Opal.Axle.Core.DigestsCrosses.$new( digestsCrosses );
     me.done = true;
