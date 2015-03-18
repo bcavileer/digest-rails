@@ -4,30 +4,27 @@ require 'digest-rails/opal_lib/core_pane_controller'
 require 'digest-rails/opal_lib/base_section_controller'
 
 class BasePaneController < CorePaneController
+
     def init
         super
-        Logger.log('BasePaneController.init',self);
-        CC = ClientContext.push(:base_pane)
-        CC.push(self)
 
-        CC = ClientContext.push_y(:header)
-        CC[:controller] = LocationPaneletController.new
-        CC[:template] = Template['digest-rails/views/pane_header']
-        CC[:render_target] = RenderTarget.new(selector: '.header')
-        CC.pop
+        ClientContext.push(:header) do |fCC|
+            fCC[:controller] = LocationPaneletController.new
+            fCC[:template] = Template['digest-rails/views/pane_header']
+            fCC[:render_target] = RenderTarget.new(selector: '.header')
+        end
 
-        CC = ClientContext.push_y(:body)
-        CC[:controller] = LocationPaneletController.new
-        CC[:template] = Template['digest-rails/views/pane_body']
-        CC[:render_target] = RenderTarget.new(selector: '.body')
-        CC.pop
+        ClientContext.push(:body) do |fCC|
+            fCC[:controller] = LocationPaneletController.new
+            fCC[:template] = Template['digest-rails/views/pane_body']
+            fCC[:render_target] = RenderTarget.new(selector: '.body')
+        end
 
-        CC = ClientContext.push_y(:footer)
-        CC[:controller] = LocationPaneletController.new
-        CC[:template] = Template['digest-rails/views/pane_footer']
-        CC[:render_target] = RenderTarget.new(selector: '.footer')
-        CC.pop
+        ClientContext.push(:footer) do |fCC|
+            fCC[:controller] = LocationPaneletController.new
+            fCC[:template] = Template['digest-rails/views/pane_footer']
+            fCC[:render_target] = RenderTarget.new(selector: '.footer')
+        end
 
     end
-
 end

@@ -38,8 +38,6 @@ import { RequestFactory } from "digest-rails/5_request/request_factory";
 let theGlobals = new GlobalsFactory();
 let theFirstRequest = new RequestFactory(theGlobals);
 
-
-
 Promise.all([
 
     theGlobals.markupController.waitForDocP().then( function(user_request){
@@ -64,6 +62,7 @@ Opal.Logger.$log("22222",user_request);
 
     })
 
-]).catch(function(reason){
-    console.log( 'application.js failed because: ' + reason );
-});
+]);
+//.catch(function(reason){
+//    console.log( 'application.js failed because: ' + reason );
+//});

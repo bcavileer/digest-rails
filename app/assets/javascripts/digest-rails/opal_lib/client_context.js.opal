@@ -1,5 +1,5 @@
 class ClientContext
-attr_accessor :list
+    attr_accessor :list
 
     class RenderContext < Hash
         attr_accessor :name, :dir
@@ -13,7 +13,7 @@ attr_accessor :list
         end
 
         def fullname
-            [ ( @root ? nil : @parent.fullname ),name].compact.join('__')
+            [ ( @root ? nil : @parent.fullname ), name ].compact.join('__')
         end
 
         def pop
@@ -46,7 +46,6 @@ attr_accessor :list
         end
 
         def chain_raw(key,r=[])
-
             r ||= []
             fetch_key_value = nil
             begin
@@ -79,19 +78,30 @@ attr_accessor :list
 
     end
 
+    def get_controller_context(c)
+        r = nil
+        context = c[:context]
+        context.push( name: c[:name] ) do |named_context|
+            named_context[:name] = c[:name]
+            named_context[:controller] = c[:controller]
+            r = named_context
+        end
+        return r
+    end
+
     def get(fullname)
         @list[fullname]
     end
 
     def init
+        @list = {}
         first_cursor = RenderContext.new(
           dir: self,
           root: true,
           name: 'root',
           parent: nil
         )
-        @list = {}
-        add(first_cursor)
+        return add(first_cursor)
     end
 
     def add(new_cursor)
@@ -103,8 +113,10 @@ attr_accessor :list
         rt_fullname = rt.fullname
         existing = @list[rt_fullname]
         @cursor = if existing.nil?
+Logger.log('push to NEW context',rt_fullname)
            @list[rt_fullname] = rt
         else
+Logger.log('push to Existing context',rt_fullname)
            existing
         end
     end

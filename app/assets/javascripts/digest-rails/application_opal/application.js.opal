@@ -1,35 +1,46 @@
+require 'digest-rails/opal_lib/controller_context'
+
 class Boot
+    include ControllerContext
+    attr_accessor :dialog
+
     class << self
+
         def run
-            n = self.new
-            n.start_logger
-            n.start_client_context
+            start_logger
+            cc = start_client_context
+            n = self.new(
+               context: cc,
+               name: :boot
+            )
+
             n.render_targets
             n.markup_links
-            n.dialog
-            n.store
-            n.pane
+            n.boot_dialog
+            n.boot_store
+            n.boot_pane
+        end
+
+        def start_logger
+            require 'digest-rails/opal_lib/logger'
+            ::Logger = Logger.new
+        end
+
+        def start_client_context
+            require 'digest-rails/opal_lib/client_context'
+            ::CC = ClientContext.new.init
+
+            Logger.log('Opal.Logger', `Opal.Logger`)
+            CC[:logger] = Logger
+
+            return ::CC
         end
 
         def start_dialog
-            CC.push(name: :dialog) do |fCC|
-                fCC[:controller].open('Loading Opal App...')
-            end
+        Logger.log('start_dialog')
+        ::Dialog.show_text('Loading Opal App...')
         end
 
-    end
-
-    def start_logger
-        require 'digest-rails/opal_lib/logger'
-        ::Logger = Logger.new
-    end
-
-    def start_client_context
-        require 'digest-rails/opal_lib/client_context'
-        ::CC = ClientContext.new.init
-
-        Logger.log('Opal.Logger', `Opal.Logger`)
-        CC[:logger] = Logger
     end
 
     def render_targets
@@ -44,31 +55,35 @@ class Boot
         CC[:markup_links] = MarkupLinks
     end
 
-    def dialog
-        require 'digest-rails/opal_lib/dialog'
-        CC.push(name: :dialog) do |fCC|
+    def boot_dialog
 
-            fCC[:render_target] = RenderTarget.new(selector:'#myModal')
-            fCC[:controller] = Dialog.new(cc_dir: fCC.dir, render_context: fCC)
+        require 'digest-rails/opal_lib/dialog_controller'
+        ::Dialog = DialogController.new( name: :main_dialog, context: self.get_context ).scope do |dialog|
 
-            fCC.push(name: :content) do |fCC|
-                fCC[:render_target] = RenderTarget.new(selector:'.content')
+Logger.log("TTTTTTT",dialog)
+
+            dialog[:controller] = dialog
+            dialog[:render_target] = RenderTarget.new(selector:'#myModal')
+
+            dialog.push(name: :content) do |content|
+                content[:render_target] = RenderTarget.new(selector:'.content')
             end
 
-            fCC.push(name: :button) do |fCC|
-                fCC[:render_target] = RenderTarget.new(selector: 'a.custom-close-reveal-modal')
+            dialog.push(name: :button) do |button|
+                button[:render_target] = RenderTarget.new(selector: 'a.custom-close-reveal-modal')
             end
 
         end
+        Logger.log('Opal.Dialog', `Opal.Dialog`)
     end
 
-    def store
+    def boot_store
         require 'axle/opal_lib/store'
         Store = Store.new
         CC[:store] = Store
     end
 
-    def pane
+    def boot_pane
 
         CC.push(name: :Pane) do |fCC|
 

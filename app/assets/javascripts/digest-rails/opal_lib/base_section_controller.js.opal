@@ -1,71 +1,37 @@
-require 'digest-rails/opal_lib/render'
+require 'digest-rails/opal_lib/controller_context'
 
 class BaseSectionController
-    #include Render
+    include ControllerContext
+    attr_accessor :content
+
+    class ContentController
+        include ControllerContext
+        def get
+            r = nil
+            scope do |cc|
+                r ||= cc[:text]
+                r ||= cc[:html]
+                if t = cc[:template]
+                    r ||= t.render(cc)
+                end
+            end
+            return r
+        end
+    end
 
     def initialize(c)
-        Logger.log('BaseSectionController render_context',c[:render_context]);
-        @CC_fullname = c[:render_context].fullname
-        @CC_dir = c[:cc_dir]
+        Element.expose :click
+        Element.expose :foundation
+        super
+        @content = ContentController.new( name: :content, context: self.get_context )
     end
 
-    def select(path=nil)
-        r = nil
-        if path.nil?
-            r = `$( self.$render_target(self.$CC() ).selector)`
-        else
-            self.CC.push(name: path) do |fCC|
-                r = `$(self.$render_target_raw(fCC).selector)`
-            end
-        end
-        return r
+    def render
+        render_content
     end
 
-    def render_target(path=nil)
-        r = nil
-        if path.nil?
-            r = render_target_raw(self.CC)
-        else
-            self.CC.push(name: path) do |fCC|
-                r = render_target_raw(fCC)
-            end
-        end
-        return r
-    end
-
-    def render_target_raw(cc)
-        rt_os = cc.chain(:render_target)
-        rt_selectors = rt_os.map{ |rto|
-            rto.selector
-        }
-        rt_selector = rt_selectors.join(' > ')
-        rt = RenderTarget.new(selector: rt_selector)
-        return rt
-    end
-
-    def CC
-        @CC_dir.get(@CC_fullname)
-    end
-
-    def xrender
-        Logger.log('BaseSectionController.render',self);
-
-        if @render_target.nil?
-            raise 'No render_target'
-
-        elsif @render_target.respond_to? :html
-            @render_target.html( @template.render( @context ) )
-
-        elsif !@render_target.parent.nil?
-            @render_target.parent.html( @template.render( @context ) )
-            @render_target.children.values.each do |child|
-                child.render
-            end
-
-        else
-            raise 'No rendering done'
-
-        end
+    def render_content
+        content.render_target.html(content.get)
     end
 
 end
