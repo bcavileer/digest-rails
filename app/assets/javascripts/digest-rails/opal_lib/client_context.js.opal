@@ -1,13 +1,25 @@
 require 'ostruct'
 
 class ClientContext
-    attr_accessor :list, :references
+    attr_accessor :references
 
     class RenderContext < Hash
         attr_accessor :name, :dir, :parent
 
-        def open_struct
-            return OpenStruct.new(self)
+        def open_struct(flattened=true)
+            os = OpenStruct.new( context(flattened) )
+        end
+
+        def context(flattened=true)
+            context = if flattened
+                flattened_context
+            else
+                self
+            end
+        end
+
+        def flattened_context
+            @dir.flattened_context( self.clone )
         end
 
         def initialize(c)
@@ -20,6 +32,10 @@ class ClientContext
 
         def fullname
             [ ( @root ? nil : @parent.fullname ), name ].compact.join('__')
+        end
+
+        def ancestory
+            [ ( @root ? nil : @parent ), self ].compact.flatten
         end
 
         def pop
@@ -135,6 +151,13 @@ Logger.log('push to Existing context',rt_fullname)
 
     def CC
         @cursor
+    end
+
+    def flattened_context(cc)
+        cc.ancestory.inject(RenderContext.new({})) do |context,flat|
+            flat.merge! context
+            flat
+        end
     end
 
 end

@@ -1,3 +1,4 @@
+
 module Render
     def render(c = nil)
 
@@ -17,10 +18,7 @@ module Render
         html = if @template.nil?
             @text
         else
-Logger.log("@template",@template)
-Logger.log("@context",@context)
-
-            @template.render(@context.open_struct)
+            @template.render(@context.open_struct())
         end
 
         render_target.html(html)
