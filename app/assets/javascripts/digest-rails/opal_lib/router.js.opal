@@ -22,7 +22,6 @@ class Router
         return new_controller
     end
 
-
     def new_controller
         controller_class = "#{@user_request.digest_name.capitalize}PaneController"
         opal_class = `Opal.get(controller_class)`
@@ -32,13 +31,8 @@ class Router
     def controller_params
         {
             user_request: @user_request,
-            name: @user_request.digest_name,
-            context: context
+            name: @user_request.digest_name
         }
-    end
-
-    def context
-        ::ClientContext.references[:pane_context]
     end
 
 end

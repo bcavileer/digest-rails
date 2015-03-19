@@ -1,40 +1,16 @@
+require 'digest-rails/opal_lib/class_template'
 require 'digest-rails/opal_lib/controller_context'
+require 'digest-rails/opal_lib/render'
 
 class BaseSectionController
+    extend ClassTemplate
     include ControllerContext
-    attr_accessor :content
-
-    class ContentController
-        include ControllerContext
-
-        def get
-            r = nil
-            scope do |cc|
-                r ||= cc[:text]
-                r ||= cc[:html]
-                if t = cc[:template]
-                    r ||= t.render(cc)
-                end
-            end
-            return r
-        end
-    end
+    include Render
 
     def initialize(c)
         Element.expose :click
         Element.expose :foundation
-Logger.log( "BaseSectionController1" )
         super
-Logger.log( "BaseSectionController2" )
-        @content = ContentController.new( name: :content, context: self.get_context )
-    end
-
-    def render
-        render_content
-    end
-
-    def render_content
-        content.render_target.html(content.get)
     end
 
 end

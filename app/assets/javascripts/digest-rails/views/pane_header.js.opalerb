@@ -1,1 +1,1 @@
-<h1><%= self.request_params.digest_name %> <%= self.flash[:text] %><h1/>
+PANE HEADER: <%= self.text %>

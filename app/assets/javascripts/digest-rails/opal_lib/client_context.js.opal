@@ -1,8 +1,14 @@
+require 'ostruct'
+
 class ClientContext
     attr_accessor :list, :references
 
     class RenderContext < Hash
         attr_accessor :name, :dir, :parent
+
+        def open_struct
+            return OpenStruct.new(self)
+        end
 
         def initialize(c)
             @dir = c[:dir]

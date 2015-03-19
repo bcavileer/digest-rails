@@ -1,2 +1,1 @@
-Digest Rails Footer
-<%= self.request_params.digest_name %>
+PANE FOOTER: <%= self.text %>

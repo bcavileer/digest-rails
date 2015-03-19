@@ -1,26 +1,24 @@
 require 'digest-rails/opal_lib/base_section_controller'
 
 class DialogController < BaseSectionController
-    attr_accessor :button
+    attr_accessor :content, :button
 
-    class ButtonController
-        include ControllerContext
+    class ContentController < BaseSectionController
+        template Template['digest-rails/views/dialog']
+    end
+
+    class ButtonController < BaseSectionController
     end
 
     def initialize(c)
         super
+        @content = ContentController.new(name: :content, context: self.get_context )
         @button = ButtonController.new(name: :button, context: self.get_context )
     end
 
     def show_text(text)
-        content.scope do |cc|
-            cc[:text] = 'Loading Opal App...'
-        end
-        render
-    end
-
-    def render
-        super
+        content.render(text: text)
+        link_close_button
         open
     end
 
