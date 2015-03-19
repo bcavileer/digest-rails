@@ -29,7 +29,9 @@ class Boot
 
         def start_client_context
             require 'digest-rails/opal_lib/client_context'
-            ::CC = ClientContext.new.init
+
+            ::ClientContext = ClientContext.new
+            ::CC = ::ClientContext.init
 
             Logger.log('Opal.Logger', `Opal.Logger`)
             CC[:logger] = Logger
@@ -92,6 +94,7 @@ class Boot
         CC.push(name: :Pane) do |fCC|
 
             Logger.log('ClientContext: ', `Opal.CC`)
+            ::ClientContext.references[:pane_context] = fCC
 
             fCC[:render_target] = RenderTarget.new( selector:'.content.active' )
 

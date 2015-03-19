@@ -6,6 +6,7 @@ class BaseSectionController
 
     class ContentController
         include ControllerContext
+
         def get
             r = nil
             scope do |cc|
@@ -22,7 +23,9 @@ class BaseSectionController
     def initialize(c)
         Element.expose :click
         Element.expose :foundation
+Logger.log( "BaseSectionController1" )
         super
+Logger.log( "BaseSectionController2" )
         @content = ContentController.new( name: :content, context: self.get_context )
     end
 

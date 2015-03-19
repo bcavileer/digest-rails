@@ -18,19 +18,27 @@ class Router
 
     def route(user_request)
         Logger.log("route to #{user_request.digest_name}:",user_request)
-        controller_class = "#{user_request.digest_name.capitalize}PaneController"
-        opal_classname = "#{controller_class}"
-        opal_class = `Opal.get(opal_classname)`
-        controller = `opal_class.$new();`
-        return controller.process_user_request(user_request)
+        @user_request = user_request
+        return new_controller
     end
 
-    def render
-        Logger.log('render')
+
+    def new_controller
+        controller_class = "#{@user_request.digest_name.capitalize}PaneController"
+        opal_class = `Opal.get(controller_class)`
+        return `opal_class.$new( self.$controller_params() )`
     end
 
-    def pre_render
-        Logger.log('pre_render')
+    def controller_params
+        {
+            user_request: @user_request,
+            name: @user_request.digest_name,
+            context: context
+        }
+    end
+
+    def context
+        ::ClientContext.references[:pane_context]
     end
 
 end

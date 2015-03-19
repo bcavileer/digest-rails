@@ -1,8 +1,8 @@
 class ClientContext
-    attr_accessor :list
+    attr_accessor :list, :references
 
     class RenderContext < Hash
-        attr_accessor :name, :dir
+        attr_accessor :name, :dir, :parent
 
         def initialize(c)
             @dir = c[:dir]
@@ -95,6 +95,8 @@ class ClientContext
 
     def init
         @list = {}
+        @references = {}
+
         first_cursor = RenderContext.new(
           dir: self,
           root: true,
