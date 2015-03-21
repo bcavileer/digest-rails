@@ -1,3 +1,3 @@
-require 'spec_helper'
-describe ClientContext do
-end
+#require 'spec_helper'
+#describe 'ClientContext' do
+#end
