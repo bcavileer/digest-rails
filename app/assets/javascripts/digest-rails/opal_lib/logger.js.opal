@@ -1,3 +1,5 @@
+`console.log('class Logger')`
+
 class Logger
 
     def log(text,object=nil)

@@ -1,4 +1,5 @@
 require 'digest-rails/opal_lib/base_section_controller'
+`console.log('class DialogController')`
 
 class DialogController < BaseSectionController
     attr_accessor :content, :button
@@ -10,10 +11,11 @@ class DialogController < BaseSectionController
     class ButtonController < BaseSectionController
     end
 
-    def initialize(c)
-        super
-        @content = ContentController.new(name: :content, context: self.get_context )
-        @button = ButtonController.new(name: :button, context: self.get_context )
+    def self.boot
+        self.new( name: :main_dialog, selector:'#myModal' ).scope do |dialog, context|
+            dialog.content = ContentController.new( name: :content, context: context )
+            dialog.button = ButtonController.new( name: :button, context: context, selector: 'a.custom-close-reveal-modal' )
+        end
     end
 
     def show_text(text)

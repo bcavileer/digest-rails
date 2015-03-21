@@ -1,26 +1,36 @@
-
 module Render
     def render(c = nil)
+Logger.log('render 1',self)
+        context = get_context
+        context = c[:context] if c and c[:context]
 
-        @context = get_context
-        @context = c[:context] if c and c[:context]
+Logger.log('render 2',self)
 
-        @template = self.class.default_template
+        template = self.class.default_template
 
-        #@template = @context[:template] if @context[:template]
-        @template = c[:template] if c and c[:template]
+        # TODO Clean up context where errant template is
+        # @template = @context[:template] if @context[:template]
 
-        @text = @context[:text]
-        @text = c[:text] if c and c[:text]
+        template = c[:template] if c and c[:template]
 
-        @context[:text] = @text if @text
+Logger.log('render 3',self)
 
-        html = if @template.nil?
-            @text
+        text = context[:text]
+        text = c[:text] if c and c[:text]
+
+        context[:text] = text if text
+
+        html = if template.nil?
+            text
         else
-            @template.render(@context.open_struct())
+            template.render( context.open_struct )
         end
 
-        render_target.html(html)
+Logger.log('self',self)
+Logger.log('get_context',get_context)
+Logger.log('render_target',get_render_target)
+Logger.log('html',html)
+
+        get_render_target.html(html)
     end
 end

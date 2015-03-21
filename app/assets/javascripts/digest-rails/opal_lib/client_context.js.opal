@@ -1,21 +1,18 @@
 require 'ostruct'
+require 'digest-rails/opal_lib/render_target'
 
 class ClientContext
-    attr_accessor :references
+    attr_accessor :list, :references, :cursor
 
     class RenderContext < Hash
         attr_accessor :name, :dir, :parent
 
-        def open_struct(flattened=true)
-            os = OpenStruct.new( context(flattened) )
+        def point_context
+            self
         end
 
-        def context(flattened=true)
-            context = if flattened
-                flattened_context
-            else
-                self
-            end
+        def open_struct
+            os = OpenStruct.new( flattened_context )
         end
 
         def flattened_context
@@ -25,6 +22,8 @@ class ClientContext
         def initialize(c)
             @dir = c[:dir]
             @root = c[:root]
+            @root ||= false
+
             @name = c[:name]
             @parent = c[:parent]
             super { |hash, key| hash[key] = [] }
@@ -49,9 +48,8 @@ class ClientContext
         def push(c)
             c[:dir] = @dir
             c[:parent] = self
-            new_cursor = @dir.push(
-                RenderContext.new(c)
-            )
+
+            new_cursor = @dir.push( RenderContext.new(c) )
 
             if block_given?
                 yield new_cursor
@@ -100,15 +98,12 @@ class ClientContext
 
     end
 
-    def get_controller_context(c)
-        r = nil
-        context = c[:context]
-        context.push( name: c[:name] ) do |named_context|
-            named_context[:name] = c[:name]
-            named_context[:controller] = c[:controller]
-            r = named_context
-        end
-        return r
+    def set_context_value_key( context_fullname, value_key, value )
+        r = @list[context_fullname][value_key] = value
+if value_key == :render_target_absolute
+    Logger.log("---------set_context context_fullname: #{context_fullname}, value_key: #{value_key}, value: #{value}",r);
+end
+        r
     end
 
     def get(fullname)
@@ -125,7 +120,9 @@ class ClientContext
           name: 'root',
           parent: nil
         )
-        return add(first_cursor)
+        add(first_cursor)
+        @references[:first_cursor] = first_cursor
+        return first_cursor
     end
 
     def add(new_cursor)
@@ -134,6 +131,7 @@ class ClientContext
     end
 
     def push(rt)
+Logger.log('rt',rt)
         rt_fullname = rt.fullname
         existing = @list[rt_fullname]
         @cursor = if existing.nil?
@@ -149,10 +147,6 @@ Logger.log('push to Existing context',rt_fullname)
         @cursor = @cursor.parent
     end
 
-    def CC
-        @cursor
-    end
-
     def flattened_context(cc)
         cc.ancestory.inject(RenderContext.new({})) do |context,flat|
             flat.merge! context
@@ -161,3 +155,5 @@ Logger.log('push to Existing context',rt_fullname)
     end
 
 end
+
+

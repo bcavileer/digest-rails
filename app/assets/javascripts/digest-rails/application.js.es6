@@ -42,24 +42,17 @@ Promise.all([
 
     theGlobals.markupController.waitForDocP().then( function(user_request){
         console.log("waitForDocP  resolved");
-        Opal.Boot.$start_dialog();
+        Opal.Dialog.$show_text('Hello');
         return(true);
     }),
 
     theGlobals.digestsController.waitForShowP().then( function(user_request){
         Opal.Logger.$log("waitForShowP resolved");
-
-Opal.Logger.$log("ClientContext", Opal.CC);
-        let CC = Opal.CC.$push_name('CC_User');
-
-        CC.$set_key_value('request',user_request);
-Opal.Logger.$log("22222",user_request);
         return(user_request);
 
     }).then( function(user_request){
         theFirstRequest.runRequest(user_request);
         return(true);
-
     })
 
 ]);

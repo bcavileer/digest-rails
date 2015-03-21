@@ -16,3 +16,4 @@ class MarkupLinks
     end
 
 end
+

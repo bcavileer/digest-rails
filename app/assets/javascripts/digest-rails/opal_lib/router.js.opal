@@ -1,6 +1,7 @@
-require 'authorize/controllers/location_pane_controller'
+`console.log('class Router')`
 
 class Router
+
     class UserRequest < Struct.new(:active_digest_index, :core_set_html_url, :digest_json_url,:digest_name, :digests_crosses_json_url, :engine)
         def initialize(r)
             self.active_digest_index = r.active_digest_index
@@ -36,3 +37,4 @@ class Router
     end
 
 end
+

@@ -9,3 +9,6 @@ gem "axle", "~> 0.5.3", {:path=>"../axle"}
 gem  'pry-rescue'
 gem  'pry-stack_explorer'
 
+group :opal do
+  gem "opal-rspec"
+end
