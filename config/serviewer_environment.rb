@@ -64,7 +64,6 @@ end
 module AltLibrary
 
   def use_key(k)
-p k
     dependancy_library_type = k.split('/')[1].to_sym
     dependancy_name = k.split('/')[2].to_sym
 
@@ -199,9 +198,12 @@ module AnySourceFile
   def process_raw_file
     source_path_split = path.split('/')
     name_split = source_path_split.last.split('.')
+
     @name = name_split[0]
-    @library_name = source_path_split[-3]
-    @library_type = source_path_split[-2]
+    fileset_class.path_labels(source_path_split).each_pair do |k,v|
+      instance_variable_set("@#{k}",v)
+    end
+
     @extension = Extension.new
     @extension.name = name_split[1..-1].join('.')
     @key = calc_key(@library_type,@name)
@@ -216,7 +218,7 @@ end
 
 module ProcessTemplateFile
   def output_path
-    File.join(fileset_class.output_dir,output_filename)
+    File.join(fileset_class.output_subdir,@library_name,@template_dir,output_filename)
   end
 
   def output_filename
@@ -224,8 +226,9 @@ module ProcessTemplateFile
   end
 
   def write_output_file
-    p "Writing to #{output_path}"
-    p content_lines
+    p "  Writing Template to #{output_path}"
+    FileUtils::mkdir_p File.dirname(output_path)
+
     File.open(output_path,'w') do |f|
       content_lines.each do |l|
         f.puts l
@@ -304,10 +307,6 @@ module SourceFiles
     @local_path ||= $LOAD_PATH.unshift File.expand_path('../../', __FILE__)
   end
 
-  def glob_search(load_path)
-    @glob_string ||= File.join( load_path, '**', 'app', 'views', library_type_search, extension_search )
-  end
-
   def extension_search
     "*.{#{extensions.map{|e| e.name}.join(',')}}"
   end
@@ -321,7 +320,6 @@ end
 module RunThruRuby
 
   def run_thru_ruby
-    write_rb_file
     run_ruby
   end
 
@@ -330,7 +328,7 @@ module RunThruRuby
     @ruby_stdout = stdout.gets(nil)
     @ruby_stderr = stderr.gets(nil)
     if ( @ruby_exit_code = wait_thr.value ) != 0
-      p "Run Thru Ruby failed: #{description}"
+      p "Run Thru Ruby failed"
       p @ruby_stdout
       p @ruby_stderr
       @ruby_passed = false
@@ -342,29 +340,8 @@ module RunThruRuby
     stderr.close
   end
 
-  def rb_path_name
-    self.class.underscore
-  end
-
-  def create_rb_file
-    @rb_file = Tempfile.new(rb_path_name)
-  end
-
-  def rb_file_path
-    @rb_file.path
-  end
-
-  def write_rb_file
-    create_rb_file
-    File.open(rb_file_path,'w') do |file|
-      @content_lines.each do |line|
-        file.puts line
-      end
-    end
-  end
-
   def ruby_command
-    @ruby_command ||= "ruby --verbose  #{rb_file_path}"
+    @ruby_command ||= "ruby --verbose  #{output_path}"
   end
 
 end
@@ -412,11 +389,16 @@ module ProcessTemplateFiles
 
   def process_files
     print_seperator_1
-    p "Running #{self.class} to create templates in: #{self.output_dir}"
+
+    p "Running #{self.class} to create templates in: #{self.output_subdir}"
     print_seperator_2
+
+    p "Removing old files..."
+    FileUtils.remove_dir(self.output_subdir,true)
+    print_seperator_2
+
     p "Processing Template Files..."
     files.each do |file|
-      p file.path #.process
       file.process_template
     end
   end
@@ -429,6 +411,11 @@ module ProcessCodeFiles
     print_seperator_1
     p "Running #{self.class} to create file: #{self.output_path}"
     print_seperator_2
+
+    p "Removing old files..."
+    FileUtils.remove_dir(self.output_subdir,true)
+    print_seperator_2
+
     p "Processing Code Files..."
     files.each do |file|
       file.process
@@ -447,6 +434,9 @@ module ProcessCodeFiles
 
     p "Write code file..."
     write_code_file
+
+    p "Run Thru Ruby..."
+    run_thru_ruby
   end
 
 end
@@ -532,6 +522,7 @@ module Server
 end
 
 module Client
+
   def output_dir
     File.expand_path(
         File.join(File.dirname(__FILE__),'..','app/assets/javascripts/serviewer')
@@ -541,6 +532,7 @@ module Client
   def output_template_ext
     'opalerb'
   end
+
 end
 
 ############################
@@ -571,6 +563,11 @@ module CodeOrTemplates
   def source_file_new
     SourceTemplateFile.new
   end
+
+  def glob_search_base(load_path)
+    File.join( load_path, '**', 'app', 'views' )
+  end
+
 end
 
 module Code
@@ -578,6 +575,13 @@ module Code
   def self.included(base)
     base.send :include, ProcessCodeFiles
     base.send :include, OutputCode
+  end
+
+  def path_labels(source_path_split)
+    {
+      library_name: source_path_split[-3],
+      library_type: source_path_split[-2]
+    }
   end
 
   def library_types
@@ -592,13 +596,17 @@ module Code
     SourceCodeFile.new
   end
 
+  def output_subdir
+    File.join(output_dir,'code')
+  end
+
   def output_path
-    File.join(output_dir,output_filename)
+    File.join(output_subdir,output_filename)
   end
 
   def write_code_file
     p output_path
-    FileUtils::mkdir_p File.dirname(output_dir)
+    FileUtils::mkdir_p File.dirname(output_path)
     File.open(output_path,'w') do |f|
       content_lines.each do |l|
         f.puts l
@@ -623,12 +631,26 @@ module Code
     end.flatten
   end
 
+  def glob_search(load_path)
+    File.join( glob_search_base(load_path), library_type_search, extension_search )
+  end
+
 end
 
 module Templates
+
   def self.included(base)
     base.send :include, ProcessTemplateFiles
     base.send :include, OutputTemplates
+  end
+
+  def path_labels(source_path_split)
+    {
+      library_name: source_path_split[-6],
+      template_dir: source_path_split[-2],
+      library_type: source_path_split[-3]
+    }
+
   end
 
   def library_types
@@ -638,9 +660,19 @@ module Templates
   def extensions
     get_extensions( %w{ js.opalerb } )
   end
+
+  def output_subdir
+    File.join(output_dir,'templates')
+  end
+
   def new_source_file
     SourceTemplateFile.new
   end
+
+  def glob_search(load_path)
+    File.join( glob_search_base(load_path), library_type_search, '', '**' ,extension_search )
+  end
+
 end
 
 ############################
