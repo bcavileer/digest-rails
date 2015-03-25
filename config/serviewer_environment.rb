@@ -162,27 +162,7 @@ module Dependancies
 
 end
 
-module ProcessFile
-  attr_accessor :possible_library_types
-
-  def calc_key(library_type,name)
-    [ @library_name,library_type,name ].flatten.join('/')
-  end
-
-  def process_raw_file
-    source_path_split = path.split('/')
-    name_split = source_path_split.last.split('.')
-    @name = name_split[0]
-    @library_name = source_path_split[-3]
-    @library_type = source_path_split[-2]
-    @extension = Extension.new
-    @extension.name = name_split[1..-1].join('.')
-    @key = calc_key(@library_type,@name)
-
-    @library_type = possible_library_types.select do |library_type|
-      source_path_split.include? library_type.name
-    end.first
-  end
+module ProcessCodeFile
 
   def process_file
     process_raw_file
@@ -192,14 +172,8 @@ module ProcessFile
 
 end
 
-class SourceFile
-
-  attr_accessor :extension, :library_name, :library_type, :path, :key
-
-  include GetJavascriptLines
-  include Dependancies
-  include AltLibrary
-  include ProcessFile
+module AnySourceFile
+  attr_accessor :fileset_class
 
   def process
     process_file
@@ -217,6 +191,68 @@ class SourceFile
   def content_lines
     @content_lines ||= content.split("\n")
   end
+
+  def calc_key(library_type,name)
+    [ @library_name,library_type,name ].flatten.join('/')
+  end
+
+  def process_raw_file
+    source_path_split = path.split('/')
+    name_split = source_path_split.last.split('.')
+    @name = name_split[0]
+    @library_name = source_path_split[-3]
+    @library_type = source_path_split[-2]
+    @extension = Extension.new
+    @extension.name = name_split[1..-1].join('.')
+    @key = calc_key(@library_type,@name)
+
+    @library_type = fileset_class.library_types.select do |library_type|
+      source_path_split.include? library_type.name
+    end.first
+    return self
+  end
+
+end
+
+module ProcessTemplateFile
+  def output_path
+    File.join(fileset_class.output_dir,output_filename)
+  end
+
+  def output_filename
+    [@name,fileset_class.output_template_ext].join('.')
+  end
+
+  def write_output_file
+    p "Writing to #{output_path}"
+    p content_lines
+    File.open(output_path,'w') do |f|
+      content_lines.each do |l|
+        f.puts l
+      end
+    end
+  end
+
+  def process_template
+    process_raw_file
+    write_output_file
+  end
+end
+
+class SourceTemplateFile
+  include AnySourceFile
+  include ProcessTemplateFile
+  attr_accessor :extension, :library_name, :library_type, :path, :key
+end
+
+class SourceCodeFile
+  include AnySourceFile
+  attr_accessor :extension, :library_name, :library_type, :path, :key
+
+  include GetJavascriptLines
+  include Dependancies
+  include AltLibrary
+  include ProcessCodeFile
 
 end
 
@@ -240,8 +276,8 @@ module SourceFiles
 
   def get_files
     get_raw_files.map do |raw_file|
-      sf = SourceFile.new
-      sf.possible_library_types = library_types
+      sf = new_source_file
+      sf.fileset_class = self
       sf.path = raw_file
       sf
     end
@@ -249,6 +285,8 @@ module SourceFiles
 
   def get_raw_files
     p "Get Bundled Serviewer Libs:"
+    p "Searching for library types: #{library_type_search}"
+    p "Searching for extensions: #{extension_search}"
     bundler
     local_path
     list = $LOAD_PATH.map do |load_path|
@@ -267,17 +305,15 @@ module SourceFiles
   end
 
   def glob_search(load_path)
-    library_type_search
-    extension_search
     @glob_string ||= File.join( load_path, '**', 'app', 'views', library_type_search, extension_search )
   end
 
   def extension_search
-    "*.{#{@extensions.map{|e| e.name}.join(',')}}"
+    "*.{#{extensions.map{|e| e.name}.join(',')}}"
   end
 
   def library_type_search
-    "{#{@library_types.map{|t| t.name}.join(',')}}"
+    "{#{library_types.map{|t| t.name}.join(',')}}"
   end
 
 end
@@ -372,11 +408,28 @@ module DependancySchedule
 
 end
 
+module ProcessTemplateFiles
+
+  def process_files
+    print_seperator_1
+    p "Running #{self.class} to create templates in: #{self.output_dir}"
+    print_seperator_2
+    p "Processing Template Files..."
+    files.each do |file|
+      p file.path #.process
+      file.process_template
+    end
+  end
+
+end
+
 module ProcessCodeFiles
 
   def process_files
-
-    p "Processing Files..."
+    print_seperator_1
+    p "Running #{self.class} to create file: #{self.output_path}"
+    print_seperator_2
+    p "Processing Code Files..."
     files.each do |file|
       file.process
     end
@@ -398,7 +451,7 @@ module ProcessCodeFiles
 
 end
 
-module Output
+module OutputCode
 
   def report_all
 
@@ -407,16 +460,16 @@ module Output
     files.each{ |file| file.report_dependancy_mapped_to_nil }
 
     p "  report_javascript_lines:"
-    p " "
+    print_seperator_2
     files.each{ |file| file.report_javascript_lines }
 
     p "  report_dependancy_order_nil:"
-    p " "
+    print_seperator_2
     files.each{ |file| file.report_dependancy_order_nil }
-    p " "
+    print_seperator_2
 
     p "  files_by_schedule:"
-    p " "
+    print_seperator_2
 
     files_by_schedule.each do |f|
        p "order: #{f.dependancy_order} => #{f.description}"
@@ -426,10 +479,26 @@ module Output
 
 end
 
+module OutputTemplates
+
+end
+
 module All
+
   def self.included(base)
     base.send :include, SourceFiles
   end
+
+  def print_seperator_1
+    p " "
+    p "-----------------------------------"
+    p " "
+  end
+
+  def print_seperator_2
+    p " "
+  end
+
 end
 ############################
 
@@ -444,7 +513,6 @@ module Server
     base.send :include, DependancySchedule
     base.send :include, ProcessCodeFiles
     base.send :include, RunThruRuby
-    base.send :include, Output
   end
 
   def output_dir
@@ -452,6 +520,11 @@ module Server
         File.join(File.dirname(__FILE__),'..','lib/serviewer')
     )
   end
+
+  def output_template_ext
+    'erb'
+  end
+
 end
 
 module Client
@@ -459,6 +532,10 @@ module Client
     File.expand_path(
         File.join(File.dirname(__FILE__),'..','app/assets/javascripts/serviewer')
     )
+  end
+
+  def output_template_ext
+    'opalerb'
   end
 end
 
@@ -475,24 +552,40 @@ module CodeOrTemplates
   end
 
   def get_library_types(type_names)
-    @library_types = all_library_types.select do |library_type|
+    all_library_types.select do |library_type|
       type_names.include? library_type.name
     end
   end
 
   def get_extensions(extension_names)
     extension_names
-    @extensions = all_extensions.select do |extension|
+    all_extensions.select do |extension|
       extension_names.include? extension.name
     end
   end
 
+  def source_file_new
+    SourceTemplateFile.new
+  end
 end
 
 module Code
 
   def self.included(base)
     base.send :include, ProcessCodeFiles
+    base.send :include, OutputCode
+  end
+
+  def library_types
+    get_library_types( %w{ poly_lib ruby_lib } )
+  end
+
+  def extensions
+    get_extensions( %w{ rb js.opal } )
+  end
+
+  def new_source_file
+    SourceCodeFile.new
   end
 
   def output_path
@@ -529,6 +622,21 @@ module Code
 end
 
 module Templates
+  def self.included(base)
+    base.send :include, ProcessTemplateFiles
+    base.send :include, OutputTemplates
+  end
+
+  def library_types
+    get_library_types( %w{ views_lib } )
+  end
+
+  def extensions
+    get_extensions( %w{ js.opalerb } )
+  end
+  def new_source_file
+    SourceTemplateFile.new
+  end
 end
 
 ############################
@@ -541,8 +649,6 @@ class ServiewerServerCode
   include Code
 
   def initialize
-    get_library_types( %w{ poly_lib ruby_lib } )
-    get_extensions( %w{ rb js.opal } )
   end
 
   def alt_library
@@ -563,7 +669,7 @@ class ServiewerServerTemplates
   include CodeOrTemplates
   include Templates
 end
-#ServiewerServerTemplates.new.process_files
+ServiewerServerTemplates.new.process_files
 
 ############################
 
