@@ -1,13 +1,3 @@
-#
-# From File: views/poly_lib/template_wrap Order: 1
-#
-# Processed Require Line: require 'digest-rails/opal_lib/template'
-
-class TemplateWrap
-end
-#
-# From File: views/ruby_lib/template_wrap Order: 1
-#
 class Template
   @_cache = {}
   def self.[](name)
@@ -55,11 +45,8 @@ class Template
 end
 
 dir = File.dirname(__FILE__)
-glob_string = File.join(dir,'*.erb')
+glob_string = File.join(dir,*.erb)
 Dir.glob(glob_string).each do |erb_file_path|
-  erb_file_path_s = erb_file_path.split('/')
-  erb_name_s = erb_file_path_s.last.split('.')
-  name = [ erb_file_path_s[-2], erb_name_s[0] ].join('/')
-  Template.new(name)
+  p erb_file_path
 end
-p Template.paths
+

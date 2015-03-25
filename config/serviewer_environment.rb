@@ -63,21 +63,21 @@ end
 
 module AltLibrary
 
-  def use_key(k,alt_library)
-
+  def use_key(k)
+p k
     dependancy_library_type = k.split('/')[1].to_sym
     dependancy_name = k.split('/')[2].to_sym
 
-    if alt_library.keys.include?(dependancy_library_type)
-      calc_key(alt_library[dependancy_library_type][:library_type],dependancy_name)
+    if fileset_class.alt_library.keys.include?(dependancy_library_type)
+      calc_key(fileset_class.alt_library[dependancy_library_type][:library_type],dependancy_name)
     else
       calc_key(dependancy_library_type,dependancy_name)
     end
 
   end
 
-  def map_alt_library(k,file_hash,alt_library)
-    ek = use_key(k,alt_library)
+  def map_alt_library(k,file_hash)
+    ek = use_key(k)
     file_hash[ ek ]
   end
 
@@ -116,9 +116,9 @@ module Dependancies
     end
   end
 
-  def map_dependancies(file_hash,alt_library)
+  def map_dependancies(file_hash)
     dependancy_map.keys.each do |k|
-      dependancy_map[k] = map_alt_library(k,file_hash,alt_library)
+      dependancy_map[k] = map_alt_library(k,file_hash)
     end
   end
 
@@ -436,7 +436,7 @@ module ProcessCodeFiles
 
     p "Mapping Dependancies..."
     files.each do |file|
-      file.map_dependancies(files_hash,alt_library)
+      file.map_dependancies(files_hash)
     end
 
     p "Scheduling Dependancies..."
@@ -497,6 +497,10 @@ module All
 
   def print_seperator_2
     p " "
+  end
+
+  def alt_library
+    {}
   end
 
 end
@@ -686,10 +690,6 @@ class ServiewerClientCode
     get_extensions( %w{ js.opalerb } )
   end
 
-  def alt_library
-    {}
-  end
-
   def output_filname
     'index.js.opal'
   end
@@ -708,10 +708,6 @@ class ServiewerClientTemplates
     super
     get_library_types( %w{ poly_lib opal_lib js_lib } )
     get_extensions( %w{ rb js.opal js.opalerb } )
-  end
-
-  def alt_library
-    {}
   end
 
   def output_filname
