@@ -1,3 +1,4 @@
+
 class RenderTarget
     attr_reader :selector
 

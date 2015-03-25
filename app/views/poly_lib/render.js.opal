@@ -1,6 +1,8 @@
 module Render
     def render(c = nil)
+
 Logger.log('render 1',self)
+
         context = get_context
         context = c[:context] if c and c[:context]
 

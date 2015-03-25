@@ -1,4 +1,5 @@
-require 'axle/opal_lib/digest_helpers'
+require 'digest-rails/poly_lib/column'
+#require 'axle/poly_lib/digest_helpers'
 
 class ColumnIndirectAttr < Column
     attr_reader :header, :core_model_name, :core_attr, :identifier_model_name
@@ -29,7 +30,6 @@ class ColumnIndirectAttr < Column
                 model: @identifier_model_name,
                 attr: :name
             ).call(id_val, nil)
-
         end
 
     end

@@ -1,3 +1,4 @@
+require 'digest-rails/poly_lib/column'
 class ColumnText < Column
     attr_reader :header, :data_proc
 

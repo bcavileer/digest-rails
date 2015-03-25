@@ -1,3 +1,4 @@
+require 'digest-rails/poly_lib/column'
 class ColumnSelect < Column
     attr_reader :header
     attr_writer :table

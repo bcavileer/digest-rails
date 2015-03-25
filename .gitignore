@@ -5,3 +5,9 @@ spec/dummy/db/*.sqlite3
 spec/dummy/log/*.log
 spec/dummy/tmp/
 spec/dummy/.sass-cache
+
+spec_ruby/dummy/db/*.sqlite3
+spec_ruby/dummy/log/*.log
+spec_ruby/dummy/tmp/
+spec_ruby/dummy/.sass-cache
+

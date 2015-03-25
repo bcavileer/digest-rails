@@ -1,5 +1,5 @@
 class Cell
-    attr_accessor :property, :data, :rendering
+    attr_accessor :property, :data
 
     def initialize(column)
         @column = column

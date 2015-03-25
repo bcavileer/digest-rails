@@ -1,4 +1,5 @@
-require 'axle/opal_lib/digest_helpers'
+#require 'axle/poly_lib/digest_helpers'
+require 'digest-rails/poly_lib/column'
 
 class ColumnDirectAttr < Column
     attr_reader :header, :model, :header

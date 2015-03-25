@@ -1,4 +1,4 @@
-require 'digest-rails/opal_lib/cell'
+require 'digest-rails/poly_lib/cell'
 
 module HotLikeTable
 

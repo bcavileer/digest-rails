@@ -1,4 +1,4 @@
-require 'digest-rails/opal_lib/base_section_controller'
+require 'digest-rails/poly_lib/base_section_controller'
 `console.log('class DialogController')`
 
 class DialogController < BaseSectionController

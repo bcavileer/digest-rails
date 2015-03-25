@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'rubygems'
 require 'bundler/setup'
-require 'tempfile'
+require 'fileutils'
 require 'open3'
 
 ############################
@@ -97,12 +97,22 @@ module Dependancies
 
   def dependancy_map
     @dependancy_map ||= content_lines.inject({}) do |hr,line|
-        tokens = line.strip.split(' ').map{ |token| token.strip }
-        if tokens[0] == 'require'
-          rkey = to_key( tokens[1] )
-          hr[ rkey ] = nil #@poly_lib[tokens[1]]
-        end
-        hr
+      if require = require_from_line(line)
+        hr[ require[:rkey] ] = nil
+      end
+      hr
+    end
+  end
+
+  def require_from_line(line)
+    tokens = line.strip.split(' ').map{ |token| token.strip }
+    if tokens[0] == 'require'
+      {
+          rkey: to_key( tokens[1] ),
+          line: line
+      }
+    else
+      nil
     end
   end
 
@@ -236,7 +246,7 @@ module SourceFiles
     local_path
     list = $LOAD_PATH.map do |load_path|
       s = glob_search(load_path)
-      rs = Dir.glob( s )
+      Dir.glob( s )
     end
     return list.flatten.uniq
   end
@@ -252,7 +262,7 @@ module SourceFiles
   def glob_search(load_path)
     library_type_search
     extension_search
-    @glob_string ||= File.join( load_path, '**', 'assets', 'javascripts', '**', library_type_search, extension_search )
+    @glob_string ||= File.join( load_path, '**', 'app', 'views', library_type_search, extension_search )
   end
 
   def extension_search
@@ -374,6 +384,8 @@ module ProcessFiles
     p "Report all..."
     report_all
 
+    p "Write code file..."
+    write_code_file
   end
 
   def files_hash
@@ -386,7 +398,6 @@ module ProcessFiles
 end
 
 module Output
-  attr_accessor :content_lines
 
   def report_all
 
@@ -412,16 +423,33 @@ module Output
 
   end
 
-  def concat_all
-    #files_by_schedule.each do |f|
-      #if h[:js_lines].length == 0
-      #  File.open(h[:target_path],'w') do |f|
-      #    h[:source_lines].each do |line|
-      #      f.puts line
-      #    end
-      #  end
-      #end
-    #end
+
+
+  def write_code_file
+    p code_file_path
+    FileUtils::mkdir_p File.dirname(code_file_path)
+    File.open(code_file_path,'w') do |f|
+      content_lines.each do |l|
+        f.puts l
+      end
+    end
+  end
+
+  def content_lines
+    @content_lines ||= files_by_schedule.map do |f|
+      [
+          "#",
+          "# From File: #{f.path} Order: #{f.dependancy_order}",
+          "#",
+          f.content_lines.map do |l|
+            if require = require_from_line(l)
+              "# Processed Require Line: #{require[:line]}"
+            else
+              l
+            end
+          end
+      ]
+    end.flatten
   end
 end
 
@@ -429,6 +457,7 @@ end
 
 class Serviewer
   include SourceFiles
+  include Dependancies
   include DependancySchedule
   include ProcessFiles
   include RunThruRuby
@@ -466,18 +495,36 @@ class ServiewerServer < Serviewer
     { :opal_lib => { library_type: :ruby_lib, extension: '.rb' } }
   end
 
+  def code_file_path
+    path = File.expand_path(
+        File.join(File.dirname(__FILE__),'..','lib/serviewer/index.rb')
+    )
+    return path
+  end
+
 end
 
-#class ServiewerClient < Serviewer
-#  include SourceFiles
-#  include DependancySchedule
+class ServiewerClient < Serviewer
 
-#  def initialize
-#    super
-#    get_library_types( %w{ poly_lib opal_lib js_lib } )
-#    get_extensions( %w{ rb js.opal js.opalerb js } )
-#  end
-#end
+  def initialize
+    super
+    get_library_types( %w{ poly_lib opal_lib js_lib } )
+    get_extensions( %w{ rb js.opal js.opalerb } )
+  end
 
+  def alt_library
+    {}
+  end
+
+  def code_file_path
+    path = File.expand_path(
+        File.join(File.dirname(__FILE__),'..','app/assets/javascripts/serviewer/index.js.opal')
+    )
+    return path
+  end
+
+end
+
+ServiewerClient.new.process_files
 ServiewerServer.new.process_files
 
