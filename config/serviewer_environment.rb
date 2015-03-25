@@ -231,6 +231,13 @@ module SourceFiles
     @files ||= get_files
   end
 
+  def files_hash
+    @files_hash ||= files.inject({}) do |h,file|
+      h[file.key] = file
+      h
+    end
+  end
+
   def get_files
     get_raw_files.map do |raw_file|
       sf = SourceFile.new
@@ -365,7 +372,8 @@ module DependancySchedule
 
 end
 
-module ProcessFiles
+module ProcessCodeFiles
+
   def process_files
 
     p "Processing Files..."
@@ -386,13 +394,6 @@ module ProcessFiles
 
     p "Write code file..."
     write_code_file
-  end
-
-  def files_hash
-    @files_hash ||= files.inject({}) do |h,file|
-      h[file.key] = file
-      h
-    end
   end
 
 end
@@ -423,12 +424,85 @@ module Output
 
   end
 
+end
 
+module All
+  def self.included(base)
+    base.send :include, SourceFiles
+  end
+end
+############################
+
+module ServerOrClient
+end
+
+module Server
+
+  def self.included(base)
+    base.send :include, SourceFiles
+    base.send :include, Dependancies
+    base.send :include, DependancySchedule
+    base.send :include, ProcessCodeFiles
+    base.send :include, RunThruRuby
+    base.send :include, Output
+  end
+
+  def output_dir
+    File.expand_path(
+        File.join(File.dirname(__FILE__),'..','lib/serviewer')
+    )
+  end
+end
+
+module Client
+  def output_dir
+    File.expand_path(
+        File.join(File.dirname(__FILE__),'..','app/assets/javascripts/serviewer')
+    )
+  end
+end
+
+############################
+
+module CodeOrTemplates
+
+  def all_library_types
+    %w{ poly_lib opal_lib ruby_lib js_lib  views_lib }.map{ |n| t = LibraryType.new; t.name = n; t }
+  end
+
+  def all_extensions
+    %w{ rb js.opal js.opalerb js js.es6 }.map{ |n| e = Extension.new; e.name = n; e }
+  end
+
+  def get_library_types(type_names)
+    @library_types = all_library_types.select do |library_type|
+      type_names.include? library_type.name
+    end
+  end
+
+  def get_extensions(extension_names)
+    extension_names
+    @extensions = all_extensions.select do |extension|
+      extension_names.include? extension.name
+    end
+  end
+
+end
+
+module Code
+
+  def self.included(base)
+    base.send :include, ProcessCodeFiles
+  end
+
+  def output_path
+    File.join(output_dir,output_filename)
+  end
 
   def write_code_file
-    p code_file_path
-    FileUtils::mkdir_p File.dirname(code_file_path)
-    File.open(code_file_path,'w') do |f|
+    p output_path
+    FileUtils::mkdir_p File.dirname(output_dir)
+    File.open(output_path,'w') do |f|
       content_lines.each do |l|
         f.puts l
       end
@@ -439,7 +513,7 @@ module Output
     @content_lines ||= files_by_schedule.map do |f|
       [
           "#",
-          "# From File: #{f.path} Order: #{f.dependancy_order}",
+          "# From File: #{f.key} Order: #{f.dependancy_order}",
           "#",
           f.content_lines.map do |l|
             if require = require_from_line(l)
@@ -451,60 +525,78 @@ module Output
       ]
     end.flatten
   end
+
+end
+
+module Templates
 end
 
 ############################
 
-class Serviewer
-  include SourceFiles
-  include Dependancies
-  include DependancySchedule
-  include ProcessFiles
-  include RunThruRuby
-  include Output
+class ServiewerServerCode
+  include All
+  include ServerOrClient
+  include Server
+  include CodeOrTemplates
+  include Code
 
   def initialize
-    @all_library_types = %w{ poly_lib opal_lib ruby_lib js_lib }.map{ |n| t = LibraryType.new; t.name = n; t }
-    @all_extensions = %w{ rb js.opal js.opalerb js }.map{ |n| e = Extension.new; e.name = n; e }
-  end
-
-  def get_library_types(type_names)
-    @library_types = @all_library_types.select do |library_type|
-      type_names.include? library_type.name
-    end
-  end
-
-  def get_extensions(extension_names)
-    extension_names
-    @extensions = @all_extensions.select do |extension|
-      extension_names.include? extension.name
-    end
-  end
-
-end
-
-class ServiewerServer < Serviewer
-
-  def initialize
-    super
     get_library_types( %w{ poly_lib ruby_lib } )
-    get_extensions( %w{ rb js.opal js.opalerb } )
+    get_extensions( %w{ rb js.opal } )
   end
 
   def alt_library
     { :opal_lib => { library_type: :ruby_lib, extension: '.rb' } }
   end
 
-  def code_file_path
-    path = File.expand_path(
-        File.join(File.dirname(__FILE__),'..','lib/serviewer/index.rb')
-    )
-    return path
+  def output_filename
+    'index.rb'
   end
 
 end
+ServiewerServerCode.new.process_files
 
-class ServiewerClient < Serviewer
+class ServiewerServerTemplates
+  include All
+  include ServerOrClient
+  include Server
+  include CodeOrTemplates
+  include Templates
+end
+#ServiewerServerTemplates.new.process_files
+
+############################
+
+class ServiewerClientCode
+  include All
+  include ServerOrClient
+  include Client
+  include CodeOrTemplates
+  include Code
+
+  def initialize
+    super
+    get_library_types( %w{ views_lib } )
+    get_extensions( %w{ js.opalerb } )
+  end
+
+  def alt_library
+    {}
+  end
+
+  def output_filname
+    'index.js.opal'
+  end
+
+end
+#ServiewerClientCode.new.process_files
+
+class ServiewerClientTemplates
+  include All
+  include ServerOrClient
+  include Client
+  include CodeOrTemplates
+  include Templates
 
   def initialize
     super
@@ -516,15 +608,16 @@ class ServiewerClient < Serviewer
     {}
   end
 
-  def code_file_path
-    path = File.expand_path(
-        File.join(File.dirname(__FILE__),'..','app/assets/javascripts/serviewer/index.js.opal')
-    )
-    return path
+  def output_filname
+    'index.js.opal'
   end
 
 end
+#ServiewerClientTemplates.new.process_files
 
-ServiewerClient.new.process_files
-ServiewerServer.new.process_files
+############################
+
+
+
+
 

@@ -1,5 +1,5 @@
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/ruby_lib/class_template.rb Order: 1
+# From File: views/ruby_lib/class_template Order: 1
 #
 module ClassTemplate
 
@@ -11,7 +11,7 @@ module ClassTemplate
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/cell.js.opal Order: 1
+# From File: views/poly_lib/cell Order: 1
 #
 class Cell
     attr_accessor :property, :data
@@ -37,7 +37,7 @@ class Cell
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/router.js.opal Order: 1
+# From File: views/poly_lib/router Order: 1
 #
 `console.log('class Router')`
 
@@ -71,7 +71,7 @@ class Router
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/column.js.opal Order: 1
+# From File: views/poly_lib/column Order: 1
 #
 class Column
 
@@ -97,7 +97,7 @@ class Column
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/render_target.js.opal Order: 1
+# From File: views/poly_lib/render_target Order: 1
 #
 
 class RenderTarget
@@ -127,7 +127,7 @@ class RenderTarget
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/render_context.js.opal Order: 1
+# From File: views/poly_lib/render_context Order: 1
 #
 class RenderContext < Hash
     attr_accessor :name, :dir, :parent
@@ -223,7 +223,7 @@ class RenderContext < Hash
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/render.js.opal Order: 1
+# From File: views/poly_lib/render Order: 1
 #
 module Render
     def render(c = nil)
@@ -264,7 +264,7 @@ Logger.log('html',html)
     end
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/quick_html_table.js.opal Order: 1
+# From File: views/poly_lib/quick_html_table Order: 1
 #
 
 #################################
@@ -310,7 +310,7 @@ module QuickHtmlTable
         end
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/markup_links.js.opal Order: 1
+# From File: views/poly_lib/markup_links Order: 1
 #
 class MarkupLinks
 
@@ -331,7 +331,7 @@ class MarkupLinks
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/controller_context_local.js.opal Order: 1
+# From File: views/poly_lib/controller_context_local Order: 1
 #
 class ControllerContextLocal
 
@@ -390,7 +390,7 @@ class ControllerContextLocal
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/controller_render_target.js.opal Order: 1
+# From File: views/poly_lib/controller_render_target Order: 1
 #
 class ControllerRenderTarget
 
@@ -438,7 +438,7 @@ class ControllerRenderTarget
 
  end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/row.js.opal Order: 1
+# From File: views/poly_lib/row Order: 1
 #
 class Route
 
@@ -449,10 +449,10 @@ class Route
     end
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/user_request.js.opal Order: 1
+# From File: views/poly_lib/user_request Order: 1
 #
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/controller_source_context.js.opal Order: 1
+# From File: views/poly_lib/controller_source_context Order: 1
 #
 class ControllerSourceContext
 
@@ -467,7 +467,7 @@ class ControllerSourceContext
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/hot_like_table.js.opal Order: 2
+# From File: views/poly_lib/hot_like_table Order: 2
 #
 # Processed Require Line: require 'digest-rails/poly_lib/cell'
 
@@ -524,7 +524,7 @@ module HotLikeTable
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/controller_context.js.opal Order: 2
+# From File: views/poly_lib/controller_context Order: 2
 #
 # Processed Require Line: require 'digest-rails/poly_lib/controller_source_context'
 # Processed Require Line: require 'digest-rails/poly_lib/controller_context_local'
@@ -565,7 +565,7 @@ module ControllerContext
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/table.js.opal Order: 2
+# From File: views/poly_lib/table Order: 2
 #
 # Processed Require Line: require 'digest-rails/poly_lib/column'
 
@@ -618,7 +618,7 @@ class Table
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/column_text.js.opal Order: 2
+# From File: views/poly_lib/column_text Order: 2
 #
 # Processed Require Line: require 'digest-rails/poly_lib/column'
 class ColumnText < Column
@@ -639,7 +639,7 @@ class ColumnText < Column
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/column_select.js.opal Order: 2
+# From File: views/poly_lib/column_select Order: 2
 #
 # Processed Require Line: require 'digest-rails/poly_lib/column'
 class ColumnSelect < Column
@@ -724,7 +724,7 @@ eos
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/column_indirect_attr.js.opal Order: 2
+# From File: views/poly_lib/column_indirect_attr Order: 2
 #
 # Processed Require Line: require 'digest-rails/poly_lib/column'
 #require 'axle/poly_lib/digest_helpers'
@@ -764,7 +764,7 @@ class ColumnIndirectAttr < Column
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/column_direct_attr.js.opal Order: 2
+# From File: views/poly_lib/column_direct_attr Order: 2
 #
 #require 'axle/poly_lib/digest_helpers'
 # Processed Require Line: require 'digest-rails/poly_lib/column'
@@ -793,7 +793,7 @@ class ColumnDirectAttr < Column
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/client_context.js.opal Order: 2
+# From File: views/poly_lib/client_context Order: 2
 #
 #require 'ostruct'
 # Processed Require Line: require 'digest-rails/poly_lib/render_target'
@@ -860,7 +860,7 @@ Logger.log('push to Existing context',rt_fullname)
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/hot_helpers.js.opal Order: 2
+# From File: views/poly_lib/hot_helpers Order: 2
 #
 #################################
 # HandsOnTable Compatible
@@ -897,7 +897,7 @@ module HotHelpers
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/base_section_controller.js.opal Order: 3
+# From File: views/poly_lib/base_section_controller Order: 3
 #
 # Processed Require Line: require 'digest-rails/poly_lib/controller_context'
 # Processed Require Line: require 'digest-rails/poly_lib/render'
@@ -914,7 +914,7 @@ class BaseSectionController
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/pane_controller.js.opal Order: 4
+# From File: views/poly_lib/pane_controller Order: 4
 #
 # Processed Require Line: require 'digest-rails/poly_lib/base_section_controller'
 `console.log('class PaneController')`
@@ -955,7 +955,7 @@ class PaneController < BaseSectionController
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/dialog_controller.js.opal Order: 4
+# From File: views/poly_lib/dialog_controller Order: 4
 #
 # Processed Require Line: require 'digest-rails/poly_lib/base_section_controller'
 `console.log('class DialogController')`
@@ -1000,7 +1000,7 @@ class DialogController < BaseSectionController
 
 end
 #
-# From File: /Users/ericlaquer/workspace/digest-rails/app/views/poly_lib/runtime.js.opal Order: 5
+# From File: views/poly_lib/runtime Order: 5
 #
 Element.expose :click
 Element.expose :foundation
