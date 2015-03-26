@@ -67,16 +67,19 @@ class Template
     "#<Template: '#@name'>"
   end
 
+  def dehashify
+    if @context.is_a? Hash
+      @context = ContextHash.create(@context)
+    end
+  end
+
   def render(context)
-    context.define_singleton_method(:get_binding) do
+    @context = context
+    dehashify
+    @context.define_singleton_method(:get_binding) do
       return binding
     end
-
-    #context.define_singleton_method(:Template) do
-      #return Template
-    #end
-
-    @erb.result(context.get_binding)
+    @erb.result(@context.get_binding)
   end
 
 end

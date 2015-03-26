@@ -14,7 +14,7 @@ class ContextHash
     end
 
     def recursed(hash)
-        hash.inject({}) do |h,k|
+        hash.keys.inject({}) do |h,k|
             v = hash[k]
             h[k] = if v.is_a? Hash
                 ContextHash.create(v)

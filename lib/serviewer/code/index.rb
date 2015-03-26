@@ -12,13 +12,12 @@ class ContextHash
 
     def create(hash)
        return OpenStruct.new(
-        #recursed(hash)
-        { :a => 1 }
+        recursed(hash)
        )
     end
 
     def recursed(hash)
-        hash.inject({}) do |h,k|
+        hash.keys.inject({}) do |h,k|
             v = hash[k]
             h[k] = if v.is_a? Hash
                 ContextHash.create(v)
@@ -31,10 +30,19 @@ class ContextHash
 
 end
 #
-# From File: views/poly_lib/template_opal Order: 1
+# From File: views/ruby_lib/vlogger Order: 1
 #
-# Include the OPAL library Template code OR it's RUBY equivalent
-# Processed Require Line: require 'digest-rails/opal_lib/template'
+class VLogger
+
+    def log(text,object=nil)
+        if object.nil?
+            puts text
+        else
+            puts "#{text} #{object}"
+        end
+    end
+
+end
 #
 # From File: views/ruby_lib/template_opal Order: 1
 #
@@ -107,16 +115,25 @@ class Template
     "#<Template: '#@name'>"
   end
 
+  def dehashify
+    if @context.is_a? Hash
+      @context = ContextHash.create(@context)
+    end
+  end
+
   def render(context)
-    context.define_singleton_method(:get_binding) do
+    @context = context
+    dehashify
+    @context.define_singleton_method(:get_binding) do
       return binding
     end
-
-    #context.define_singleton_method(:Template) do
-      #return Template
-    #end
-
-    @erb.result(context.get_binding)
+    @erb.result(@context.get_binding)
   end
 
 end
+#
+# From File: views/poly_lib/template_opal Order: 2
+#
+# Include the OPAL library Template code OR it's RUBY equivalent
+# Processed Require Line: require 'digest-rails/poly_lib/context_hash'
+# Processed Require Line: require 'digest-rails/opal_lib/template'
