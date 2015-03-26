@@ -502,6 +502,14 @@ module Serviewer
   ############################
 
   module ServerOrClient
+    def root_dir
+      if rails_config_init_file_path
+        File.join( File.dirname(rails_config_init_file_path), '..','..')
+      else
+        File.join(File.dirname(__FILE__),'..')
+      end
+    end
+
   end
 
   module Server
@@ -512,14 +520,6 @@ module Serviewer
       base.send :include, DependancySchedule
       base.send :include, ProcessCodeFiles
       base.send :include, RunThruRuby
-    end
-
-    def root_dir
-      if rails_config_init_file_path
-        File.join(rails_config_init_file_path,'..','..')
-      else
-        File.join(File.dirname(__FILE__),'..')
-      end
     end
 
     def output_dir
@@ -538,7 +538,7 @@ module Serviewer
 
     def output_dir
       File.expand_path(
-          File.join(File.dirname(__FILE__),'..','app/assets/javascripts/serviewer')
+          File.join(root_dir,'app/assets/javascripts/serviewer')
       )
     end
 
@@ -557,7 +557,7 @@ module Serviewer
     end
 
     def all_extensions
-      %w{ rb js.opal js.opalerb js js.es6 }.map{ |n| e = Extension.new; e.name = n; e }
+      %w{ rb js.opal js.opalerb js js.es6 html.opalerb }.map{ |n| e = Extension.new; e.name = n; e }
     end
 
     def get_library_types(type_names)
@@ -673,7 +673,7 @@ module Serviewer
     end
 
     def extensions
-      get_extensions( %w{ js.opalerb } )
+      get_extensions( %w{ js.opalerb html.opalerb } )
     end
 
     def output_subdir

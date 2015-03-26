@@ -36,8 +36,17 @@ module DigestRails
 
     end
 
+    def active_digest_index
+      @active_digest_index
+    end
+
+    def digests
+      @digests_crosses[:digests]
+    end
+
     def show
-      render :text => Template.paths
+
+      render :text => Template['digest-rails/layout/base'].render(self)
       #js 'Digest#show',show_response
 
     end
