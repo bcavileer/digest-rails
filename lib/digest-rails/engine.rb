@@ -9,8 +9,8 @@ module DigestRails
       g.helper false
     end
 
-    def eager_load!
-    end
+    #def eager_load!
+    #end
 
   end
 end

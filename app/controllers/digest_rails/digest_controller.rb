@@ -37,8 +37,8 @@ module DigestRails
     end
 
     def show
-
-      js 'Digest#show',show_response
+      render :text => Template.paths
+      #js 'Digest#show',show_response
 
     end
 
