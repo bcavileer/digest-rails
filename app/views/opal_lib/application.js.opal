@@ -1,3 +1,3 @@
-`console.log('application.js.opal')`
+`console.log('yyapplication.js.opal')`
 require 'digest-rails/opal_lib/runtime'
 

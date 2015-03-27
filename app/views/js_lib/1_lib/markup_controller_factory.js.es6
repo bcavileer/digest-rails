@@ -1,4 +1,4 @@
-import { delay } from 'digest-rails/1_lib/delay';
+import { delay } from 'code/js_lib/1_lib/delay';
 
 export class MarkupControllerFactory {
 

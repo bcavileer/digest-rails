@@ -3,7 +3,9 @@ require 'rubygems'
 require 'bundler/setup'
 require 'fileutils'
 require 'open3'
+
 module Serviewer
+
   class Engine
     def self.config(c)
       yield c
@@ -726,10 +728,6 @@ module Serviewer
       base.send :include, ProcessCodeFiles
     end
 
-    def code_output_subdir
-      File.join(output_dir,'code')
-    end
-
     def path_labels(source_path_split)
       {
         library_name: source_path_split[-3],
@@ -821,8 +819,12 @@ module Serviewer
 
     def initialize(c)
       super
-      @library_type_names = %w{ poly_lib opal_lib ruby_lib js_lib  views_lib }
+      @library_type_names = %w{ poly_lib ruby_lib }
       @extension_names = %w{ rb js.opal }
+    end
+
+    def code_output_subdir
+      File.join(output_dir,'code')
     end
 
   end
@@ -844,7 +846,7 @@ module Serviewer
 
   ############################
 
-  class ClientCode < Base
+  class ClientCodeJs < Base
     include All
     include ServerOrClient
     include Client
@@ -853,12 +855,38 @@ module Serviewer
 
     def initialize(c)
       super
-      @library_type_names = %w{ poly_lib opal_lib js_lib }
-      @extension_names = %w{ js.opal js.es6 }
+      @library_type_names = %w{ js_lib }
+      @extension_names = %w{ js.es6 }
     end
 
     def output_filname
       'index.js.opal'
+    end
+
+    def code_output_subdir
+      File.join(output_dir,'js_code')
+    end
+  end
+
+  class ClientCodeOpal < Base
+    include All
+    include ServerOrClient
+    include Client
+    include CodeOrTemplates
+    include Code
+
+    def initialize(c)
+      super
+      @library_type_names = %w{ poly_lib opal_lib }
+      @extension_names = %w{ js.opal }
+    end
+
+    def output_filname
+      'index.js.opal'
+    end
+
+    def code_output_subdir
+      File.join(output_dir,'opal_code')
     end
 
   end

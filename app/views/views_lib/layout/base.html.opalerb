@@ -2,8 +2,7 @@
 <html>
 
 <head>
-  <%= self.view_context.stylesheet_link_tag("digest-rails/application", "data-turbolinks-track" => true) %>
-  <%= self.view_context.javascript_include_tag("digest-rails/application", "data-turbolinks-track" => true) %>
+  <%= self.view_context.javascript_include_tag("serviewer/application", "data-turbolinks-track" => true) %>
 </head>
 
 <body>
