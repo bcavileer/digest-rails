@@ -330,7 +330,7 @@ module Serviewer
       list = $LOAD_PATH.map do |load_path|
         load_path
         s = glob_search(load_path)
-        r = Dir.glob( s )
+        r = Dir.glob(s)
         r
       end
       return list.flatten.uniq
@@ -750,7 +750,7 @@ module Serviewer
     end
 
     def glob_search(load_path)
-      File.join( glob_search_base(load_path), library_type_search, extension_search )
+      File.join( glob_search_base(load_path), library_type_search, '**', extension_search )
     end
 
   end
@@ -836,8 +836,8 @@ module Serviewer
 
     def initialize(c)
       super
-      @library_type_names = %w{ view_lib }
-      @extension_names = %w{ js.opalerb }
+      @library_type_names = %w{ views_lib }
+      @extension_names = %w{ js.opalerb html.opalerb }
     end
 
   end

@@ -46,6 +46,10 @@ module DigestRails
       @digests_crosses[:digests]
     end
 
+    def index
+      render :text => Template['digest-rails/layout/base'].render(self)
+    end
+
     def show
       render :text => Template['digest-rails/layout/base'].render(self)
       #js 'Digest#show',show_response
