@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+  <%= self.view_context.stylesheet_link_tag("digest-rails/application", "data-turbolinks-track" => true) %>
+  <%= self.view_context.javascript_include_tag("digest-rails/application", "data-turbolinks-track" => true) %>
+</head>
+
+<body>
 
 <%= Template["templates/digest-rails/layout/page_header"].render(self) %>
 <%= Template["templates/digest-rails/layout/navbar"].render(self) %>
@@ -10,10 +16,6 @@
 <x%= Template["templates/digest-rails/layout/footer"].render(self) %>
 
 <%= Template["templates/digest-rails/layout/footer"].render(self) %>
-
-</head>
-
-<body>
 
 </body>
 </html>
