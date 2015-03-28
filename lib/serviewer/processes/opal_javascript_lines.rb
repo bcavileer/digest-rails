@@ -1,7 +1,7 @@
 module Serviewer
-  module JavascriptLines
+  module OpalJavascriptLines
 
-    def javascript_lines(content_lines)
+    def opal_javascript_lines(content_lines)
       line_number = 1
       r = content_lines.map do |line|
         r = if /\`/ =~ line

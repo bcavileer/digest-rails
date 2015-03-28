@@ -10,20 +10,23 @@ require 'serviewer/outputs/server_template'
 
 require 'serviewer/processes/write_file'
 require 'serviewer/processes/copy_file'
-require 'serviewer/processes/javascript_lines'
-require 'serviewer/processes/parse_and_sort_js_es6_on_imports'
-require 'serviewer/processes/parse_and_sort_rb_on_requires'
 
-require 'serviewer/processes/javascript_lines'
-require 'serviewer/processes/require_lines'
+require 'serviewer/processes/opal_javascript_lines'
+require 'serviewer/processes/rb_require_lines'
+require 'serviewer/processes/js_import_lines'
+require 'serviewer/processes/js_export_lines'
 
 require 'serviewer/file/gem_bundler'
 require 'serviewer/file/source_files'
 require 'serviewer/file/source_file'
 
+require 'serviewer/post_process/build_manifests'
+require 'serviewer/post_process/exception'
+
 module Serviewer
 
   class Builder
+    include Exception
 
     include GemBundler
 
@@ -36,8 +39,12 @@ module Serviewer
     include WriteFile
     include OutputDirs
 
-    include JavascriptLines
-    include RequireLines
+    include OpalJavascriptLines
+    include RbRequireLines
+    include JsImportLines
+    include JsExportLines
+
+    include BuildManifests
 
     attr_accessor :rails_config_init_file_path
 
@@ -46,8 +53,8 @@ module Serviewer
 
     def initialize(c)
       @dry_run = c[:dry_run]
-      @dry_run ||= true
-      @log = true
+      #@dry_run ||= true
+      #@log = true
       @rails_config_init_file_path = c[:rails_config_init_file_path]
       gem_bundler
 
@@ -57,7 +64,7 @@ module Serviewer
     def run
       cache_files
       process_files
-      #output_files
+      build_manifests
       return true
     end
 
@@ -95,12 +102,47 @@ module Serviewer
 
     end
 
+    def check_for_existing(from_hash,ready_for_hash_process_map)
+      if from_hash
+        post_processs_exception(
+          message: [
+            "Contention for reason #{from_hash[:reason]}, key #{from_hash[:file].key} ....}",
+            "Two files exist with the same keys... check extensions...",
+            "Previously defined file #{from_hash[:file].file_path}",
+            "Newly defined file #{ready_for_hash_process_map[:file].file_path}"
+          ],
+          process_maps: [ from_hash,ready_for_hash_process_map ]
+        )
+      end
+    end
+
+    def add_to_process_map_reason_hash(process_map)
+      @process_map_reason_hash ||= {}
+
+      r = @process_map[:reason]
+      if r.nil?
+        raise "Process #{process} did not assign reason"
+      end
+      @process_map_reason_hash[r] ||= {}
+
+      k = @process_map[:file].key
+      if k.nil?
+        raise "Process #{@process_map} did not assign key"
+      end
+
+      check_for_existing(@process_map_reason_hash[r][k],@process_map)
+
+      @process_map_reason_hash[r][k] = @process_map.clone
+    end
+
     def process_file(process,file)
       @process_map = {
           file: file
       }
       self.send(process)
-      @process_maps << @process_map.clone
+
+      return if @process_map.keys == [:file]
+      add_to_process_map_reason_hash(@process_map)
     end
 
     def process_files

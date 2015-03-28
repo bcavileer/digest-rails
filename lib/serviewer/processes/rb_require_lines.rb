@@ -1,7 +1,7 @@
 module Serviewer
-  module RequireLines
+  module RbRequireLines
 
-    def require_lines(content_lines)
+    def rb_require_lines(content_lines)
       line_number = 1
       content_lines.map do |line|
         require = require_from_line(line,line_number)
