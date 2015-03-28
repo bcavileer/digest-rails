@@ -1,1 +1,0 @@
-DIGEST partial for <%= @active_digest.key %> <br/>

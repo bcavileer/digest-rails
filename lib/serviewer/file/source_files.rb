@@ -1,10 +1,10 @@
 module Serviewer
 
-  ## For File Set
   class SourceFiles
     attr_reader :extension_list, :library_list
 
     def initialize(c)
+      @serviewer_builder = c[:serviewer_builder]
       @library_list = c[:library_list]
       @extension_list = c[:extension_list]
     end
@@ -14,9 +14,6 @@ module Serviewer
 
       p "Searching for libraries: #{library_list}"
       p "Searching for extensions: #{extension_list}"
-
-      bundler
-      local_path
 
       list = $LOAD_PATH.map do |load_path|
         load_path
@@ -29,15 +26,7 @@ module Serviewer
     end
 
     def glob_search(load_path)
-      File.join(load_path,'**',library_type_search,'**',extension_search)
-    end
-
-    def bundler
-      @bundler ||= Bundler.setup(:default)
-    end
-
-    def local_path
-      @local_path ||= $LOAD_PATH.unshift File.expand_path('../../../..', __FILE__)
+      File.join( load_path, '**', library_type_search, '**', extension_search )
     end
 
     def extension_search
@@ -47,6 +36,7 @@ module Serviewer
     def library_type_search
       "{#{library_list.join(',')}}"
     end
+
   end
 
 end

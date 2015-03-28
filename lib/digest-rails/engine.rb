@@ -14,3 +14,4 @@ module DigestRails
 
   end
 end
+

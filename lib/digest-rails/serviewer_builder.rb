@@ -15,13 +15,17 @@ require 'serviewer/processes/parse_and_sort_js_es6_on_imports'
 require 'serviewer/processes/parse_and_sort_rb_on_requires'
 
 require 'serviewer/processes/javascript_lines'
+require 'serviewer/processes/require_lines'
 
+require 'serviewer/file/gem_bundler'
 require 'serviewer/file/source_files'
 require 'serviewer/file/source_file'
 
 module Serviewer
 
   class Builder
+
+    include GemBundler
 
     include ClientOpalCode
     include ClientJsCode
@@ -33,10 +37,11 @@ module Serviewer
     include OutputDirs
 
     include JavascriptLines
+    include RequireLines
 
     attr_accessor :rails_config_init_file_path
 
-    LIBRARY_NAMES = %w{ s_views s_controllers s_models }
+    LIBRARY_NAMES = %w{ s_views s_lib s_controllers s_models }
     EXTENSIONS = %w{ rb js.opal js.opalerb js js.es6 html.opalerb }
 
     def initialize(c)
@@ -44,6 +49,7 @@ module Serviewer
       @dry_run ||= true
       @log = true
       @rails_config_init_file_path = c[:rails_config_init_file_path]
+      gem_bundler
 
       raise "requires rails_config_init_file_path" if @rails_config_init_file_path.nil?
     end
@@ -58,8 +64,8 @@ module Serviewer
     def cache_files
 
       p "Caching Files"
-
       @cached_files = SourceFiles.new(
+          serviewer_builder: self,
           library_list: LIBRARY_NAMES,
           extension_list: EXTENSIONS
       ).all.map do |file_path|
@@ -67,7 +73,12 @@ module Serviewer
         LIBRARY_NAMES.map do |library_name|
           library_name_position = path_s.index(library_name)
           if library_name_position
-            SourceFile.new(file_path,library_name,library_name_position)
+            SourceFile.new(
+                serviewer_builder: self,
+                file_path: file_path,
+                library_name: library_name,
+                library_name_position: library_name_position
+            )
           end
         end
       end.flatten.compact
