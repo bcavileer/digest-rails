@@ -22,6 +22,16 @@ module Serviewer
       @key = [ file_path_s[@library_name_position+1..-2], @name ].flatten.join('/')
     end
 
+    def logical_key
+      key
+    end
+
+    def source_key
+      gem_key
+      File.join( key, @gem_name )
+    end
+
+
     def has_path_dir(dir)
       @file_path.split('/').include?(dir)
     end
@@ -45,15 +55,6 @@ module Serviewer
 
     def key_wo_last
       key.split('/')[0..-2].join('/')
-    end
-
-    def logical_key
-      key
-    end
-
-    def source_key
-      gem_key
-      File.join( key, @gem_name )
     end
 
     def gem_key

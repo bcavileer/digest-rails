@@ -2,7 +2,7 @@ module Serviewer
 
   class SourceFiles
     include Lexical
-    
+
     attr_reader :extension_list, :library_list
 
     def initialize(c)

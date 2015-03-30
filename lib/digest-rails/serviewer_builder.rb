@@ -103,7 +103,8 @@ module Serviewer
 
     end
 
-    def check_for_existing(from_hash,ready_for_hash_process_map)
+    def check_for_existing(reason,logical_key,source_key)
+
       if from_hash
         post_processs_exception(
           message: [
@@ -117,23 +118,27 @@ module Serviewer
       end
     end
 
+    def register_new_process_map
+      @process_map_reason_hash[r][k] = @process_map.clone
+      @process_map = nil
+    end
+
     def add_to_process_map_reason_hash
       @process_map_reason_hash ||= {}
 
-      r = @process_map[:reason]
-      if r.nil?
-        raise "Process #{process} did not assign reason"
-      end
-      @process_map_reason_hash[r] ||= {}
+      reason = @process_map[:reason]
+      raise "Process #{process} did not assign reason" if !reason
+      @process_map_reason_hash[reason] ||= {}
 
-      k = @process_map[:file].key
-      if k.nil?
-        raise "Process #{@process_map} did not assign key"
-      end
+      logical_key = @process_map[:file].logical_key
+      raise "Process #{@process_map} did not assign logical_key" if !logical_key
+      @process_map_reason_hash[reason][logical_key] ||= {}
 
-      check_for_existing(@process_map_reason_hash[r][k],@process_map)
-      @process_map_reason_hash[r][k] = @process_map.clone
-      @process_map = nil
+      source_key = @process_map[:file].source_key
+      raise "Process #{@process_map} did not assign source_key" if !source_key
+
+      check_for_existing(reason,logical_key,source_key)
+      register_new_process_map
     end
 
     def process_file(process,file)
