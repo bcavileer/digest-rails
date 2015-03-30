@@ -1,5 +1,5 @@
-import { PalomaControllerFactory } from 'digest-rails/1_lib/paloma_controller_factory';
-import { DigestControllerFactory } from "digest-rails/2_lib/digest_controller_factory";
+import { PalomaControllerFactory } from 'code/client_runtime/paloma_controller_factory';
+import { DigestControllerFactory } from 'code/client_runtime/digest_controller_factory';
 
 export class DigestsControllerFactory extends PalomaControllerFactory {
 

@@ -1,6 +1,11 @@
 module Serviewer
   module OutputDirs
 
+    def root_ref(path)
+      path_s = path.split('/')
+      "ROOT:#{path_s[root_dir_length..-1].join('/') }"
+    end
+
     def client_template_output_dir
       File.join(client_output_dir,'template')
     end
@@ -39,9 +44,15 @@ module Serviewer
       )
     end
 
+    def root_dir_length
+      @root_dir_length = root_dir.split('/').length
+    end
+
     def root_dir
       if rails_config_init_file_path
-        File.join( File.dirname(@rails_config_init_file_path), '..','..')
+        File.expand_path(
+            File.join( File.dirname(@rails_config_init_file_path), '..','..')
+        )
       else
         p File.dirname(__FILE__)
         File.join(File.dirname(__FILE__),'..')

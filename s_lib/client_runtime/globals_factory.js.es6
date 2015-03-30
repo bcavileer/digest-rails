@@ -1,8 +1,7 @@
-
 let theFirstRequest, PHASE, theDigestsController, theDigestController, markupController, thePaneController;
 
-import { DigestsControllerFactory } from "digest-rails/3_paloma/digests_controller_factory";
-import { MarkupControllerFactory } from "digest-rails/1_lib/markup_controller_factory";
+import { DigestsControllerFactory } from "code/client_runtime/digests_controller_factory";
+import { MarkupControllerFactory } from "code/client_runtime/markup_controller_factory";
 
 export class GlobalsFactory {
   constructor() {

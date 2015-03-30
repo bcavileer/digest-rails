@@ -1,4 +1,4 @@
-import { delay } from 'code/js_lib/1_lib/delay';
+import { delay } from 'code/client_runtime/delay';
 
 export class MarkupControllerFactory {
 

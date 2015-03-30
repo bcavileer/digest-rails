@@ -1,5 +1,3 @@
-require 'serviewer/file/get_es6_exports_imports'
-require 'serviewer/file/get_rb_requires'
 require 'serviewer/file/output_dirs'
 
 require 'serviewer/outputs/client_opal_code'
@@ -11,12 +9,13 @@ require 'serviewer/outputs/server_template'
 require 'serviewer/processes/write_file'
 require 'serviewer/processes/copy_file'
 
-require 'serviewer/processes/opal_javascript_lines'
-require 'serviewer/processes/rb_require_lines'
-require 'serviewer/processes/js_import_lines'
-require 'serviewer/processes/js_export_lines'
+require 'serviewer/processes/get_opal_javascript_lines'
+require 'serviewer/processes/get_rb_require_lines'
+require 'serviewer/processes/get_js_import_lines'
+require 'serviewer/processes/get_js_export_lines'
 
 require 'serviewer/file/gem_bundler'
+require 'serviewer/file/lexical'
 require 'serviewer/file/source_files'
 require 'serviewer/file/source_file'
 
@@ -39,10 +38,12 @@ module Serviewer
     include WriteFile
     include OutputDirs
 
-    include OpalJavascriptLines
-    include RbRequireLines
-    include JsImportLines
-    include JsExportLines
+    include Lexical
+
+    include GetOpalJavascriptLines
+    include GetRbRequireLines
+    include GetJsImportLines
+    include GetJsExportLines
 
     include BuildManifests
 
@@ -116,7 +117,7 @@ module Serviewer
       end
     end
 
-    def add_to_process_map_reason_hash(process_map)
+    def add_to_process_map_reason_hash
       @process_map_reason_hash ||= {}
 
       r = @process_map[:reason]
@@ -131,8 +132,8 @@ module Serviewer
       end
 
       check_for_existing(@process_map_reason_hash[r][k],@process_map)
-
       @process_map_reason_hash[r][k] = @process_map.clone
+      @process_map = nil
     end
 
     def process_file(process,file)
@@ -142,12 +143,11 @@ module Serviewer
       self.send(process)
 
       return if @process_map.keys == [:file]
-      add_to_process_map_reason_hash(@process_map)
+      add_to_process_map_reason_hash
     end
 
     def process_files
       p "Processing Files"
-      @process_maps = []
       @cached_files.map do |file|
         processes.map do |process|
           process_file(process,file)

@@ -1,7 +1,5 @@
 module Serviewer
   class SourceFile
-    include GetRbRequires
-    include GetEs6ExportsImports
 
     attr_accessor :file_path, :library_type, :gem_name, :key, :name, :ext
 
@@ -49,9 +47,22 @@ module Serviewer
       key.split('/')[0..-2].join('/')
     end
 
+    def logical_key
+      key
+    end
+
+    def source_key
+      gem_key
+      File.join( key, @gem_name )
+    end
+
+    def gem_key
+      File.join( @gem_name, key )
+    end
+
     def file_path_for_dir(dir,ext)
       last = [@name,ext].join('.')
-      File.join( dir, @gem_name, key_wo_last, last )
+      File.join( dir, key_wo_last, last )
     end
 
     def content

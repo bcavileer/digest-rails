@@ -18,23 +18,14 @@
 //= require paloma
 //= require foundation
 //= require handsontable_dr
-//= require_tree ./code/axle
-//= require_tree ./code/js_lib/1_lib/
-//= require_tree ./code/js_lib/0_kludge
-//= require_tree ./code/js_lib/1_lib
-//= require_tree ./code/js_lib/2_lib
-//= require_tree ./code/js_lib/3_paloma
-//= require_tree ./code/js_lib/4_globals
-//= require_tree ./code/js_lib/5_request
+//= require_tree ./code/client_runtime
 //= require_tree ./templates
-//= require_tree ./application_opal
-//= require authorize
 
 import { id } from 'digest-rails/1_lib/id';
 console.log( id() );
 
-import { GlobalsFactory } from "./code/js_lib/4_globals/globals_factory";
-import { RequestFactory } from "./code/js_lib/5_request/request_factory";
+import { GlobalsFactory } from "./code/globals_factory";
+import { RequestFactory } from "./code/request_factory";
 
 let theGlobals = new GlobalsFactory();
 let theFirstRequest = new RequestFactory(theGlobals);

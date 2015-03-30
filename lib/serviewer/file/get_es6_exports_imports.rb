@@ -1,2 +1,0 @@
-module GetEs6ExportsImports
-end

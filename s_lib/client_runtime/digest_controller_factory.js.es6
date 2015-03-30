@@ -1,5 +1,5 @@
-import { PalomaControllerFactory } from 'digest-rails/1_lib/paloma_controller_factory';
-import { delay } from 'digest-rails/1_lib/delay';
+import { PalomaControllerFactory } from 'code/client_runtime/paloma_controller_factory';
+import { delay } from 'code/client_runtime/delay';
 
 export class DigestControllerFactory{
 

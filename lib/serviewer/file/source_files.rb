@@ -1,6 +1,8 @@
 module Serviewer
 
   class SourceFiles
+    include Lexical
+    
     attr_reader :extension_list, :library_list
 
     def initialize(c)
@@ -12,8 +14,8 @@ module Serviewer
     def all
       p "Get Bundled Serviewer Libs:"
 
-      p "Searching for libraries: #{library_list}"
-      p "Searching for extensions: #{extension_list}"
+      p remove_quotes("Searching for libraries: #{library_list}")
+      p remove_quotes("Searching for extensions: #{extension_list}")
 
       list = $LOAD_PATH.map do |load_path|
         load_path
